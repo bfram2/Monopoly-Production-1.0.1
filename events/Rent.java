@@ -1,6 +1,7 @@
 package events;
 import events.Turn;
 import events.Players;
+import event.Buy;
 
 //import tile.Properties;
 //import tile.Utilities;
@@ -12,6 +13,7 @@ public class Rent {
 	int grent; //group rent
 	int group; //group number
 	int diet;  //total dice roll from Turn
+	int bought;//make sure owner[Pos] == 1 in Board
 	public Rent() {
 		Paytheman();
 	}
