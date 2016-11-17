@@ -1,42 +1,146 @@
 package events;
+import events.Turn;
+import events.Players;
 
 //import tile.Properties;
 //import tile.Utilities;
 //import tile.Vias;
 
-public class Rent extends Turn {
+public class Rent {
+	int Pos;   //Pos in Turn
+	int rent;  //regular rent
+	int grent; //group rent
+	int group; //group number
+	int diet;  //total dice roll from Turn
 	public Rent() {
-		
+		Paytheman();
 	}
-	public void paytheman() {
-			// Pos, name, group, rent, group rent
-	        //1,"Germania Inferior", 1, 2, 4
-	           //3,"Germania Superior",1,4,8
-	           //6,"Alps Poeniae",2,6,12
-	            //8,"Alps Cottiae",2,6,12
-	            //9,"Alps Maritimae",2,8,16
-	            //12,"Aquitina",3,10,20
-	            //13,"Belgice",3,10,20
-	            //15,"Raetia",3,12,24
-	            //17,"Africa Proconsularis", 4,14,28
-	            //19,"Asia",4,14,28),
-	            //20,"Britannia",4,16,32),
-	            //22,"Cilicia",5,18,32),
-	            //24,"Galatia",5,18,32),
-	            //25,"Cappadocia",5,20,40),
-	            //27,"Aegyptus",6,22,44),
-	            //28,"Arabia Petraea",6,22,44),
-	            //30,"Suria",6,24,48),
-	            //32,"Macedonia",7,,26,52),
-	            //33,"Epirus",7,26,52),
-	            //35,"Achaia",7,28,56),
-	            //38,"Sicilia",8,35,70),
-	            //40,"Italia",8,50,100), 		
-	            //5,"Via Appia","Via_Appia.PNG",10,200,100,0,0,0,0,0),
-	            //16,"Via Flaminia","Via_Flaminia.PNG",10,200,100,0,0,0,0,0),
-	            //26,"Via Aemilia","Via_Aemilia.PNG",10,200,100,0,0,0,0,0),
-	            //36,"Via Popilia","Via_Popillia.PNG",10,200,100,0,0,0,0,0),
-	            //13,"Sewers","Utility_Sewers.PNG",10,150,75,0),
-	            //29,"Aquaducts","Utility_Aqueducts.PNG",10,150,75,0),
+	public void Paytheman() {
+	// Pos, name, group, rent, group rent
+		if (Pos == 1) {
+		group = 1;
+		rent = 2;
+		grent = 2*rent; //Germania Inferior
+		}
+		if (Pos == 3) {
+		group = 1;
+		rent = 4;
+		grent = 2*rent; //Germania Superior
+		}
+		if (Pos == 6) {
+		group = 2;
+		rent = 6;
+		grent = 2*rent; //Alps Poeniae
+		}
+	    if (Pos == 8) {
+		group = 2;
+		rent = 6;
+		grent = 2*rent; //Alps Cottiae
+		}
+		if (Pos == 9) {
+		group = 2;
+		rent = 8;
+		grent = 2*rent; //Alps Maritimae
+		}
+		if (Pos == 12) {
+		group = 3;
+		rent = 10;
+		grent = 2*rent; //Aquitina
+		}
+		if (Pos == 13) {
+		group = 3;
+		rent = 10;
+		grent = 2*rent; //Belgice
+		}
+		if (Pos == 15) {
+		group = 3;
+		rent = 12;
+		grent = 2*rent; //Raetia
+		}
+		if (Pos == 17) {
+		group = 4;
+		rent = 14;
+		grent = 2*rent; //Africa Proconsularis
+		}
+		if (Pos == 19) {
+		group = 4;
+		rent = 14;
+		grent = 2*rent; //Asia
+		}
+		if (Pos == 20) {
+		group = 4;
+		rent = 16;
+		grent = 2*rent; //Britannia
+		}
+		if (Pos == 22) {
+		group = 5;
+		rent = 18;
+		grent = 2*rent; //Cilicia
+		}
+		if (Pos == 24) {
+		group = 5;
+		rent = 18;
+		grent = 2*rent; //Galatia
+		}
+		if (Pos == 25) {
+		group = 5;
+		rent = 20;
+		grent = 2*rent; //Cappadocia
+		}
+		if (Pos == 27) {
+		group = 6;
+		rent = 22;
+		grent = 2*rent; //Aegyptus
+		}
+		if (Pos == 28) {
+		group = 6;
+		rent = 22;
+		grent = 2*rent; //Arabia Petraea
+		}
+		if (Pos == 30) {
+		group = 6;
+		rent = 24;
+		grent = 2*rent; //Arabia Petraea
+		}
+		if (Pos == 32) {
+		group = 7;
+		rent = 26;
+		grent = 2*rent; //Macedonia
+		}
+		if (Pos == 33) {
+		group = 7;
+		rent = 26;
+		grent = 2*rent; //Epirus
+		}
+		if (Pos == 35) {
+		group = 7;
+		rent = 28;
+		grent = 2*rent; //Achaia
+		}
+		if (Pos == 38) {
+		group = 8;
+		rent = 35;
+		grent = 2*rent; //Sicilia
+		}
+		if (Pos == 40) {
+		group = 8;
+		rent = 50;
+		grent = 2*rent; //Italia
+		}
+		if (Pos == 5 || Pos == 16 || Pos == 26 || Pos == 36) {
+		group = 9;
+		rent = 25;  //50, 100, 200
+		grent = 2*rent; //Vias
+		}
+		if (Pos == 13) {
+		group = 10;
+		rent = 4*diet;
+		grent = 10*diet; //Sewers
+		}
+		if (Pos == 29) {
+		group = 10;
+		rent = 4*diet;
+		grent = 10*diet; //Aquaducts
+		}
 	}
 }
