@@ -12,10 +12,15 @@ public class Rent {
 	int rent;  //regular rent
 	int grent; //group rent
 	int group; //group number
-	int diet;  //total dice roll from Turn
+	int diet;  //total dice roll from Board, after Turn
 	int bought;//make sure owner[Pos] == 1 in Board
 	public Rent() {
 		Paytheman();
+	}
+	public Rent(int group, int rent, int grent) {
+		this.group = group;
+		this.rent = rent;
+		this.grent = grent;
 	}
 	public void Paytheman() {
 	// Pos, name, group, rent, group rent
@@ -144,5 +149,8 @@ public class Rent {
 		rent = 4*diet;
 		grent = 10*diet; //Aquaducts
 		}
-	}
+	}//end of pay the man
+	public int getGroup() {return group;}
+	public int getRent() {return rent;}
+	public int getGRent() {return grent;}
 }
