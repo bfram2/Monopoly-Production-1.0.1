@@ -1,7 +1,7 @@
 package events;
 import events.Turn;
 import events.Players;
-import event.Buy;
+import events.Buy;
 
 //import tile.Properties;
 //import tile.Utilities;
