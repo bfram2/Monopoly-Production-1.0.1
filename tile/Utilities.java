@@ -6,13 +6,13 @@ public class Utilities {
 
 	public int tileNumber;
 	private String name;
-	private String imgname;
+	private String imageName;
 	private int group;
 	private int cost;
 	private int mortgage;
 	private int owner;
 	
-	public Utilities(int tileNumber, String name, String imgname, int group, int cost, int mortgage, int owner){
+	public Utilities(int tn, String n, String in, int g, int c, int m, int o){
 		//tileNumber is the number of the property in order starting with Go as 0
 		//name is the name of the property
 		//group is the color grouping which have been assigned numbers 1-10
@@ -20,48 +20,38 @@ public class Utilities {
 		//mortgage is the amount a player can have added to their bank by mortgaging the property
 		//owner is the player that owns the property with 0 as the default no owner/bank owned
 		
-		tileNumber = this.tileNumber;
-		name = this.name;
-		imgname = this.imgname;
-		group = this.group;
-		cost = this.cost;
-		mortgage = this.mortgage;
-		owner = this.owner;
+		this.tileNumber = tn;
+		this.name = n;
+		this.imageName = in;
+		this.group = g;
+		this.cost = c;
+		this.mortgage = m;
+		this.owner = o;
 	}
-	public static int getTile(Utilities[] holder, int index){
-		Utilities findByIndex = holder [index];
-		int t = findByIndex.tileNumber;
-		return t;
+	public  int getTile(){
+		return this.tileNumber;
 	}
-	public static String getName(Utilities[] holder, int index){
-		Utilities findByIndex = holder [index];
-		String n= findByIndex.name;
-		return n;
+	public String getName(){
+		return this.name;
 	}
-	public static String getImgName(Utilities[] holder, int index){
-		Utilities findByIndex = holder [index];
-		String in= findByIndex.imgname;
-		return in;
+	public String getImageName(){
+		return this.imageName;
 	}
-	public static int getGroup(Utilities[] holder, int index){
-		Utilities findByIndex = holder [index];
-		int g = findByIndex.group;
-		return g;
+	public int getGroup(){
+		return this.group;
 	}
-	public static int getCost(Utilities[] holder, int index){
-		Utilities findByIndex = holder [index];
-		int c= findByIndex.cost;
-		return c;
+	public int getCost(){
+		return this.cost;
 	}
-	public static int getMortgage(Utilities[] holder, int index){
-		Utilities findByIndex = holder [index];
-		int m= findByIndex.mortgage;
-		return m;
+	public int getMortgage(){
+		return this.mortgage;
 	}
-	public static int getOwner(Utilities[] holder, int index){
-		Utilities findByIndex = holder [index];
-		int o = findByIndex.owner;
-		return o;
+	public int getOwner(){
+		return this.owner;
+	}
+	public int setOnwer(){
+		return this.owner;
+		//this will have to be changed to take info to change the owner
 	}
 	public static int calcSingleRent(Dice currentRoll){
 		int totalValue = currentRoll.getTotal();

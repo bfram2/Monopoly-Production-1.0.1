@@ -6,13 +6,17 @@ package tile;
 
 		public int tileNumber;
 		private String name;
-		private String imgname;
+		private String imageName;
 		private int group;
 		private int cost;
 		private int mortgage;
 		private int owner;
+		private int singleRent;
+		private int doubleRent;
+		private int tripleRent;
+		private int quadRent;
 		
-		public Vias(int tileNumber,String name,String imgname,int group,int cost,int mortgage,int owner,int singleRent,int doubleRent,int tripleRent,int quadRent){
+		public Vias(int tn,String n,String in, int g, int c, int m, int o,int sr,int dr,int tr,int qr){
 			//tileNumber is the number of the property in order starting with Go as 0
 			//name is the name of the property
 			//group is the color grouping which have been assigned numbers 1-10
@@ -20,51 +24,53 @@ package tile;
 			//mortgage is the amount a player can have added to their bank by mortgaging the property
 			//owner is the player that owns the property with 0 as the default no owner/bank owned
 			
-			tileNumber = this.tileNumber;
-			name = this.name;
-			imgname = this.imgname;
-			group = this.group;
-			cost = this.cost;
-			mortgage = this.mortgage;
-			owner = this.owner;
-			singleRent = 100;
-			doubleRent = 200;
-			tripleRent = 300;
-			quadRent = 300;
+			this.tileNumber = tn;
+			this.name = n;
+			this.imageName = in;
+			this.group = g;
+			this.cost = c;
+			this.mortgage = m;
+			this.owner = o;
+			this.singleRent = sr;
+			this.doubleRent = dr;
+			this.tripleRent = tr;
+			this.quadRent = qr;
 		}
-		public static int getTile(Vias[] holder, int index){
-			Vias findByIndex = holder [index];
-			int t = findByIndex.tileNumber;
-			return t;
+		public int getTile(){
+			return this.tileNumber;
 		}
-		public static String getName(Vias[] holder, int index){
-			Vias findByIndex = holder [index];
-			String n= findByIndex.name;
-			return n;
+		public String getName(){
+			return this.name;
 		}
-		public static String getImgName(Vias[] holder, int index){
-			Vias findByIndex = holder [index];
-			String in= findByIndex.imgname;
-			return in;
+		public String getImageName(){
+			return this.imageName;
 		}
-		public static int getGroup(Vias[] holder, int index){
-			Vias findByIndex = holder [index];
-			int g = findByIndex.group;
-			return g;
+		public int getGroup(){
+			return this.group;
 		}
-		public static int getCost(Vias[] holder, int index){
-			Vias findByIndex = holder [index];
-			int c= findByIndex.cost;
-			return c;
+		public int getCost(){
+			return this.cost;
 		}
-		public static int getMortgage(Vias[] holder, int index){
-			Vias findByIndex = holder [index];
-			int m= findByIndex.mortgage;
-			return m;
+		public int getMortgage(){
+			return this.mortgage;
 		}
-		public static int getOwner(Vias[] holder, int index){
-			Vias findByIndex = holder [index];
-			int o = findByIndex.owner;
-			return o;
+		public int getOwner(){
+			return this.owner;
+		}
+		public int setOwner(){
+			return this.owner;
+			//this will have to be changed to update the owner
+		}
+		public int getSingleRent(){
+			return this.singleRent;
+		}
+		public int getDoubleRent(){
+			return this.doubleRent;
+		}
+		public int getTripleRent(){
+			return this.tripleRent;
+		}
+		public int getQuadRent(){
+			return this.quadRent;
 		}
 }
