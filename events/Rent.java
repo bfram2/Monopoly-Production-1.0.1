@@ -1,11 +1,8 @@
 package events;
-import events.Turn;
-import events.Players;
-import events.Buy;
-
-//import tile.Properties;
-//import tile.Utilities;
-//import tile.Vias;
+//import events.Turn;
+//import events.Players;
+//import events.Buy;
+//import tile.*;
 
 public class Rent {
 	int Pos;   //Pos in Turn

@@ -1,21 +1,19 @@
 package events;
-//Player turn and movement
-import pieces.*; //board,dice,images
-//import tile.*; //properties, utilities, vias
-import events.Players;
-import cards.*;
+import cards.Chance;
+import cards.CommunityChest;
+import pieces.Dice;
+//import pieces.Board;
 
 public class Turn {
-	int tdplimg; //title deed cards index in tile package
-	int titledeed;
+	//Players thePlayers = new Players(); //add Player to board
+	int titledeed = 28;    //if 28, then blank
 	int dice1 = 0;    //dice class
 	int dice2 = 0;    //0 is no visible dice image
-	int Prev;         //position
-	int Pos;          //new position
+	int Prev;        //position
+	int Pos;
 	int j = 0;        //jail
 	int k = 0;        //doubles
 	int money;        //pull adjust into it from chance and chest
-	int Bal = 1500;          //output to players as(Bal - money)
 	String statustxt; //Pos status text
 	int chacard;      //theChance.getChanceNo
 	String chaimg;    //         .getImgName
@@ -28,47 +26,38 @@ public class Turn {
 	String spacename;
 	String spaceimg;
 	
-	
-
+	public void setPos(int Pos) {this.Pos = Pos;}
+	public void setPrev(int Prev) {this.Prev = Prev;}
+	public void setDice1(int dice1) {this.dice1 = dice1;}
+	public void setDice2(int dice2) {this.dice2 = dice2;}
 	public Turn() {
-		TurnAction(); //activate player turn
-		System.out.println("Pos after: "+Pos);
+		TurnAction(Pos, Prev, dice1, dice2); //activate player turn
 	}
-	public Turn(int tdplimg, int Pos, String statustxt, int dice1, int dice2, int Bal, int j) {
-		this.tdplimg = tdplimg;
+	public Turn(int Pos, int titledeed, String statustxt, int dice1, int dice2, int money, int j, String chaimg) {
 		this.Pos = Pos;
 		this.statustxt = statustxt;
 		this.dice1 = dice1;
 		this.dice2 = dice2;
-		this.Bal = Bal;
+		this.money = money;
 		this.j = j;
+		this.chaimg = chaimg;
+		this.titledeed = titledeed;
 	}
-	public void TurnAction() {
-		for (int i=0; i<1; i++) {
-		Players thePlayer = new Players(); //add Player to board
-		Prev = thePlayer.getPosition();
-		System.out.println("Prev: "+Prev);
-		tdplimg = 28; //blank slate
+	public void TurnAction(int Pos, int Prev, int dice1, int dice2) {
+		int action = 1;
+		for (int i=0; i<action; i++) {
+		//Prev = thePlayers.getPosition(); //Player position from last loop, otherwise zero
+		
 		money = 0;
-		Bal = thePlayer.getBalance();
 		
 		int[] jail = new int[4];
 		int[] doubles = new int[3]; //test for errors when doubles > 3
 		
-		Dice theDice = new Dice();
-	    dice1 = theDice.getDie1();
-	    dice2 = theDice.getDie2();
-		Pos = (Prev + dice1 + dice2) % 40; //token position
-		
-		thePlayer.setPosition(Pos); //set position early for Chance & Chest
-		//spacename = Properties.getImgName(regions, 0);
-		//System.out.println(spacename);
-		
-		//Properties[] regions
-		//if (regions[0].tileNumber == Pos) {
-		//	if (Pos == 11 && j == 0) {
-				//Pos = 10; //see a battle
-		//	}
+		//Dice theDice = new Dice();
+	    //dice1 = theDice.getDie1();
+	    //dice2 = theDice.getDie2();
+		//Pos = (Prev + dice1 + dice2) % 40; //token position
+		//thePlayers.setPosition(Pos); //set new position early for Chance & Chest
 		
 		Chance theChance = new Chance(); //chance class
 		chacard = theChance.getChanceNo();
@@ -101,7 +90,6 @@ public class Turn {
 				if (Pos > 39) {
 					Pos = 40 - Pos; //don't go out of bounds
 				}
-				thePlayer.setPosition(Pos);
 			} //if Pos is less than 10 and will become greater than 10, add one to skip jail (Pos = 11)
 			if (Pos != 0) {
 			    if ((Prev > Pos) && (j == 0)) {
@@ -115,8 +103,7 @@ public class Turn {
 			} //Rome
 			if (Pos == 1) {
 				statustxt = "Germania Inferior.";
-				titledeed = 0; //properties[Pos].name;
-				tdplimg = 0;   //properties[Pos].imgname;
+				titledeed = 0;
 			} //Germania Inferior
 			if (Pos == 3) {
 				titledeed = 1;
@@ -157,7 +144,7 @@ public class Turn {
 			if (Pos == 36) {titledeed = 27;} //Via Popillia
 			if (Pos == 38) {titledeed = 20;} //Sicilia
 			if (Pos == 39) {
-				money = 100;
+				money = -100;
 				statustxt = "Citizen's Tax";
 			}
 			if (Pos == 40) {titledeed = 21;} //Italia
@@ -188,26 +175,33 @@ public class Turn {
 		if (k > 3) {
 			k = 4 - k;
 		} //keep doubles from going out of bounds
+		if (Pos == 10 || Pos == 11 || Pos == 2 || Pos == 18 || Pos == 34 || Pos == 7 || Pos == 23 || Pos == 37) {
+			titledeed = 28;
+		}
+		System.out.println("Pos: "+Pos+", Prev: "+Prev+", td: "+titledeed+", dice: "+dice1+"+"+dice2);
+		Prev = Pos;
 		jail[j]++;
 	    doubles[k]++;
-		Bal += money;
-		thePlayer.setDoubles(k); //doubles counter
-		thePlayer.setJail(j); //jail counter
-		thePlayer.setBalance(Bal); //player balance
+		//theBoard.setDoubles(k); //doubles counter
+		//theBoard.setJail(j); //jail counter
+		//theBoard.setBalance(Bal); //player balance
+		//theBoard.setPosition(Prev); //player old position
 		
-		if (Bal == 0) {
-			statustxt = "Game over.";
-		}
-		Prev = Pos;
-		thePlayer.setPosition(Prev); //set position early for Chance & Chest
+		//if (Bal == 0) {
+		//	statustxt = "Game over.";
+		//}
+		//System.out.println("Prev: "+Prev+", Pos: "+Pos+", td: "+titledeed);
 		} //end of loop
+		
 	} //end of turn
-	//gets: tdplimg, Pos, statustxt
-	public int getTdplimg() {return tdplimg;}
+	//get & set
+	public int getTitleDeed() {TurnAction(Pos, Prev, dice1, dice2); return titledeed;}
 	public int getPos() {return Pos;}
-	public int getBal() {return Bal;}
+	
+	public int getMoney() {return money;}
 	public int getTjail() {return j;}
 	public String getStatustxt() {return statustxt;}
 	public int getDice1() {return dice1;}
 	public int getDice2() {return dice2;}
+	public String getChaimg() {return chaimg;}
 }
