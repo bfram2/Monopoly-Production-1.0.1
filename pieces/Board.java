@@ -33,19 +33,20 @@ public class Board extends JFrame implements ActionListener {
 	JFrame boardFrame = new JFrame("Stats");
 	JPanel stats = new JPanel();
 	
-	Players thePlayer = new Players(); //for token
+	public Players thePlayer = new Players(); //for token
 	Turn theTurn = new Turn(); //pulling player's turn
+	Buy theBuy = new Buy();
 	int ttbuy = 0;
-	int tdmort = 0;
 	//board spaces
 	int tdPos = 0;
-	int titledeed = 28; //buy picks
+	public int titledeed = 28; //buy picks
 	//int tdplimg; //titledeed card counter
 	int buymort = 0; //counter for buy or mortgage
 	int Pos = 0; //board positions
 	int money = 0;
 	public int Prev;
-	int Bal = 1500;
+	public int Bal = 1500;
+	int prevown; //owned[titledeed]
 	int k = 0; //doubles counter
 	int j = 0; //jail counter
 	//int g = 0; //pass go counter
@@ -56,7 +57,8 @@ public class Board extends JFrame implements ActionListener {
 	int dice2 = 0;
 	
 	//buying price for title deeds
-	int[] tdBuy = {60,60,100,100,120,140,140,160,180,180,200,220,220,240,260,260,280,300,300,320,350,400,150,150,200,200,200,200};
+	public int[] tdBuy = {60,60,100,100,120,140,140,160,180,180,200,220,220,240,260,260,280,300,300,320,350,400,150,150,200,200,200,200,0};
+	public int[] owned = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; //0=bank,1=owned,-1=mortgaged
 	//the name of the spaces with title deeds
     String[] tdPlaces = {"Germania Inferior","Germania Superior","Alpes Poeniae","Alpes Cottiae","Aples Maritimae","Aquitania","Belgica","Raetia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia","Aegyptus","Arabia Petraea","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia","Sewers","Aqueducts","Via Appia","Via Flaminia","Via Aemilia","Via Popillia",""};
 	//title deed card image names
@@ -66,7 +68,7 @@ public class Board extends JFrame implements ActionListener {
 	//token movement setBounds(x[Pos],y[Pos])
     int[] x = {9,96,152,208,264,320,376,432,488,544,665,600,600,600,600,600,600,600,600,600,600,600,543,488,432,376,320,264,208,152,96,9,77,77,77,77,77,77,77,77,77};
     int[] y = {11,11,11,11,11,11,11,11,11,11,11,35,97,154,209,265,322,377,432,490,544,601,601,601,601,601,601,601,601,601,601,601,545,489,434,377,322,265,209,154,97};
-    	
+
 	public Board() {
 		//layout
 		boardFrame.setVisible(true);
@@ -237,6 +239,7 @@ public class Board extends JFrame implements ActionListener {
 			Pos = theTurn.getPos();
 			chaimg = theTurn.getChaimg();
 			money = theTurn.getMoney();
+			
 			Bal += money;
 			if (Prev < 10 && Pos > 10) {
 				Pos+= 1; //don't count 11, arena
@@ -244,7 +247,10 @@ public class Board extends JFrame implements ActionListener {
 					Pos = 40 - Pos; //don't go out of bounds
 				}
 			}
-			System.out.println("Pos: "+Pos+", Prev: "+Prev+", Dice: "+dice1+"+"+dice2+", images: "+tdimages[titledeed]+", money: "+money+", j: "+j);
+			if (Pos == 31) {
+				Pos = 11; //go to jail
+			}
+			//System.out.println("Pos: "+Pos+", Prev: "+Prev+", Dice: "+dice1+"+"+dice2+", images: "+tdimages[titledeed]+", money: "+money+", j: "+j); //debugging
 			dicez.setIcon(new ImageIcon("src/pieces/images/Dice"+dice1+".png")); //refresh img dice
 			dice2thereckoning.setIcon(new ImageIcon("src/pieces/images/Dice"+dice2+".png"));
 			spaces.setBounds(x[Pos], y[Pos], 50, 56);
@@ -257,11 +263,19 @@ public class Board extends JFrame implements ActionListener {
 			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player 1<br/> Balance: "+thePlayer.getBalance()+
 					" denarius <br/>Space: "+board[Pos]+
 					", <br/>Buy cost: "+ttbuy+" denarius <br/>Jail Counter: "+j+", Doubles Counter: "+k+"</div></html>");
+			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+theTurn.getStatustxt()+"</div></html>");
+			ttbuy = tdBuy[titledeed];
 			if (Bal < (ttbuy/2)) {
 				mortgage.setEnabled(false);
 			}
+			if (Bal > (ttbuy/2)) {
+				mortgage.setEnabled(true);
+			}
 			if (Bal < ttbuy) {
 				buying.setEnabled(false);
+			}
+			if (Bal > ttbuy) {
+				buying.setEnabled(true);
 			}
 			if (Bal == 0) {
 				System.out.println("Game over.");
@@ -276,8 +290,9 @@ public class Board extends JFrame implements ActionListener {
 			buying.setEnabled(false);
 			mortgage.setEnabled(false);
 			ending.setEnabled(true);
-			buymort = 0;
-			new Buy();
+			
+			prevown = owned[titledeed];
+			new Buy().purchase(prevown);
 			} else {
 			buying.setEnabled(false);
 			mortgage.setEnabled(false);
@@ -291,8 +306,8 @@ public class Board extends JFrame implements ActionListener {
 			buying.setEnabled(false);
 			mortgage.setEnabled(false);
 			ending.setEnabled(true);
-			buymort = 1;
-			new Buy();
+			prevown = owned[titledeed];
+			new Buy().mortgage(prevown);
 			} else {
 			buying.setEnabled(false);
 			mortgage.setEnabled(false);
