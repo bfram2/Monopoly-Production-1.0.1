@@ -14,7 +14,7 @@ public class Turn {
 	int j = 0;        //jail
 	int k = 0;        //doubles
 	int money;        //pull adjust into it from chance and chest
-	String statustxt; //Pos status text
+	String statustxt = ""; //Pos status text
 	int chacard;      //theChance.getChanceNo
 	String chaimg;    //         .getImgName
 	String chaout;    //         .getOutcome
@@ -47,7 +47,7 @@ public class Turn {
 		int action = 1;
 		for (int i=0; i<action; i++) {
 		//Prev = thePlayers.getPosition(); //Player position from last loop, otherwise zero
-		
+		statustxt = "";
 		money = 0;
 		
 		int[] jail = new int[4];
@@ -115,7 +115,7 @@ public class Turn {
 	    	if (Pos == 6) {titledeed = 2;}   //Alpes Poeniae
 			if (Pos == 8) {titledeed = 3;}   //Alpes Cottiae
 			if (Pos == 9) {titledeed = 4;}   //Alpes Maritimae
-			if (Pos == 10) {statustxt = "See a battle.";} //see a battle
+			if (Pos == 10) {titledeed = 28; statustxt = "See a battle.";} //see a battle
 			if (Pos == 12) {titledeed = 5;}  //Aquitania
 			if (Pos == 13) {titledeed = 22;} //Sewers
 			if (Pos == 14) {titledeed = 6;}  //Belgica
@@ -124,7 +124,7 @@ public class Turn {
 			if (Pos == 17) {titledeed = 8;}  //Africa Proconsularis
 			if (Pos == 19) {titledeed = 9;}  //Asia
 			if (Pos == 20) {titledeed = 10;} //Britannia
-			if (Pos == 21) {statustxt = "Free market.";} //free market
+			if (Pos == 21) {titledeed = 28; statustxt = "Free market.";} //free market
 			if (Pos == 22) {titledeed = 11;} //Cilicia
 			if (Pos == 24) {titledeed = 12;} //Galatia
 			if (Pos == 25) {titledeed = 13;} //Cappadocia
@@ -154,7 +154,7 @@ public class Turn {
 			} //chest card
 			if (Pos == 7 || Pos == 23 || Pos == 37) {
 				money += chaadj;
-				statustxt = "Draw a Chance card."+cheout;
+				statustxt = "Draw a Chance card. "+cheout;
 			} //chance card
 			
 		} //j=0; if not in jail
@@ -175,10 +175,10 @@ public class Turn {
 		if (k > 3) {
 			k = 4 - k;
 		} //keep doubles from going out of bounds
-		if (Pos == 10 || Pos == 11 || Pos == 2 || Pos == 18 || Pos == 34 || Pos == 7 || Pos == 23 || Pos == 37) {
+		if (Pos == 10 || Pos == 11 || Pos == 2 || Pos == 18 || Pos == 34 || Pos == 7 || Pos == 21 || Pos == 23 || Pos == 37) {
 			titledeed = 28;
 		}
-		System.out.println("Pos: "+Pos+", Prev: "+Prev+", td: "+titledeed+", dice: "+dice1+"+"+dice2);
+		//System.out.println("Pos: "+Pos+", Prev: "+Prev+", td: "+titledeed+", dice: "+dice1+"+"+dice2);
 		Prev = Pos;
 		jail[j]++;
 	    doubles[k]++;
