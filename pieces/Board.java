@@ -58,7 +58,7 @@ public class Board extends JFrame implements ActionListener {
 	
 	//buying price for title deeds
 	public int[] tdBuy = {60,60,100,100,120,140,140,160,180,180,200,220,220,240,260,260,280,300,300,320,350,400,150,150,200,200,200,200,0};
-	public int[] owned = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; //0=bank,1=owned,-1=mortgaged
+	public int[] owned = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; //0=bank,1=owned,-1=mortgaged
 	//the name of the spaces with title deeds
     String[] tdPlaces = {"Germania Inferior","Germania Superior","Alpes Poeniae","Alpes Cottiae","Aples Maritimae","Aquitania","Belgica","Raetia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia","Aegyptus","Arabia Petraea","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia","Sewers","Aqueducts","Via Appia","Via Flaminia","Via Aemilia","Via Popillia",""};
 	//title deed card image names
@@ -265,26 +265,34 @@ public class Board extends JFrame implements ActionListener {
 					", <br/>Buy cost: "+ttbuy+" denarius <br/>Jail Counter: "+j+", Doubles Counter: "+k+"</div></html>");
 			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+theTurn.getStatustxt()+"</div></html>");
 			ttbuy = tdBuy[titledeed];
+			if (owned[titledeed] != 1 && titledeed != 28) {
 			if (Bal < (ttbuy/2)) {
 				mortgage.setEnabled(false);
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">You do not have enough funds to mortgage this space.</div></html>");
 			}
 			if (Bal > (ttbuy/2)) {
 				mortgage.setEnabled(true);
 			}
 			if (Bal < ttbuy) {
 				buying.setEnabled(false);
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">You do not have enough funds to purchase this space.</div></html>");
 			}
 			if (Bal > ttbuy) {
 				buying.setEnabled(true);
 			}
-			if (Bal == 0) {
-				System.out.println("Game over.");
-			}
+			} //check if bank owns, check for titledeed space
 			ending.setEnabled(true);
+			if (thePlayer.getBalance() == 0) {
+				//System.out.println("Game over.");
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Game Over.</div></html>");
+				rolling.setEnabled(false);
+				buying.setEnabled(false);
+				mortgage.setEnabled(false);
+				ending.setEnabled(false);
+				hmenu.setEnabled(false);
+			}
 		}
-		
 		if(e.getSource() == buying) {
-			if (Bal > ttbuy) {
 			//buy property
 			rolling.setEnabled(false);
 			buying.setEnabled(false);
@@ -292,27 +300,57 @@ public class Board extends JFrame implements ActionListener {
 			ending.setEnabled(true);
 			
 			prevown = owned[titledeed];
-			new Buy().purchase(prevown);
-			} else {
-			buying.setEnabled(false);
-			mortgage.setEnabled(false);
-			System.out.println("You do not have enough money to purchase this property.");
-			} //backup if able to get around rolling
+			//new Buy().purchase(prevown);
+			if(prevown == 0) {
+				prevown = 1;
+				ttbuy = tdBuy[titledeed];
+				money -= (ttbuy);
+				Bal += money;
+				thePlayer.setBalance(Bal); //set to mortgaged in tile objects
+				owned[titledeed] = prevown;
+				//System.out.println("Purchase: "+tdBuy[titledeed]+", "+titledeed+", "+money+", "+(ttbuy)+", "+prevown);
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+
+						"Pay the full purchase price of the title deed.<br>"+ttbuy+" denarius paid to the bank.</div></html>");
+				//regions[0].setOwner(); //set to owned in tile objects, if statements based on titledeed?
+				}
 		}
 		if(e.getSource() == mortgage) {
-			if (Bal > (ttbuy/2)) {
 			//mortgage property
 			rolling.setEnabled(false);
 			buying.setEnabled(false);
 			mortgage.setEnabled(false);
 			ending.setEnabled(true);
+			
 			prevown = owned[titledeed];
-			new Buy().mortgage(prevown);
-			} else {
-			buying.setEnabled(false);
-			mortgage.setEnabled(false);
-			System.out.println("You do not have enough money to mortgage this property.");
-			} //backup if able to get around rolling
+			//new Buy().mortgage(prevown);
+			if(prevown == -1) {
+				ttbuy = tdBuy[titledeed];
+				ttbuy *= 0.60; //already Mortgaged, pay the 60% back
+				if (thePlayer.getBalance() > ttbuy) {
+					money -= (ttbuy);
+					Bal += money;
+					thePlayer.setBalance(Bal);
+					System.out.println("Pay to bank half of the mortgage and 10% interest.");
+					statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+
+					"Pay to bank half of the mortgage and 10% interest.<br>"+ttbuy+" denarius paid to the bank.</div></html>");
+					prevown = 1;
+					owned[titledeed] = prevown;
+				} else {
+					System.out.println("You do not have enough money to own property.");
+				}
+			}
+			if(prevown == 0) {
+				prevown = -1;
+				ttbuy = tdBuy[titledeed];
+				money -= (ttbuy/2);
+				Bal += money;
+				thePlayer.setBalance(Bal); //set to mortgaged in tile objects
+				owned[titledeed] = prevown;
+				//System.out.println("Mortgage: "+tdBuy[titledeed]+", "+titledeed+", "+money+", "+(ttbuy/2)+", "+prevown);
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+
+						"Pay to bank half of the mortgage.<br>"+(ttbuy/2)+" denarius paid to the bank.</div></html>");
+				//regions[0].setOwner(); //set to owned in tile objects, if statements based on titledeed?
+				}
 		}
 		if(e.getSource() == hmenu) {
 			//user guide
