@@ -1,6 +1,7 @@
 package pieces;
 //Loading the board [fonts for board.jpg: Verdana 8pt, 6pt, 8pt bold]
 //position vs titledeed cards need to be fixed
+//import java.lang.StringBuilder;
 import javax.swing.*;
 //import javax.swing.event.*;
 import java.awt.*;
@@ -49,16 +50,21 @@ public class Board extends JFrame implements ActionListener {
 	int prevown; //owned[titledeed]
 	int k = 0; //doubles counter
 	int j = 0; //jail counter
+	int jtotal = 0; //out of jail counter
 	//int g = 0; //pass go counter
+	String tdowned = " ";
+	String tdmort = " ";
 	int chacard;
 	String chaimg;
 	String chaout;
-	int dice1 = 0;
+	int dice1 = 0; //called in ActionListener
 	int dice2 = 0;
+	int diet = dice1+dice2; //dice total
 	
 	//buying price for title deeds
 	public int[] tdBuy = {60,60,100,100,120,140,140,160,180,180,200,220,220,240,260,260,280,300,300,320,350,400,150,150,200,200,200,200,0};
-	public int[] owned = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; //0=bank,1=owned,-1=mortgaged
+	public int[] owned = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; //0=bank,1=owned,-1=mortgaged, owned[28] is a blank counter
+	public int[] rent = {2,4,6,6,8,10,10,12,14,14,16,18,18,20,22,22,24,26,26,28,35,50,4,4,25,25,25,25,0};
 	//the name of the spaces with title deeds
     String[] tdPlaces = {"Germania Inferior","Germania Superior","Alpes Poeniae","Alpes Cottiae","Aples Maritimae","Aquitania","Belgica","Raetia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia","Aegyptus","Arabia Petraea","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia","Sewers","Aqueducts","Via Appia","Via Flaminia","Via Aemilia","Via Popillia",""};
 	//title deed card image names
@@ -125,7 +131,7 @@ public class Board extends JFrame implements ActionListener {
 	chabtn = new JButton();
 	plbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player 1<br/> Balance: "+thePlayer.getBalance()+
 			" denarius <br/>Space: "+board[Pos]+
-			", <br/>Buy cost: "+ttbuy+" denarius <br/>Jail Counter: "+j+", Doubles Counter: "+k+"</div></html>");
+			"<br/>Buy cost: "+ttbuy+" denarius <br/>Jail Counter: "+j+", Doubles Counter: "+k+"<br/></div></html>");
 	statusbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\"></div></html>");
 	dicez.add(die1);
 	dice2thereckoning.add(die2);
@@ -222,19 +228,32 @@ public class Board extends JFrame implements ActionListener {
 			buying.setEnabled(false);
 			mortgage.setEnabled(false);
 			ending.setEnabled(false);
-
+			tdowned = ""; //set to blank
+			tdmort = "";
+			for(int i=0; i<owned.length; i++) {
+		         if(owned[i] == 1) {tdowned += (tdPlaces[i]+"<br/>");}
+		         if(owned[i] == -1){tdmort += (tdPlaces[i]+"<br/>");}
+		    } //checks for owned & mortgaged properties and outputs to stats jframe
 			Prev = thePlayer.getPosition();
 			j = theTurn.getTjail();
-			if (j == 0) {
+			if (j != 0 && theTurn.getOutJail() != 0) {
+				j = 0; //escape from jail
+				jtotal = theTurn.getJTotal();
+				jtotal--;
+			} //get out of jail free card, return card to bank
+			
 			Dice theDice = new Dice();
 		    dice1 = theDice.getDie1();
 		    dice2 = theDice.getDie2();
+		    diet = dice1+dice2;
+		    if (j == 0) {
 			Pos = (Prev + dice1 + dice2) % 40;
-			}
+			} //must not be in jail to move forward
 			theTurn.setPos(Pos);
 			theTurn.setDice1(dice1);
 			theTurn.setDice2(dice2);
-			//new Turn().TurnAction(Pos, Prev, dice1, dice2);
+			theTurn.setJTotal(jtotal);
+			//new Turn().TurnAction(Pos, Prev, dice1, dice2, jtotal);
 			titledeed = theTurn.getTitleDeed();
 			Pos = theTurn.getPos();
 			chaimg = theTurn.getChaimg();
@@ -260,29 +279,63 @@ public class Board extends JFrame implements ActionListener {
 			thePlayer.setPosition(Prev);
 			thePlayer.setBalance(Bal);
 			theTurn.setPrev(Prev);
+			ttbuy = tdBuy[titledeed];
 			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player 1<br/> Balance: "+thePlayer.getBalance()+
 					" denarius <br/>Space: "+board[Pos]+
-					", <br/>Buy cost: "+ttbuy+" denarius <br/>Jail Counter: "+j+", Doubles Counter: "+k+"</div></html>");
+					"<br/>Buy cost: "+ttbuy+" denarius <br/>Jail Counter: "+j+", Doubles Counter: "+k+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+theTurn.getStatustxt()+"</div></html>");
-			ttbuy = tdBuy[titledeed];
 			if (owned[titledeed] != 1 && titledeed != 28) {
-			if (Bal < (ttbuy/2)) {
+				if (Bal < (ttbuy/2)) {
 				mortgage.setEnabled(false);
 				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">You do not have enough funds to mortgage this space.</div></html>");
-			}
-			if (Bal > (ttbuy/2)) {
+				}
+				if (Bal > (ttbuy/2)) {
 				mortgage.setEnabled(true);
-			}
-			if (Bal < ttbuy) {
+				}
+				if (Bal < ttbuy) {
 				buying.setEnabled(false);
 				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">You do not have enough funds to purchase this space.</div></html>");
-			}
-			if (Bal > ttbuy) {
+				}
+				if (Bal > ttbuy) {
 				buying.setEnabled(true);
-			}
+				}
 			} //check if bank owns, check for titledeed space
+			if (owned[titledeed] == 1 && titledeed != 28) {
+				if (Pos == 5 || Pos == 16 || Pos == 26 || Pos == 36) {
+					prevown = owned[24]+owned[25]+owned[26]+owned[27];
+					if (prevown == 1) {money -= rent[titledeed];}
+					if (prevown == 2) {money -= (2*rent[titledeed]);}
+					if (prevown == 3) {money -= (4*rent[titledeed]);}
+					if (prevown == 4) {money -= (8*rent[titledeed]);}
+				} //Vias, 4 spaces
+				if (Pos == 13 || Pos == 29) {
+					prevown = owned[22]+owned[23]; //titledeed = 22,23
+					if (prevown == 1) {money -= (diet*4);}
+					if (prevown == 2) {money -= (diet*10);}
+				} //utilities, 2 spaces
+				if (Pos == 1 || Pos == 3 || Pos == 38 || Pos == 40) {
+					if (Pos == 1 || Pos == 3) {prevown = owned[0]+owned[1];} //group 1
+					if (Pos == 38 || Pos == 40) {prevown = owned[20]+owned[21];} //group 8
+					if (prevown == 2) {money -= (2*rent[titledeed]);}
+					if (prevown != 2) {money -= rent[titledeed];}
+				} //2 space groups
+				if (Pos == 6 || Pos == 8 || Pos == 9  || Pos == 12 || Pos == 14 || Pos == 15 || Pos == 17 || Pos == 19 || Pos == 20 || Pos == 22 || Pos == 24 || Pos == 25 || Pos == 27 || Pos == 28 || Pos == 30 || Pos == 32 || Pos == 33 || Pos == 35) {
+					if (Pos == 6 || Pos == 8 || Pos == 9) {prevown = owned[2]+owned[3]+owned[4];} //group 2
+					if (Pos == 12 || Pos == 14 || Pos == 15) {prevown = owned[2]+owned[3]+owned[4];} //group 3
+					if (Pos == 17 || Pos == 19 || Pos == 20) {prevown = owned[8]+owned[9]+owned[10];} //group 4
+					if (Pos == 22 || Pos == 24 || Pos == 25) {prevown = owned[11]+owned[12]+owned[13];} //group 5
+					if (Pos == 27 || Pos == 28 || Pos == 30) {prevown = owned[14]+owned[15]+owned[16];} //group 6
+					if (Pos == 32 || Pos == 33 || Pos == 35) {prevown = owned[17]+owned[18]+owned[19];} //group 7
+					if (prevown == 3) {money -= (2*rent[titledeed]);}
+					if (prevown != 3) {money -= rent[titledeed];}
+				}//three space groups
+				Bal += money;
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+
+				"You have landed on an owned space. Pay: "+(-money)+" denarius to the bank.</div></html>");
+				thePlayer.setBalance(Bal); //set new Player Balance
+			} //pay rent, on owned properties due to only having one player
 			ending.setEnabled(true);
-			if (thePlayer.getBalance() == 0) {
+			if (thePlayer.getBalance() <= 0) {
 				//System.out.println("Game over.");
 				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Game Over.</div></html>");
 				rolling.setEnabled(false);
@@ -308,10 +361,10 @@ public class Board extends JFrame implements ActionListener {
 				Bal += money;
 				thePlayer.setBalance(Bal); //set to mortgaged in tile objects
 				owned[titledeed] = prevown;
+				
 				//System.out.println("Purchase: "+tdBuy[titledeed]+", "+titledeed+", "+money+", "+(ttbuy)+", "+prevown);
 				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+
 						"Pay the full purchase price of the title deed.<br>"+ttbuy+" denarius paid to the bank.</div></html>");
-				//regions[0].setOwner(); //set to owned in tile objects, if statements based on titledeed?
 				}
 		}
 		if(e.getSource() == mortgage) {
@@ -349,7 +402,6 @@ public class Board extends JFrame implements ActionListener {
 				//System.out.println("Mortgage: "+tdBuy[titledeed]+", "+titledeed+", "+money+", "+(ttbuy/2)+", "+prevown);
 				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+
 						"Pay to bank half of the mortgage.<br>"+(ttbuy/2)+" denarius paid to the bank.</div></html>");
-				//regions[0].setOwner(); //set to owned in tile objects, if statements based on titledeed?
 				}
 		}
 		if(e.getSource() == hmenu) {
