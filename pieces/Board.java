@@ -52,8 +52,9 @@ public class Board extends JFrame implements ActionListener {
 	int j = 0; //jail counter
 	int jtotal = 0; //out of jail counter
 	//int g = 0; //pass go counter
-	String tdowned = " ";
-	String tdmort = " ";
+	String tdowned = " "; //print owned spaces
+	String tdmort = " "; //print mortgaged spaces
+	int td = 0; //count number of spaces owned
 	int chacard;
 	String chaimg;
 	String chaout;
@@ -231,7 +232,7 @@ public class Board extends JFrame implements ActionListener {
 			tdowned = ""; //set to blank
 			tdmort = "";
 			for(int i=0; i<owned.length; i++) {
-		         if(owned[i] == 1) {tdowned += (tdPlaces[i]+"<br/>");}
+		         if(owned[i] == 1) {tdowned += (tdPlaces[i]+"<br/>"); td++;}
 		         if(owned[i] == -1){tdmort += (tdPlaces[i]+"<br/>");}
 		    } //checks for owned & mortgaged properties and outputs to stats jframe
 			Prev = thePlayer.getPosition();
@@ -253,8 +254,7 @@ public class Board extends JFrame implements ActionListener {
 			theTurn.setDice1(dice1);
 			theTurn.setDice2(dice2);
 			theTurn.setJTotal(jtotal);
-			//new Turn().TurnAction(Pos, Prev, dice1, dice2, jtotal);
-			titledeed = theTurn.getTitleDeed();
+			titledeed = theTurn.getTitleDeed(); //Turn().TurnAction(Pos, Prev, dice1, dice2, jtotal);
 			Pos = theTurn.getPos();
 			chaimg = theTurn.getChaimg();
 			money = theTurn.getMoney();
@@ -337,7 +337,16 @@ public class Board extends JFrame implements ActionListener {
 			ending.setEnabled(true);
 			if (thePlayer.getBalance() <= 0) {
 				//System.out.println("Game over.");
-				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Game Over.</div></html>");
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">You have run out of money. Game Over.</div></html>");
+				rolling.setEnabled(false);
+				buying.setEnabled(false);
+				mortgage.setEnabled(false);
+				ending.setEnabled(false);
+				hmenu.setEnabled(false);
+			}
+			if (td == 27) {
+				//System.out.println("Game over.");
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">You own everything! Game over.</div></html>");
 				rolling.setEnabled(false);
 				buying.setEnabled(false);
 				mortgage.setEnabled(false);
