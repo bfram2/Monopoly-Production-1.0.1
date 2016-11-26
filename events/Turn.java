@@ -1,7 +1,7 @@
 package events;
 import cards.Chance;
 import cards.CommunityChest;
-import pieces.Dice;
+//import pieces.Dice;
 //import pieces.Board;
 
 public class Turn {
@@ -9,9 +9,12 @@ public class Turn {
 	int titledeed = 28;    //if 28, then blank
 	int dice1 = 0;    //dice class
 	int dice2 = 0;    //0 is no visible dice image
-	int Prev;        //position
-	int Pos;
+	int Prev;        //previous position in Board
+	int Pos;         //current rolled position from Board
 	int j = 0;        //jail
+	int escha = 0; //get out of jail free chance card counter
+	int esche = 0; //get out of jail free chest card counter
+	int jtotal = 0; //total get out of jail counter
 	int k = 0;        //doubles
 	int money;        //pull adjust into it from chance and chest
 	String statustxt = ""; //Pos status text
@@ -30,8 +33,9 @@ public class Turn {
 	public void setPrev(int Prev) {this.Prev = Prev;}
 	public void setDice1(int dice1) {this.dice1 = dice1;}
 	public void setDice2(int dice2) {this.dice2 = dice2;}
+	public void setJTotal(int jtotal) {this.jtotal = jtotal;}
 	public Turn() {
-		TurnAction(Pos, Prev, dice1, dice2); //activate player turn
+		TurnAction(Pos, Prev, dice1, dice2, jtotal); //activate player turn
 	}
 	public Turn(int Pos, int titledeed, String statustxt, int dice1, int dice2, int money, int j, String chaimg) {
 		this.Pos = Pos;
@@ -43,7 +47,7 @@ public class Turn {
 		this.chaimg = chaimg;
 		this.titledeed = titledeed;
 	}
-	public void TurnAction(int Pos, int Prev, int dice1, int dice2) {
+	public void TurnAction(int Pos, int Prev, int dice1, int dice2, int jtotal) {
 		int action = 1;
 		for (int i=0; i<action; i++) {
 		//Prev = thePlayers.getPosition(); //Player position from last loop, otherwise zero
@@ -53,23 +57,21 @@ public class Turn {
 		int[] jail = new int[4];
 		int[] doubles = new int[3]; //test for errors when doubles > 3
 		
-		//Dice theDice = new Dice();
-	    //dice1 = theDice.getDie1();
-	    //dice2 = theDice.getDie2();
-		//Pos = (Prev + dice1 + dice2) % 40; //token position
-		//thePlayers.setPosition(Pos); //set new position early for Chance & Chest
-		
 		Chance theChance = new Chance(); //chance class
 		chacard = theChance.getChanceNo();
 		chaimg = theChance.getImgName();
 		chaout = theChance.getOutcome();
 		chaadj = theChance.getAdjust();
+		escha += theChance.getOutJail();
 		
 		CommunityChest theChest = new CommunityChest(); //community class
 		checard = theChest.getChestNo();
 		cheimg = theChest.getImgName();
 		cheout = theChest.getOutcome();
 		cheadj = theChest.getAdjust();
+		esche += theChest.getOutJail();
+		
+		jtotal += (escha+esche);
 		
 		j = j % 4; //jail 0 not, 4 leave
 	    k = (dice1 == dice2) ? k + 1 : 0; //if matching: k++
@@ -102,7 +104,6 @@ public class Turn {
 				money += 200;
 			} //Rome
 			if (Pos == 1) {
-				statustxt = "Germania Inferior.";
 				titledeed = 0;
 			} //Germania Inferior
 			if (Pos == 3) {
@@ -175,7 +176,7 @@ public class Turn {
 		if (k > 3) {
 			k = 4 - k;
 		} //keep doubles from going out of bounds
-		if (Pos == 10 || Pos == 11 || Pos == 2 || Pos == 18 || Pos == 34 || Pos == 7 || Pos == 21 || Pos == 23 || Pos == 37) {
+		if (Pos == 0 || Pos == 10 || Pos == 11 || Pos == 2 || Pos == 18 || Pos == 34 || Pos == 7 || Pos == 21 || Pos == 23 || Pos == 37 || Pos == 39) {
 			titledeed = 28;
 		}
 		//System.out.println("Pos: "+Pos+", Prev: "+Prev+", td: "+titledeed+", dice: "+dice1+"+"+dice2);
@@ -195,9 +196,11 @@ public class Turn {
 		
 	} //end of turn
 	//get & set
-	public int getTitleDeed() {TurnAction(Pos, Prev, dice1, dice2); return titledeed;}
-	public int getPos() {return Pos;}
 	
+	public int getTitleDeed() {TurnAction(Pos, Prev, dice1, dice2, jtotal); return titledeed;}
+	public int getJTotal() {return jtotal;}
+	public int getPos() {return Pos;}
+	public int getOutJail() {return escha+esche;}
 	public int getMoney() {return money;}
 	public int getTjail() {return j;}
 	public String getStatustxt() {return statustxt;}
