@@ -1,29 +1,28 @@
 package cards;
 import java.util.Random;
 //import pieces.*;
-import events.Players;
+//import events.Players;
 //For image Chance Cards and their events
 
 	public class Chance {
-		Players thePlayer = new Players();     //need position, balance, oj, k & j counters
-		int PrevPos = thePlayer.getPosition(); //player's current position
-		int PrevBal = thePlayer.getBalance();  //player's current balance
-		int Outjail = thePlayer.getOutJail();  //get out of jail counter
-		int jail = thePlayer.getJail();        //in jail, cannot pass go if(j=0)
-
-		private int chanceno;
-		private String imgname;
-		private int adjust;
-		private String outcome;
+		int PrevPos = 0; //player's current position
+		int adjust = 0; //player's current balance
+		int Outjail = 0; //get out of jail counter
+		int jail = 0;    //in jail, cannot pass go if(j=0)
+		int chanceno;
+		String imgname;
+		String outcome;
 		Random chan = new Random();
+		
+		public void setPrevPos(int PrevPos) {this.PrevPos = PrevPos;}
+		
 		public Chance () {
 			pull(); //pick card
 		}
 		public Chance(int chanceno, String imgname, String outcome, int adjust) {
-			
 			chanceno = this.chanceno; //chanceno for random rolling 1-16
 			imgname = this.imgname; //imgname is the image location
-			adjust = this.adjust; //adjust is the amount Player Bal will change by
+			adjust = this.adjust; //adjust is the amount Bal will change by
 			outcome = this.outcome; //prints the text of the card
 		}
 		public void pull() {
@@ -31,15 +30,15 @@ import events.Players;
 		imgname = "src/cards/images/Chance"+chanceno+".PNG"; // src/cards/images/Chance1-16.PNG
 		if (jail == 0) {
 			if (chanceno == 1) {
-					if (PrevPos > 5) {PrevBal += 200;} //pass go
+					if (PrevPos > 5) {adjust += 200;} //pass go
 					PrevPos = 5; //Via Appia
-					outcome = "Take a trip to Via Appia. If you pass Rome collect $200.";
+					outcome = "Take a trip to Via Appia. If you pass Rome collect 200 denarius.";
 			}
 			if (chanceno == 2 || chanceno == 3) {
 				outcome = "Advance to the nearest Via. If UNOWNED, you may buy it from the Bank. If OWNED, pay owner twice the rental to which they are otherwise entitled.";
 				if (PrevPos > 35 || PrevPos < 5) {
 					PrevPos = 5; //Via Appia
-					PrevBal += 200; //pass go
+					adjust += 200; //pass go
 				}
 				if (PrevPos > 4 || PrevPos < 16) {
 					PrevPos = 16; //Via Flaminia
@@ -67,21 +66,21 @@ import events.Players;
 			} //utilities
 			if (chanceno == 6) {
 				
-				outcome = "Advance to Rome. Collect $200.";
+				outcome = "Advance to Rome. Collect 200 denarius.";
 				PrevPos = 0;
-				PrevBal += 200;
+				adjust += 200;
 			} //go to Rome
 			if (chanceno == 7) {
-				outcome = "A new road is built near your Villa raising its value, collect $150.";
-				PrevBal += 150; //collect 150
+				outcome = "A new road is built near your Villa raising its value, collect 150 denarius.";
+				adjust += 150; //collect 150
 			}
 			if (chanceno == 8) {
 				outcome = "Go back 3 spaces.";
 				PrevPos -= 3; //go back 3 spaces
 			}
 			if (chanceno == 9) {
-				outcome = "Make general repairs on all of your properties: For villa pay $25, For pantheons pay $100.";
-				PrevBal -= 100; //a fine for now
+				outcome = "Make general repairs on all of your properties: For villa pay 25 denarius, For pantheons pay 100 denarius. If no villas or pantheons are owned pay 100 denarius.";
+				adjust -= 100; //a fine for now
 				//Make general repairs on all of your properties:
 				//player's villas times 25
 				//player's pantheons times 100
@@ -91,42 +90,40 @@ import events.Players;
 				PrevPos = 40; //go to Italia
 			}
 			if (chanceno == 11) {
-				outcome = "Recent investment in more merchant carts gains you $50.";
-				PrevBal += 50; //collect 50
+				outcome = "Recent investment in more merchant carts gains you 50 denarius.";
+				adjust += 50; //collect 50
 			}
 			if (chanceno == 12) {
-				outcome = "Your horses escape into the city. Pay a $15 fine.";
-				PrevBal -= 15; //fine of 15
+				outcome = "Your horses escape into the city. Pay a 15 denarius fine.";
+				adjust -= 15; //fine of 15
 			}
 			if (chanceno == 13) {
-				outcome = "Go to the Gladiatorial Arena. Go directly to the arena, DO NOT pass Rome, DO NOT collect $200.";
+				outcome = "Go to the Gladiatorial Arena. Go directly to the arena, DO NOT pass Rome, DO NOT collect 200 denarius.";
 				PrevPos = 11;
 				jail = 1; //go to jail
 			}
 			if (chanceno == 14) {
-				outcome = "Advance to Aquitania. If you pass Rome, Collect $200.";
-					if (PrevPos > 12) {PrevBal += 200;} //pass go
+				outcome = "Advance to Aquitania. If you pass Rome, Collect 200 denarius.";
+					if (PrevPos > 12) {adjust += 200;} //pass go
 					PrevPos = 12; //Aquitania
 			}
 			if (chanceno == 15) {
-				outcome = "Advance to Cappadocia. If you pass Rome, Collect $200.";
-					if (PrevPos > 25) {PrevBal += 200;} //pass go
+				outcome = "Advance to Cappadocia. If you pass Rome, Collect 200 denarius.";
+					if (PrevPos > 25) {adjust += 200;} //pass go
 					PrevPos = 25; //Cappadocia
 			}
 			if (chanceno == 16) {
-				outcome = "You have been elected a Senator, pay each player $50.";
-				PrevBal -= 50; //fine of 50
+				outcome = "You have been elected a Senator, pay each player 50 denarius.";
+				adjust -= 50; //fine of 50
 			} //pay each player 50 later, count Players array
-
-			thePlayer.setPosition(PrevPos); //set Player position, counters & balance
-			thePlayer.setBalance(PrevBal);
-			thePlayer.setOutJail(Outjail);
 		 } //can't be in jail
 		}  //end pull
 		public int getChanceNo() {return chanceno;}
 		public String getImgName() {return imgname;} 
 		public String getOutcome() {return outcome;}
 		public int getAdjust() {return adjust;}
+		public int getOutJail() {return Outjail;}
+		public int getPrevPos() {return PrevPos;}
 }
 	
 	/*
