@@ -93,7 +93,7 @@ public class Turn {
 					Pos = 40 - Pos; //don't go out of bounds
 				}
 			} //if Pos is less than 10 and will become greater than 10, add one to skip jail (Pos = 11)
-			if (Pos != 0) {
+			if (Pos != 0 && Prev != 0) {
 			    if ((Prev > Pos) && (j == 0)) {
 			    statustxt = "Pass Rome, Collect 200 denarius.";
 				money += 200;
@@ -160,13 +160,13 @@ public class Turn {
 			
 		} //j=0; if not in jail
 		if(j > 0 && j < 4) {
-			Pos = 11;
 			statustxt = "You are in the Arena. Turns until free: "+(4-j);
 			j++;
 			if (k == 1) {
 				statustxt = "You rolled a double, escape the Arena.";
 				j = 0;
 			}
+			Pos = 11;
 		}
 		if (j > 3) {
 			statustxt = "You paid a fine, leave the Arena.";
