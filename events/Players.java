@@ -6,11 +6,14 @@ package events;
 //int oj = 0; //out of jail counter
 public class Players {
 	private String name;
+	private int playerNumber;
 	private String token;
 	private int position;
 	private int balance;
 	private int k, j;
 	private int oj;
+	boolean currentPlayer;
+	int jailCounter;
 	String player;
 
 	public Players() {
@@ -21,17 +24,21 @@ public class Players {
         k = 0;                 //counters
         j = 0;
         oj = 0;	
+        
         player = (name+token+position+balance);
 	}
 	
-	public Players(String name, String token, int position, int k, int j, int oj, int balance) {
+	public Players(String name, int playerNumber, String token, int position, int k, int j, int oj, int balance, boolean currentPlayer, int jailCounter) {
 	        this.name = name;
+	        this.playerNumber = playerNumber;
 	        this.token = token;
 	        this.position = position;
 	        this.balance = balance;
 	        this.k = k;
 	        this.j = j;
 	        this.oj = oj;
+	        this.currentPlayer = currentPlayer;
+	        this.jailCounter = jailCounter;
 	}
 	public int getDoubles() {return k;}
 	public void setDoubles(int k) {this.k = k;}
@@ -45,14 +52,36 @@ public class Players {
 	public String getName() {return name;}
 	public void setName(String name) {this.name = name;}
 	
+	public int getPlayerNumber(){
+		return this.playerNumber;
+	}
 	public String getToken() {return token;}
 	public void setToken(String token) {this.token = token;}
 	
+	public int getK(){
+		return this.k;
+	}
+	public int getJ(){
+		return this.j;
+	}
+	public int getOJ(){
+		return this.oj;
+	}
 	public int getPosition() {return position;}
 	public void setPosition(int position) {this.position = position;}
 	
 	public int getBalance() {return balance;}
 	public void setBalance(int balance) {this.balance = balance;}
+	
+	public boolean getCurrentPlayer(){
+		return currentPlayer;
+	}
+	public int getJailCounter(){
+		return jailCounter;
+	}
+	public void setJailCounter(int jailCounter){
+		this.jailCounter = jailCounter;
+	}
 }
 
 //Switching between Player and Computer Players in the amount choosen in the main menu
