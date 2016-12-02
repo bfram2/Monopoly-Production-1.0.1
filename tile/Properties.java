@@ -1,5 +1,7 @@
 package tile;
 
+//import pieces.Dice;
+
 public class Properties {
 
     private int tileNumber;
@@ -8,15 +10,22 @@ public class Properties {
     private int group;
     private int cost;
     private int mortgage;
-    private int owner;
+    private int mortgaged;
+    private int unmortgage;
+    private int owner;			
     private int villas;
     private int pantheons;
     private int singleRent;
     private int groupRent;
+    private int doubleRent;
+    private int tripleRent;
+    private int quadRent;
+    private boolean purchaseAllowed;
+    private boolean housesAllowed;
 
 
-
-    public Properties(int tn, String n, String in, int g, int c,int m,int o,int v,int p, int sr,int gr){
+    public Properties(int tn, String n, String in, int g, int c,int m, int md, int um, int o,int v,int p, int sr,
+    		int gr, int dr, int tr, int qr,boolean pa, boolean ha){
         //tileNumber is the number of the property in order starting with Go as 0
         //name is the name of the property
         //group is the color grouping which have been assigned numbers 1-10
@@ -32,13 +41,21 @@ public class Properties {
         this.group = g;
         this.cost = c;
         this.mortgage = m;
+        this.mortgaged = md;
+        this.unmortgage = um;
         this.owner = o;
         this.villas = v;
         this.pantheons = p;
         this.singleRent = sr;
         this.groupRent = gr;
+        this.doubleRent = dr;
+        this.tripleRent = tr;
+        this.quadRent = qr;
+        this.purchaseAllowed = pa;
+        this.housesAllowed = ha;
     }
-    public int getTile(){
+    
+	public int getTile(){
         return this.tileNumber;
     }
     public String getName(){
@@ -56,18 +73,36 @@ public class Properties {
     public int getMortgage(){
         return this.mortgage;
     }
+    public int getMortgaged(){
+    	return this.mortgaged;
+    }
+    public int setMortgaged(int m){
+    	this.mortgaged = m;
+    	return this.mortgaged;
+    }
+    public int getUnMortgaged(){  	
+    	return this.unmortgage;
+    }
     public int getOwner(){
         return this.owner;
     }
-    public int setOwner(){
+    public int setOwner(int own){
+    	this.owner = own;
         return this.owner;
-        //this will need to be modified when buying 
     }
     public int getVillas(){
         return this.villas;
     }
+    public int setVillas(int villas){
+    	this.villas = villas;
+    	return this.villas;
+    }
     public int getPantheons(){
         return this.pantheons;
+    }
+    public int setPantheons(int pantheons){
+    	this.pantheons = pantheons;
+    	return this.pantheons;
     }
     public int getSingleRent(){
         return this.singleRent;
@@ -75,6 +110,21 @@ public class Properties {
     public int getGroupRent(){
         return this.groupRent;
     }
+    public int getDoubleRent(){
+    	return this.doubleRent;
+    }
+    public int getTripleRent(){
+    	return this.tripleRent;
+    }
+    public int getQuadRent(){
+    	return this.quadRent;
+    }
+    public boolean getPurchaseAllowed(){
+    	return this.purchaseAllowed;
+    }
+    public boolean getHousesAllowed(){
+    	return this.housesAllowed;
+    }	
 }
 //Title Deed Cards
 /*
