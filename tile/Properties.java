@@ -1,6 +1,6 @@
 package tile;
 
-//import pieces.Dice;
+import pieces.Dice;
 
 public class Properties {
 
@@ -93,15 +93,15 @@ public class Properties {
     public int getVillas(){
         return this.villas;
     }
-    public int setVillas(int villas){
-    	this.villas = villas;
+    public int setVillas(int v){
+    	this.villas = v;
     	return this.villas;
     }
     public int getPantheons(){
         return this.pantheons;
     }
-    public int setPantheons(int pantheons){
-    	this.pantheons = pantheons;
+    public int setPantheons(int p){
+    	this.pantheons = p;
     	return this.pantheons;
     }
     public int getSingleRent(){
@@ -124,7 +124,17 @@ public class Properties {
     }
     public boolean getHousesAllowed(){
     	return this.housesAllowed;
-    }	
+    }
+    public static int calcSingleRent(Dice currentRoll){
+		int totalValue = currentRoll.getTotal();
+		int singleRent = totalValue * 4;
+		return singleRent;
+	}
+	public static int calcGroupRent(Dice currentRoll){
+		int totalValue = currentRoll.getTotal();
+		int groupRent = totalValue * 10;
+		return groupRent;
+	}
 }
 //Title Deed Cards
 /*
