@@ -29,8 +29,10 @@ private static final long serialVersionUID = 1L;
 JButton game, set, help, bear;
 
 	public MainMenu() {
+	
 	setTitle("Monopoly");
 	setSize(609,454); //window size
+	setLocationRelativeTo(null);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	setVisible(true);
 	setLocation(40, 150);
@@ -63,7 +65,8 @@ JButton game, set, help, bear;
 	setSize(610,455);
 	}
 	
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+    {
 		if(e.getSource() == game) {
 			//start game button
 			//activate Board.java, close menu

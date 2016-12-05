@@ -18,11 +18,12 @@ public class HelpMenu extends JFrame implements ActionListener {
 	public HelpMenu() {
 		setTitle("User Guide");
 		setLocation(40, 150);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setVisible(true);
 		//pack();
 		//setLayout(new BorderLayout());
 		setSize(575, 400); //window size
+		setLocationRelativeTo(null);
 		
 		//HelpMenu hMenu = new HelpMenu();
 		createActions();
@@ -219,13 +220,13 @@ public class HelpMenu extends JFrame implements ActionListener {
         helpSubmenu.add(helpMenuItem);
         
      	helpMenuItem = new JMenuItem();
-        helpMenuItem.setAction(H08);
+        helpMenuItem.setAction(H10);
         helpMenuItem.setText("Utility – Aqueducts or Sewers");
         helpMenuItem.setMnemonic(KeyEvent.VK_U);
         helpSubmenu.add(helpMenuItem);
 
      	helpMenuItem = new JMenuItem();
-        helpMenuItem.setAction(H07);
+        helpMenuItem.setAction(H09);
         helpMenuItem.setText("VIA’s");
         helpMenuItem.setMnemonic(KeyEvent.VK_V);
         helpSubmenu.add(helpMenuItem);
