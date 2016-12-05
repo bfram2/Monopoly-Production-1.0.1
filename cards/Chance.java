@@ -1,26 +1,32 @@
 package cards;
 import events.Players;
+import tile.Properties;
+//import pieces.*;
+//import events.Players;
+//For image Chance Cards and their events
+
 
 	public class Chance {
-		int Outjail = 0; //get out of jail counter
+		int Outjail; //get out of jail counter
 		int jail = 0;    //in jail, cannot pass go if(j=0)
 		int chanceno;
 		String imgname;
 		String outcome;
 		
-		public Chance (Players p) {
-			pull(p); //pick card
+		public Chance (Players p, Players [] play, Properties [] prop) {
+			pull(p, play, prop); //pick card
 		}
 		public Chance(int chanceno, String imgname, String outcome) {
 			chanceno = this.chanceno; //chanceno for random rolling 1-16
 			imgname = this.imgname; //imgname is the image location
 			outcome = this.outcome; //prints the text of the card
 		}
-		public void pull(Players play) {
-		Players thePlayer = play;
+		public void pull(Players p, Players [] play, Properties [] prop) {
+		Players thePlayer = p;
 		
 		chanceno = (int)(Math.random()*16) + 1;
 		imgname = "src/cards/images/Chance"+chanceno+".PNG"; // src/cards/images/Chance1-16.PNG
+		if (jail == 0) {
 			if (chanceno == 1) {
 					if (thePlayer.getPosition()> 5) {
 					int changeBalance = thePlayer.getBalance() + 200;
@@ -48,9 +54,12 @@ import events.Players;
 			} //nearest Via, if owned: pay 2(rent), if unowned can buy
 			if (chanceno == 4) {
 				outcome = "Gain a favor with a Senator, get out of the Gladiatorial Arena for free. This card may be kept until needed or traded.";
+				Outjail = thePlayer.getOutJail(); // get current player's get out of jail free card count
 				Outjail++; //get out of jail for free
-			}
+				thePlayer.setOutJail(Outjail); //Set get out of jail to new value
+			} //changes
 			if (chanceno == 5) {
+				
 				outcome = "Advance to the nearest Utility. If UNOWNED, you may buy it from the Bank. If OWNED, throw dice and pay owner a total ten times amount thrown.";
 				if (thePlayer.getPosition() > 28 || thePlayer.getPosition() < 13) {
 					thePlayer.setPosition(13); //sewers
@@ -80,7 +89,9 @@ import events.Players;
 				int changeBalance = thePlayer.getBalance() - 100;
 				thePlayer.setBalance(changeBalance);
 				//a fine for now
-				//Make general repairs on all of your properties: player's villas times 25, player's pantheons times 100
+				//Make general repairs on all of your properties:
+				//player's villas times 25
+				//player's pantheons times 100
 			}
 			if (chanceno == 10) {
 				outcome = "Advance to Italia.";
@@ -122,11 +133,13 @@ import events.Players;
 				int changeBalance = thePlayer.getBalance() - 50;
 				thePlayer.setBalance(changeBalance);//fine of 50
 			} //pay each player 50 later, count Players array
+		 } //can't be in jail
 		}  //end pull
 		public int getChanceNo() {return chanceno;}
 		public String getImgName() {return imgname;} 
 		public String getOutcome() {return outcome;}
 		public int getOutJail() {return Outjail;}
+		
 }
 	
 	/*

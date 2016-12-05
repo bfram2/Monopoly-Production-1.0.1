@@ -1,6 +1,4 @@
 package cards;
-import java.util.Random;
-
 import events.Players;
 import tile.Properties;
 //For Community Chest Cards & images
@@ -8,14 +6,13 @@ import tile.Properties;
 
 public class CommunityChest {
 	int Outjail = 0; //get out of jail counter
+	int jail = 0;    //in jail, cannot pass go if(j=0)
 	int chestno;
 	String imgname;
 	String outcome;
-	Random ches = new Random();
 	
 	public CommunityChest(Players p, Players [] play, Properties [] prop) {
 		heartofcards(p, play, prop); //pick card
-		
 	}
 	public CommunityChest(int chestno, String imgname, String outcome) {
 		this.chestno = chestno;
@@ -24,10 +21,14 @@ public class CommunityChest {
 	}
 	public void heartofcards(Players p, Players [] play, Properties [] prop) {
 		Players thePlayer = p;
-		
-
+		/*for(int i = 0; i < play.length; i++) {
+			if(play[i].getCurrentPlayer() == true){
+				thePlayer = play[i];
+			}
+		}*/
 		chestno = (int)(Math.random()*16) + 1;
 		imgname = "src/cards/images/Chest"+chestno+".PNG"; // src/cards/images/Chest1-16.PNG
+		//if (jail == 0) {
 			//chestno 1-16
 			if (chestno == 1) {
 				outcome = "Bank error in your favor. Collect 200 denarius.";
@@ -50,9 +51,10 @@ public class CommunityChest {
 				thePlayer.setBalance(changeBalance);
 			}
 			if (chestno == 5) {
+				jail = 1;
 				outcome = "Go to the Gladiatorial Arena. Go directly to the arena, DO NOT pass Rome, DO NOT collect 200 denarius.";
 				thePlayer.setPosition(11);
-				thePlayer.setJailCounter(1);
+				//thePlayer.setJailCounter(1);
 			}
 			if (chestno == 6) {
 				thePlayer.setPosition(0);
@@ -120,11 +122,13 @@ public class CommunityChest {
 			thePlayer.setBalance(changeBalance);
 			}
 			if (chestno == 16) {
+				Outjail = thePlayer.getOutJail(); // get current player's get out of jail free card count
 				Outjail++;
-				thePlayer.setOutJail(Outjail);
 				outcome = "Gain a favor with a Senator, get out of the Gladiatorial Area for free. This card may be kept until needed or traded.";
+				thePlayer.setOutJail(Outjail); //Set get out of jail to new value
 			}
 		}
+	//}
 	public int getChestNo() {return chestno;}
 	public String getImgName() {return imgname;} 
 	public String getOutcome() {return outcome;}
