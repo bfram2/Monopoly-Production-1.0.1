@@ -11,24 +11,21 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import menu.HelpMenu;
-import menu.MainMenu;
 import events.*;
+import own.*;
 import pieces.Dice;
 import tile.Properties;
 
 
 public class Board extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	JButton rolling, buying, mortgage, ending, mmenu, hmenu, token1, token2, token3, token4, token5, token6, token7, token8, plbtn, chabtn, statusbtn, dicez, dice2thereckoning, tdbtn;
-	//final JButton dicez;
-	//final JButton dice2thereckoning;
-	//final JButton tdbtn;
+	JButton rolling, buying, mortgage, unmortgage, improve, ending, mmenu, hmenu, token1, token2, token3, token4, token5, token6, token7, token8, plbtn, chabtn, statusbtn, dicez, dice2thereckoning, tdbtn;
+	//JButton sell;
+
 	JFrame boardFrame = new JFrame("Stats");
 	JPanel stats = new JPanel();
-	
 	Turn theTurn = new Turn(); //pulling player's turn
-	Own theBuy = new Own();
-	
+
 	int turnCounter = 0;
 	//public int titledeed = 28; //buy picks
 	int buymort = 0; //counter for buy or mortgage
@@ -42,8 +39,6 @@ public class Board extends JFrame implements ActionListener {
 	int chacard;
 	String chaimg;
 	String chaout;
-	String winner;
-	int winnerBal;
 	int dice1 = 0;
 	int dice2 = 0;
 	int diet;
@@ -57,8 +52,8 @@ public class Board extends JFrame implements ActionListener {
 	//all spaces
 	String[] board = {"Go","Germania Inferior","Community Chest","Germania Superior","Render unto Caesar","Via Appia","Alpes Poeniae","Chance","Alpes Cottiae","Alpes Maritimae","See a battle","Arena","Aquitania","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Community Chest","Asia","Britannia","Free Market","Cilicia","Chance","Galatia","Cappadocia","Via Aemilia","Aegyptus","Arabia Petraea","Aqueducts","Syria","Go to the Arena","Macedonia","Epirus","Community Chest","Achaia","Via Popillia","Chance","Sicilia","Citizens Tax","Italia"};
 	//token movement setBounds(x[Pos],y[Pos])
-    int[] x = {9,96,152,208,264,320,376,432,488,544,665,600,600,600,600,600,600,600,600,600,600,600,543,488,432,376,320,264,208,152,96,9,77,77,77,77,77,77,77,77,77};
-    int[] y = {11,11,11,11,11,11,11,11,11,11,11,35,97,154,209,265,322,377,432,490,544,601,601,601,601,601,601,601,601,601,601,601,545,489,434,377,322,265,209,154,97};
+    int[] x = {9,96,152,208,264,320,376,432,488,544,660,600,600,600,600,600,600,600,600,600,600,600,543,488,432,376,320,264,208,152,96,9,52,52,52,52,52,52,52,52,52};
+    int[] y = {11,11,11,11,11,11,11,11,11,11,1,35,97,154,209,265,322,377,432,490,544,601,601,601,601,601,601,601,601,601,601,601,545,489,434,377,322,265,209,154,97};
 	
     
 	public Board(Properties [] propArr, Players [] playArr) {	
@@ -98,15 +93,21 @@ public class Board extends JFrame implements ActionListener {
 	rolling = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px 15px 5px 15px;\"><u>R</u>oll Dice</div>");
 	buying = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>B</u>uy Property</div>");
 	mortgage = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>M</u>ortgage</div>");
+	unmortgage = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>U</u>nMortgage</div>");
+	improve = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>I</u>mprovements</div>");
+	//sell = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>S</u>ell</div>");
 	ending = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>E</u>nd Turn</div>");
 	hmenu = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>H</u>elp Menu</div>");
-	mmenu = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 0px 5px 0px 5px;\"><u>E</u>nd Game<br/><span style=\"font-size: 9pt\">Return to Main Menu</span></div>");
+	mmenu = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>E</u>xit Game</div>");
 		rolling.setBackground(new Color(73,175,47));
-		buying.setBackground(new Color(71,71,255));
+		buying.setBackground(new Color(167,39,88));
 		mortgage.setBackground(new Color(247, 153, 22));
+		unmortgage.setBackground(new Color(247, 153, 22));
+		improve.setBackground(new Color(68, 35, 90));
+		//sell.setBackground(new Color(71,71,255));
 		ending.setBackground(new Color(0, 0, 0));
 		hmenu.setBackground(new Color(0, 0, 0));
-		mmenu.setBackground(new Color(0, 0, 0));
+		mmenu.setBackground(new Color(226, 40, 53));
 
 	//dice, cards, and token images	
 	JLabel die1=new JLabel(new ImageIcon("src/pieces/images/Dice"+dice1+".png"));
@@ -139,6 +140,9 @@ public class Board extends JFrame implements ActionListener {
 	rolling.addActionListener(this);
 	buying.addActionListener(this);
 	mortgage.addActionListener(this);
+	unmortgage.addActionListener(this);
+	improve.addActionListener(this);
+	//sell.addActionListener(this);
 	ending.addActionListener(this);
 	mmenu.addActionListener(this);
 	hmenu.addActionListener(this);
@@ -201,6 +205,9 @@ public class Board extends JFrame implements ActionListener {
 	front.add(rolling);
 	front.add(buying);
 	front.add(mortgage);
+	front.add(unmortgage);
+	front.add(improve);
+	//front.add(sell);
 	front.add(ending);
 	front.add(hmenu);
 	front.add(mmenu);
@@ -212,12 +219,6 @@ public class Board extends JFrame implements ActionListener {
 	stats.add(chabtn);
 	
 	//nope totally not buttons
-	rolling.setFocusPainted(false);
-	buying.setFocusPainted(false);
-	mortgage.setFocusPainted(false);
-	hmenu.setFocusPainted(false);
-	mmenu.setFocusPainted(false);
-	ending.setFocusPainted(false);
 	token1.setOpaque(false);
 	token1.setFocusPainted(false);
 	token1.setContentAreaFilled(false);
@@ -260,6 +261,13 @@ public class Board extends JFrame implements ActionListener {
 	rolling.setEnabled(true);
 	buying.setEnabled(false);
 	mortgage.setEnabled(false);
+	if(thePlayer.getOwner() == true);
+	{
+		mortgage.setEnabled(true);
+	}
+	unmortgage.setEnabled(false);
+	improve.setEnabled(true);
+	//sell.setEnabled(false);
 	ending.setEnabled(false);
 
 	//debugging, finding x,y positions on the board for every click
@@ -276,38 +284,52 @@ public class Board extends JFrame implements ActionListener {
 	}
 	//button actions
 	public void actionPerformed(ActionEvent e) {
+		
 		Players thePlayer = play[turnCounter];
+		Properties theProperty = prop[thePlayer.getPosition()];
 		
 		if(e.getSource() == rolling) {
-			
 			//start turn
 			rolling.setEnabled(false);
 			buying.setEnabled(false);
 			mortgage.setEnabled(false);
+			if(thePlayer.getOwner() == true);
+			{
+				mortgage.setEnabled(true);
+			}
 			ending.setEnabled(false);
-			theTurn.setTurn(turnCounter);
+			
 			tdowned = ""; //set to blank
 			tdmort = "";
 			td = 0;
 			for(int i=0; i<prop.length; i++) {
+		         if(prop[i].getOwner() != 0 && prop[i].getMortgaged() != 0) {
+		        	 tdmort += (prop[i].getName()+" - "+play[prop[i].getMortgaged()-1].getName()+"<br/>"); td++;
+		        }
+		    }
+			
+			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
 		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>"); td++;
 		        }
-		    }
+		    }  
+			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+		 //checks for owned properties and outputs to stats jframe
+
 			Prev = thePlayer.getPosition();
 			Dice theDice = new Dice();
 		    dice1 = theDice.getDie1();
 		    dice2 = theDice.getDie2();
+		    if (j == 0) {
 			thePlayer.setPosition((Prev + dice1 + dice2) % 40);
+		    } //prevent token from moving out of jail, dice still need to roll
 			theTurn.TurnAction(prop, play, Prev, dice1, dice2, j, turnCounter);
 			j = theTurn.getTjail();
-		    if (j == 0) {
-			
-			} //prevent token from moving out of jail, dice still need to roll
+		    
 			theTurn.setDice1(dice1);
 			theTurn.setDice2(dice2);
 			chaimg = theTurn.getChaimg();
-			//money = theTurn.getMoney();
 			
 			if (Prev < 10 && thePlayer.getPosition() > 10) {
 				thePlayer.setPosition(12);
@@ -325,8 +347,6 @@ public class Board extends JFrame implements ActionListener {
 			if (turnCounter == 0) {
 			token1.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
 			token1.setIcon(new ImageIcon("src/pieces/images/"+play[turnCounter].getToken()));
-			//token1.setBackground(new Color(71,71,255));
-			//token1.setOpaque(true);
 			} //player 1 update token movement
 			if (turnCounter == 1) {
 				token2.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
@@ -365,67 +385,58 @@ public class Board extends JFrame implements ActionListener {
 					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 			
 			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+theTurn.getStatustxt()+"</div></html>");
-			//System.out.println(thePlayer.getBalance()+" "+prop[thePlayer.getPosition()].getPurchaseAllowed());
+			
 			if (prop[thePlayer.getPosition()].getPurchaseAllowed() != false && prop[thePlayer.getPosition()].getOwner() == 0) {
-				if (thePlayer.getBalance() < prop[thePlayer.getPosition()].getCost()) {
-				buying.setEnabled(false);
-				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">You do not have enough funds to purchase this space.</div></html>");
-				}
 				if (thePlayer.getBalance() >= prop[thePlayer.getPosition()].getCost()) {
-				buying.setEnabled(true);
+						buying.setEnabled(true);
 				} //if space isn't already purchased
-			
-				if (prop[thePlayer.getPosition()].getMortgaged() == 0) {
-					
-                    if (thePlayer.getBalance() >= prop[thePlayer.getPosition()].getMortgage()) {
-                    	if (thePlayer.getBalance() < prop[thePlayer.getPosition()].getMortgage()) {
-                    		
-            				mortgage.setEnabled(false);
-            				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">You do not have enough funds to mortgage this space.</div></html>");
-            				}
-                    	
-                    }
-                    
-                }
 			} //must be ownable and not owned
-			
+			/*
+			if (prop[thePlayer.getPosition()].getPurchaseAllowed() != false){
+				mortgage.setEnabled(true);
+				}*/
+            if (thePlayer.getBalance() >= prop[thePlayer.getPosition()].getMortgage()) {
+            	if (thePlayer.getBalance() < prop[thePlayer.getPosition()].getMortgage()) {
+    				mortgage.setEnabled(false);
+    				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">You do not have enough funds to mortgage this space.</div></html>");
+    				}
+            }
+            
 			if (prop[thePlayer.getPosition()].getPurchaseAllowed() != false) {
 				if(thePlayer.getPlayerNumber() != prop[thePlayer.getPosition()].getOwner()){
-					if(prop[thePlayer.getPosition()].getOwner() != 0){
-						@SuppressWarnings("unused")
-						Rent theRent = new Rent(play, prop, turnCounter, (dice1+dice2));
-					}
+					if(prop[thePlayer.getPosition()].getOwner() != 0 && prop[thePlayer.getPosition()].getMortgaged() == 0) {
+						Rent theRent = new Rent(play, prop, turnCounter,(dice1+dice2));
+						statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+theRent.getRenttxt()+"</div></html>");
+					} //if not owned by current person and is not mortgaged
 				}
 			} //pay rent
 			ending.setEnabled(true);
 			if (thePlayer.getBalance() <= 0) {
-				tdowned = ""; //set to blank
-				tdmort = "";
-				td = 0;
-				for(int i=0; i<play.length; i++) {
-					if (play[i].getBalance() > play[0].getBalance() && play[i].getBalance() > play[1].getBalance() && play[i].getBalance() > play[2].getBalance() && play[i].getBalance() > play[3].getBalance() && play[i].getBalance() > play[4].getBalance() && play[i].getBalance() > play[5].getBalance() && play[i].getBalance() > play[6].getBalance() && play[i].getBalance() > play[7].getBalance()) {
-					winnerBal = play[i].getBalance();
-					winner = play[i].getName();
-					} //winner must have the highest balance of all players
-				}
-				
-				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Game Over. Player "+winner+" wins with the highest balance of "+winnerBal+" denarius!</div></html>");
+				//System.out.println("Game over.");
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Game Over.</div></html>");
 				rolling.setEnabled(false);
 				buying.setEnabled(false);
 				mortgage.setEnabled(false);
+				if(thePlayer.getOwner() == true);
+				{
+					mortgage.setEnabled(true);
+				}
 				ending.setEnabled(false);
 				hmenu.setEnabled(false);
-			} //game over, find a winner
+			}
 		}
 		if(e.getSource() == buying) {
-			//buy property
 			rolling.setEnabled(false);
 			buying.setEnabled(false);
 			mortgage.setEnabled(false);
+			if(thePlayer.getOwner() == true);
+			{
+				mortgage.setEnabled(true);
+			}
 			ending.setEnabled(true);
-			theBuy.purchase(play, prop, turnCounter);
+			
+			new Purchase(thePlayer, prop[thePlayer.getPosition()], thePlayer.getBalance());
 			tdowned = ""; //set to blank
-			tdmort = "";
 			td = 0;
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
@@ -434,60 +445,88 @@ public class Board extends JFrame implements ActionListener {
 		    }
 			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
 					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
-		}
+		} //buy property
 		if(e.getSource() == mortgage) {
-			//mortgage property
-			rolling.setEnabled(false);
-			buying.setEnabled(false);
-			mortgage.setEnabled(false);
-			ending.setEnabled(true);
-			if (prop[thePlayer.getPosition()].getMortgaged() == 0) {
-			//theBuy.mortgage(play, prop);
-			for(int i=0; i<prop.length; i++) {
-		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
-		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>"); td++;
-		        }
-		    }
-			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
-			} //if not mortgaged
-			
-		}
+            rolling.setEnabled(false);
+            buying.setEnabled(false);
+            mortgage.setEnabled(false);
+            if(thePlayer.getOwner() == true);
+        	{
+        		mortgage.setEnabled(true);
+        	}
+            ending.setEnabled(true);
+            
+            if(e.getSource() == mortgage) {
+                //mortgage property
+                rolling.setEnabled(false);
+                buying.setEnabled(false);
+                mortgage.setEnabled(false);
+                ending.setEnabled(true);
+
+                String[] choices = { "Germania Inferior", "Germania Superior", "Alps Poeniae", "Alps Cottiae", "Alps Maritimae", "Aquitanina","Belgica","Raetia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia","Aegyptus","Arabia Petraea","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
+                String input = (String) JOptionPane.showInputDialog(null, "Choose a property to mortgage","Properties", JOptionPane.QUESTION_MESSAGE, null,choices,choices[1]); // Initial choice
+                String propName = input;
+                Properties mortProp = null;
+                for(int i = 0; i < prop.length; i++){
+                    if(propName == prop[i].getName()){
+                        mortProp = prop[i]; 
+                    } 
+                new Mortgage(thePlayer, mortProp);
+                }
+
+                plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+                        ", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+            }
+   	    } //find all unowned properties
 		if(e.getSource() == hmenu) {
 			//user guide
 			new HelpMenu();
 		}
 		if(e.getSource()== mmenu){
-			//exit for main menu
-			boardFrame.dispose();
-			dispose();
-			new MainMenu();
+			System.exit(0); //exit
 		}
-		if(e.getSource()== ending){
+		if(e.getSource()== unmortgage){
+
+		}
+		if(e.getSource()== improve) {
+			new Improvements(thePlayer, theProperty, play, prop);
+		} //villas and pantheons
+		//if(e.getSource()== sell) {}
+		if(e.getSource()== ending) {
 			//here it goes again
 			rolling.setEnabled(true);
 			ending.setEnabled(false);
 			buying.setEnabled(false);
 			mortgage.setEnabled(false);
+			if(thePlayer.getOwner() == true);
+			{
+				mortgage.setEnabled(true);
+			}
 			tdbtn.setIcon(new ImageIcon("")); //you get nothing
 			chabtn.setIcon(new ImageIcon(""));
-			tdowned = ""; //set to blank
-			tdmort = "";
-			td = 0;
-			for(int i=0; i<prop.length; i++) {
-		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
-		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>"); td++;
-		        }
-		    }
-			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
-			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\"></div></html>"); //set to blank
+			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\"></div></html>");
 			
 			if(turnCounter < 7){
 				turnCounter++;
 			} else {
 				turnCounter = 0;
 			}
+			tdowned = ""; //set to blank
+			tdmort = "";
+			td = 0;
+			for(int i=0; i<prop.length; i++) {
+		         if(prop[i].getOwner() != 0 && prop[i].getMortgaged() != 0) {
+		        	 tdmort += (prop[i].getName()+" - "+play[prop[i].getMortgaged()-1].getName()+"<br/>"); td++;
+		        }
+		    }
+			
+			for(int i=0; i<prop.length; i++) {
+		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
+		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>"); td++;
+		        }
+		    }  
+			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 		}//ends current turn
 		
     } //ends Action	
