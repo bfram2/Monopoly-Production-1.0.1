@@ -9,6 +9,7 @@ public class Players {
 	private int playerNumber;
 	private String token;
 	private int position;
+	private boolean owner;
 	private int balance;
 	private int k, j;
 	private int oj;
@@ -28,12 +29,13 @@ public class Players {
         player = (name+token+position+balance);
 	}
 	
-	public Players(String name, int playerNumber, String token, int position, int k, int j, int oj, int balance, boolean currentPlayer, int jailCounter) {
+	public Players(String name, int playerNumber, String token, int position, boolean owner, int k, int j, int oj, int balance, boolean currentPlayer, int jailCounter) {
 	        this.name = name;
 	        this.playerNumber = playerNumber;
 	        this.token = token;
 	        this.position = position;
 	        this.balance = balance;
+	        this.owner = owner;
 	        this.k = k;
 	        this.j = j;
 	        this.oj = oj;
@@ -69,6 +71,13 @@ public class Players {
 	}
 	public int getPosition() {return position;}
 	public void setPosition(int position) {this.position = position;}
+	
+	public boolean getOwner() {
+		return owner;
+	}
+	public void setOwner(boolean owner) {
+		this.owner = owner;
+	}
 	
 	public int getBalance() {return balance;}
 	public void setBalance(int balance) {this.balance = balance;}

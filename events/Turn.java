@@ -31,33 +31,32 @@ public class Turn {
 	Properties [] prop;
 	Players [] play;
 	
-	
+	public void setPrev(int Prev) {this.Prev = Prev;}
+	public void setDice1(int dice1) {this.dice1 = dice1;}
+	public void setDice2(int dice2) {this.dice2 = dice2;}
+	public void setJTotal(int jtotal) {this.jtotal = jtotal;}
 	public Turn() {
 	}
-	public Turn(Properties [] prop, Players [] play,  String statustxt, int dice1, int dice2, int j, String chaimg, int counter) {
+	public Turn(Properties [] prop, Players [] play,  String statustxt, int dice1, int dice2, int j, String chaimg) {
 		this.statustxt = statustxt;
 		this.dice1 = dice1;
 		this.dice2 = dice2;
 		this.j = j;
 		this.chaimg = chaimg;
-		this.counter = counter;
 	}
-	public void setTurn(int counter) {this.counter = counter;}
-	public void setPrev(int Prev) {this.Prev = Prev;}
-	public void setDice1(int dice1) {this.dice1 = dice1;}
-	public void setDice2(int dice2) {this.dice2 = dice2;}
-	public void setJTotal(int jtotal) {this.jtotal = jtotal;}
-	
-	public void TurnAction(Properties [] prop, Players [] play, int Prev, int dice1, int dice2, int jtotal, int counter) {
+	public void TurnAction(Properties [] prop, Players [] play, int Prev, int dice1, int dice2, int j, int counter) {
 		for (int i=0; i<1; i++) {
-		int pno = counter;
-		Players p = play[pno];
-		statustxt = "";
-		System.out.println(play[pno].getName()+", Position: "+p.getPosition());
+			int pno = counter;
+			Players p = play[pno];
+			statustxt = "";
+			//System.out.println(play[pno].getName()+", Position: "+p.getPosition());
+		
+		int[] jail = new int[4];
 		int[] doubles = new int[3]; //test for errors when doubles > 3
 		
 		k = p.getDoubles();
 		
+		//j = j % 4; //jail 0 not, 4 leave
 	    k = (dice1 == dice2) ? k++ : 0; //if matching dice roles: k++
 		k = k % 3; //doubles 0 none, 3 jail
 		
@@ -77,10 +76,10 @@ public class Turn {
 				
 			} //if Pos is less than 10 and will become greater than 10, add one to skip jail (Pos = 11)
 	    	if (p.getPosition() > 39) {
-				p.setPosition(40-p.getPosition());
+				p.setPosition(0);
 			}
 			if (p.getPosition() != 0 && Prev != 0) {
-			    if (Prev > p.getPosition()) {
+			    if ((Prev > p.getPosition()) && (j == 0)) {
 			    int currentBal = p.getBalance();
 			    statustxt = "Pass Rome, Collect 200 denarius.";
 				p.setBalance(currentBal + 200);
@@ -103,11 +102,6 @@ public class Turn {
 				p.setBalance(currentBal - 100);
 				statustxt = "Citizen's Tax";
 			}
-			if (p.getPosition() == 4) {
-				int currentBal = p.getBalance();
-				p.setBalance(currentBal - 200);
-				statustxt = "Render 200 denarius unto Caesar.";
-			}
 			if (p.getPosition() == 2 || p.getPosition() == 18 || p.getPosition() == 34) {
 				CommunityChest theChest = new CommunityChest(p, play, prop); //community class
 				checard = theChest.getChestNo();
@@ -118,16 +112,19 @@ public class Turn {
 				int currentBalance = p.getBalance();
 				p.setBalance(currentBalance + cheadj);
 				statustxt = "Draw a Community Chest card. "+cheout;
+				//System.out.println("Chest: "+checard+", "+cheout);
 			} //chest card
 			if (p.getPosition() == 7 || p.getPosition() == 23 || p.getPosition() == 37) {
-				Chance theChance = new Chance(p); //chance class
+				Chance theChance = new Chance(p, play, prop); //chance class
 				chacard = theChance.getChanceNo();
 				chaimg = theChance.getImgName();
 				chaout = theChance.getOutcome();
 				escha += theChance.getOutJail();
+				
 				int currentBalance = p.getBalance();
 				p.setBalance(currentBalance + chaadj);
 				statustxt = "Draw a Chance card. "+chaout;
+				//System.out.println("Chance: "+chacard+", "+chaout);
 			} //chance card
 			
 		} //j=0; if not in jail
@@ -150,19 +147,21 @@ public class Turn {
 			k = 4 - k;
 		} //keep doubles from going out of bounds
 		Prev = p.getPosition();
+		jail[j]++;
 	    doubles[k]++;
 	    p.setDoubles(k);
 	    jtotal += (escha+esche);
 		} //end of loop
+		//System.out.println(statustxt);
 	} //end of turn
 	//get & set
 	public int getJTotal() {return jtotal;}
 	public int getOutJail() {return escha+esche;}
 	public int getTjail() {return j;}
-	public String getStatustxt() {return statustxt;}
+	public String getStatustxt() {
+		//TurnAction(prop, play, Prev, dice1, dice2, jtotal); 
+	return statustxt;}
 	public int getDice1() {return dice1;}
 	public int getDice2() {return dice2;}
-	public String getChaimg() {
-		//TurnAction(prop, play, Prev, dice1, dice2, jtotal, counter); 
-		return chaimg;}
+	public String getChaimg() {return chaimg;}
 }

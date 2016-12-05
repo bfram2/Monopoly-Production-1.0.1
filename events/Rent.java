@@ -1,5 +1,4 @@
 package events;
-
 import tile.*;
 
 //import events.Turn;
@@ -8,9 +7,8 @@ import tile.*;
 //import tile.*;
 
 public class Rent {
-	public Rent() {
-		
-	}
+	String statustxt = "";
+	public Rent(String statustxt) {this.statustxt = statustxt;}
 	public Rent(Players[] playArr, Properties [] propArr, int counter, int dice) {
 		int playerNumber = counter;
 		int ownerNumber;
@@ -18,15 +16,15 @@ public class Rent {
 		Players ownerPlayer;
 		Properties currentProperty;
 		
+		
 		currentPlayer = playArr[playerNumber];
 		int position = currentPlayer.getPosition();
 		currentProperty = propArr[position];
 		ownerNumber = propArr[position].getOwner()-1; //-1 is bank, 0 is player 1
 		ownerPlayer = playArr[ownerNumber];
 		
-		System.out.println("current: "+playArr[playerNumber].getName()+", owned player #: "+playArr[ownerNumber].getName()+", rent: "+currentProperty.getSingleRent()+" "+currentProperty.getGroupRent());
 		if(counter > 7){counter = counter-7;} 
-		if(ownerNumber > 7){ownerNumber = ownerNumber-7;}	
+		if(ownerNumber > 7){ownerNumber = ownerNumber-7;}
 		
 		int playerBalance;
 		int ownerBalance;
@@ -58,15 +56,17 @@ public class Rent {
 			ownerPlayer.setBalance(ownerBalance);
 			playerBalance = currentPlayer.getBalance() - groupRent;
 			currentPlayer.setBalance(playerBalance);
+			statustxt = "Paid "+currentProperty.getGroupRent()+" denarius in rent to "+playArr[ownerNumber].getName()+".";
 		}
 		else if(group == false){
 			ownerBalance = singleRent + ownerPlayer.getBalance();
 			ownerPlayer.setBalance(ownerBalance);
 			playerBalance = currentPlayer.getBalance() - singleRent;
 			currentPlayer.setBalance(playerBalance);
+			statustxt = "Paid "+currentProperty.getSingleRent()+" denarius in rent to "+playArr[ownerNumber].getName()+".";
 		}
 		
-	}//end of pay the man
+	} //end of pay the man
 	public boolean checkGroup(Properties prop, Properties [] arr){
 		int propertyGroup = prop.getGroup();
 		int owner = prop.getOwner();
@@ -75,7 +75,7 @@ public class Rent {
 		boolean returnValue = false;
 		
 		if(propertyGroup == 1 || propertyGroup == 8){
-			for(int i = 0; i < arr.length; i++){
+			for(int i = 0; i < arr.length; i++) {
 				test1 = arr[i];
 				if(owner == test1.getOwner() && propertyGroup == test1.getGroup()){
 					returnValue = true;
@@ -88,7 +88,7 @@ public class Rent {
 				if(owner == test1.getOwner() && propertyGroup == test1.getGroup()){
 					for(int k = j; k < arr.length; k++){
 						test2 = arr[k];
-						if(owner == test2.getOwner() && propertyGroup == test2.getGroup()){
+						if(owner == test2.getOwner() && propertyGroup == test2.getGroup()) {
 							returnValue = true;
 						}
 						else{
@@ -98,8 +98,9 @@ public class Rent {
 				}
 				else returnValue = false;
 			}
-			}
-			return returnValue;
 		}
+		return returnValue;
+	} //end of group rent
 	
+	public String getRenttxt() {return statustxt;}
 }
