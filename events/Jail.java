@@ -75,13 +75,13 @@ public class Jail extends JFrame implements ActionListener {
 				play.setDoubles(0);
 				statustxt = "Leave the Arena. You have "+play.getOutJail()+" cards left."; //message that they used their card
 			} //click yes JButton
-			else{rollTheDice(Players play, counter, dice1, dice2);}
+			else{rollTheDice(play, counter, dice1, dice2);}
 		}
-		else{rollTheDice(Players play, counter, dice1, dice2);} //roll the dice
+		else{rollTheDice(play, counter, dice1, dice2);} //roll the dice
 		status.repaint();
 	}
 
-public void rollTheDice(Players play, counter, dice1, dice2) {
+public void rollTheDice(play, counter, dice1, dice2) {
 		//Dice dice = new Dice();
 		k = play.getDoubles();
 		
