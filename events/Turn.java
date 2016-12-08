@@ -22,7 +22,7 @@ public class Turn {
 	String chaout;    //         .getOutcome
 	int chaadj;       //         .getAdjust
 	int checard;      //theChest.getChestNo
-	String cheimg;    //        .getImgName
+	//String cheimg;    //        .getImgName
 	String cheout;    //        .getOutcome
 	int cheadj;       //        .getAdjust
 	String spacename;
@@ -108,7 +108,7 @@ public class Turn {
 			if (p.getPosition() == 2 || p.getPosition() == 18 || p.getPosition() == 34) {
 				CommunityChest theChest = new CommunityChest(p, play, prop); //community class
 				checard = theChest.getChestNo();
-				cheimg = theChest.getImgName();
+				chaimg = theChest.getImgName();
 				cheout = theChest.getOutcome();
 				esche += theChest.getOutJail();
 				
