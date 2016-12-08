@@ -24,7 +24,7 @@ public class CommunityChest {
 	public void heartofcards(Players p, Players [] play, Properties [] prop) {
 		Players thePlayer = p;
 		chestno = (int)(Math.random()*16) + 1;
-		imgname = "cards/images/Chest"+chestno+".PNG";
+		imgname = "Chest"+chestno+".PNG";
 			if (chestno == 1) {
 				outcome = "Bank error in your favor. Collect 200 denarius.";
 				int changeBalance = thePlayer.getBalance() + 200;

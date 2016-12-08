@@ -29,7 +29,7 @@ import tile.Properties;
 		public void pull(Players p, Players [] play, Properties [] prop) {
 		Players thePlayer = p;
 		chanceno = (int)(Math.random()*16) + 1;
-		imgname = "/cards/images/Chance"+chanceno+".PNG";
+		imgname = "Chance"+chanceno+".PNG";
 			if (chanceno == 1) {
 					if (thePlayer.getPosition()> 5) {
 					int changeBalance = thePlayer.getBalance() + 200;
