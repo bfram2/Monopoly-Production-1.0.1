@@ -1,5 +1,10 @@
 package cards;
+//import java.net.URL;
+
+//import javax.swing.ImageIcon;
+
 import events.Players;
+//import pieces.Board;
 import tile.Properties;
 //import pieces.*;
 //import events.Players;
@@ -23,10 +28,8 @@ import tile.Properties;
 		}
 		public void pull(Players p, Players [] play, Properties [] prop) {
 		Players thePlayer = p;
-		
 		chanceno = (int)(Math.random()*16) + 1;
-		imgname = "src/cards/images/Chance"+chanceno+".PNG"; // src/cards/images/Chance1-16.PNG
-		if (jail == 0) {
+		imgname = "/cards/images/Chance"+chanceno+".PNG";
 			if (chanceno == 1) {
 					if (thePlayer.getPosition()> 5) {
 					int changeBalance = thePlayer.getBalance() + 200;
@@ -54,12 +57,9 @@ import tile.Properties;
 			} //nearest Via, if owned: pay 2(rent), if unowned can buy
 			if (chanceno == 4) {
 				outcome = "Gain a favor with a Senator, get out of the Gladiatorial Arena for free. This card may be kept until needed or traded.";
-				Outjail = thePlayer.getOutJail(); // get current player's get out of jail free card count
-				Outjail++; //get out of jail for free
-				thePlayer.setOutJail(Outjail); //Set get out of jail to new value
+				thePlayer.setOutJail(thePlayer.getOutJail()+1); //Set get out of jail + 1
 			} //changes
 			if (chanceno == 5) {
-				
 				outcome = "Advance to the nearest Utility. If UNOWNED, you may buy it from the Bank. If OWNED, throw dice and pay owner a total ten times amount thrown.";
 				if (thePlayer.getPosition() > 28 || thePlayer.getPosition() < 13) {
 					thePlayer.setPosition(13); //sewers
@@ -85,13 +85,17 @@ import tile.Properties;
 				thePlayer.setPosition(newPosition);
 			}
 			if (chanceno == 9) {
-				outcome = "Make general repairs on all of your properties: For villa pay 25 denarius, For pantheons pay 100 denarius. If no villas or pantheons are owned pay 100 denarius.";
-				int changeBalance = thePlayer.getBalance() - 100;
+				outcome = "Make general repairs on all of your properties: For villa pay 25 denarius, For pantheons pay 100 denarius.";
+				int villas = 0;
+				int pantheon = 0;
+				for(int i = 0; i < prop.length; i++){
+					if(prop[i].getOwner()== thePlayer.getPlayerNumber()){
+						villas += prop[i].getVillas();
+						pantheon += prop[i].getPantheons();
+					}
+				}
+				int changeBalance = thePlayer.getBalance() + (villas * 25) + (pantheon * 100);
 				thePlayer.setBalance(changeBalance);
-				//a fine for now
-				//Make general repairs on all of your properties:
-				//player's villas times 25
-				//player's pantheons times 100
 			}
 			if (chanceno == 10) {
 				outcome = "Advance to Italia.";
@@ -110,15 +114,15 @@ import tile.Properties;
 			if (chanceno == 13) {
 				outcome = "Go to the Gladiatorial Arena. Go directly to the arena, DO NOT pass Rome, DO NOT collect 200 denarius.";
 				thePlayer.setPosition(11);
-				jail = 1; //go to jail
-			}
+				thePlayer.setJailCounter(1);
+			} //go to jail
 			if (chanceno == 14) {
 				outcome = "Advance to Aquitania. If you pass Rome, Collect 200 denarius.";
 					if (thePlayer.getPosition() > 12) {
 						int changeBalance = thePlayer.getBalance() + 200;
 						thePlayer.setBalance(changeBalance);
 						} //pass go
-					thePlayer.setPosition(12); //Aquitania
+				thePlayer.setPosition(12); //Aquitania
 			}
 			if (chanceno == 15) {
 				outcome = "Advance to Cappadocia. If you pass Rome, Collect 200 denarius.";
@@ -126,14 +130,18 @@ import tile.Properties;
 						int changeBalance = thePlayer.getBalance() + 200;
 						thePlayer.setBalance(changeBalance);
 						}//pass go
-					thePlayer.setPosition(25);  //Cappadocia
+				thePlayer.setPosition(25);  //Cappadocia
 			}
 			if (chanceno == 16) {
 				outcome = "You have been elected a Senator, pay each player 50 denarius.";
-				int changeBalance = thePlayer.getBalance() - 50;
+				int changeBalance = thePlayer.getBalance() - 350;
 				thePlayer.setBalance(changeBalance);//fine of 50
-			} //pay each player 50 later, count Players array
-		 } //can't be in jail
+				for(int i = 0; i < play.length; i++){
+					if(play[i].getCurrentPlayer() == false){
+						play[i].setBalance(play[i].getBalance()+50);
+					}
+				} //pay each player 50 denarius
+			}
 		}  //end pull
 		public int getChanceNo() {return chanceno;}
 		public String getImgName() {return imgname;} 
@@ -141,23 +149,3 @@ import tile.Properties;
 		public int getOutJail() {return Outjail;}
 		
 }
-	
-	/*
-	1.Take a trip to Via Appia. If you pass Rome collect $200.
-	2,3. Advance to the nearest Via. If UNOWNED, you may buy it from the Bank. 
-	If OWNED, pay owner twice the rental to which they are otherwise entitled.
-	4. Gain a favor with a Senator, get out of the Gladiatorial Arena for free. This card may be kept until needed or traded.
-	5. Advance to the nearest Utility. If UNOWNED, you may buy it from the Bank. 
-	If OWNED, throw dice and pay owner a total ten times amount thrown.
-	6. Advance to Rome. Collect $200.
-	7. A new road is built near your Villa raising its value, collect $150.
-	8. Go back 3 spaces.
-	9. Make general repairs on all of your properties: For villa pay $25, For pantheons pay $100.
-	10. Advance to Italia.
-	11. Recent investment in more merchant carts gains you $50.
-	12. Your horses escape into the city. Pay a $15 fine.
-	13. Go to the Gladiatorial Arena. Go directly to the arena, DO NOT pass Rome, DO NOT collect $200.
-	14. Advance to Aquitania. If you pass Rome, Collect $200.
-	15. Advance to Cappadocia. If you pass Rome, Collect $200.
-	16. You have been elected a Senator, pay each player $50.
-	*/
