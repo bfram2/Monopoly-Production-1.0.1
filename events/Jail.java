@@ -114,6 +114,7 @@ public void rollTheDice(Players[] play, counter, dice1, dice2) {
 
 	public void actionPerformed(ActionEvent e) {
 		Players[] play;
+		play = play[counter];
 		if(e.getSource() == yes) {
 			answer = "yes";
 			//play.setOutJail(lay.getOutJail() - 1);
