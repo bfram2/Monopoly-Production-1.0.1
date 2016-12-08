@@ -10,7 +10,7 @@ public class Properties {
     private int group;
     private int cost;
     private int mortgage;
-    private int mortgaged;
+    private boolean mortgaged;
     private int unmortgage;
     private int owner;			
     private int villas;
@@ -24,7 +24,7 @@ public class Properties {
     private boolean housesAllowed;
 
 
-    public Properties(int tn, String n, String in, int g, int c,int m, int md, int um, int o,int v,int p, int sr,
+    public Properties(int tn, String n, String in, int g, int c,int m, boolean md, int um, int o,int v,int p, int sr,
     		int gr, int dr, int tr, int qr,boolean pa, boolean ha){
         //tileNumber is the number of the property in order starting with Go as 0
         //name is the name of the property
@@ -73,11 +73,11 @@ public class Properties {
     public int getMortgage(){
         return this.mortgage;
     }
-    public int getMortgaged(){
+    public boolean getMortgaged(){
     	return this.mortgaged;
     }
-    public int setMortgaged(int m){
-    	this.mortgaged = m;
+    public boolean setMortgaged(boolean md){
+    	this.mortgaged = md;
     	return this.mortgaged;
     }
     public int getUnMortgaged(){  	
