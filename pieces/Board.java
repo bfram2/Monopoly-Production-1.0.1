@@ -1,13 +1,10 @@
 package pieces;
-//Loading the board [fonts for board.jpg: Verdana 8pt, 6pt, 8pt bold]
-//position vs titledeed cards need to be fixed
+//Loading the board [fonts for board.jpg: Verdana 8pt, 6pt, 11pt bold]
 import javax.swing.*;
-//import javax.swing.event.*;
 import java.awt.*;
-
-//debugging tokens
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+//import java.awt.event.MouseAdapter; //debugging tokens
+//import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import menu.HelpMenu;
@@ -16,60 +13,54 @@ import own.*;
 import pieces.Dice;
 import tile.Properties;
 
-
 public class Board extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	JButton rolling, buying, mortgage, unmortgage, improve, ending, mmenu, hmenu, token1, token2, token3, token4, token5, token6, token7, token8, plbtn, chabtn, statusbtn, dicez, dice2thereckoning, tdbtn;
-	//JButton sell;
+	JButton rolling, buying, mortgage, unmortgage, improve, ending, mmenu, hmenu, token1, token2, token3, token4, token5, token6, token7, token8, plbtn, chabtn, statusbtn, dicez, dice2thereckoning, tdbtn, sell, trade;
 
 	JFrame boardFrame = new JFrame("Stats");
 	JPanel stats = new JPanel();
 	Turn theTurn = new Turn(); //pulling player's turn
 
-	int turnCounter = 0;
-	//public int titledeed = 28; //buy picks
+	int turnCounter = 0; //counter to switch players
 	int buymort = 0; //counter for buy or mortgage
-	//board positions
-	public int Prev;
+	public int Prev; //board positions
 	int k = 0; //doubles counter
-	int j = 0; //jail counter
+	//int j = 0; //jail counter
 	int td = 0; //count owned items
 	String tdowned = " "; //print owned spaces
 	String tdmort = " "; //print mortgaged spaces
-	int chacard;
-	String chaimg;
-	String chaout;
-	int dice1 = 0;
-	int dice2 = 0;
-	int diet;
-	Properties [] prop;
-	Players [] play;
+	String printVillas = " "; //print the properties with villas
+	String chaimg; //chance and chest images
+	int dice1 = 1; //dice 1 and 2 updated by dice class
+	int dice2 = 1;
+	int diet; //total of dice 1 and dice2
+	Properties [] prop; //property objects, 41
+	Players [] play; //players objects, 8
     
 	//the name of the spaces with title deeds
-    String[] tdPlaces = {"Germania Inferior","Germania Superior","Alpes Poeniae","Alpes Cottiae","Aples Maritimae","Aquitania","Belgica","Raetia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia","Aegyptus","Arabia Petraea","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia","Sewers","Aqueducts","Via Appia","Via Flaminia","Via Aemilia","Via Popillia",""};
+    //String[] tdPlaces = {"Germania Inferior","Germania Superior","Alpes Poeniae","Alpes Cottiae","Aples Maritimae","Aquitania","Belgica","Raetia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia","Aegyptus","Arabia Petraea","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia","Sewers","Aqueducts","Via Appia","Via Flaminia","Via Aemilia","Via Popillia",""};
 	//title deed card image names
-	String[] tdimages = {"Purple_GermaniaI","Purple_GermaniaS","BBlue_APoeniae","BBlue_ACottiae","BBlue_AMaritimae","DPink_Aquitania","DPink_Belgica","DPink_Raetia","Orange_AProconsularis","Orange_Asia","Orange_Britannia","Red_Cilicia","Red_Galatia","Red_Cappadocia","Yellow_Aegyptus","Yellow_APetraea","Yellow_Syria","Green_Macedonia","Green_Epirus","Green_Achaia","Blue_Sicilia", "Blue_Italia","Utility_Sewers","Utility_Aqueducts","Via_Appia","Via_Flaminia","Via_Aemilia","Via_Popillia",""};
+	//String[] tdimages = {"Purple_GermaniaI","Purple_GermaniaS","BBlue_APoeniae","BBlue_ACottiae","BBlue_AMaritimae","DPink_Aquitania","DPink_Belgica","DPink_Raetia","Orange_AProconsularis","Orange_Asia","Orange_Britannia","Red_Cilicia","Red_Galatia","Red_Cappadocia","Yellow_Aegyptus","Yellow_APetraea","Yellow_Syria","Green_Macedonia","Green_Epirus","Green_Achaia","Blue_Sicilia", "Blue_Italia","Utility_Sewers","Utility_Aqueducts","Via_Appia","Via_Flaminia","Via_Aemilia","Via_Popillia",""};
 	//all spaces
-	String[] board = {"Go","Germania Inferior","Community Chest","Germania Superior","Render unto Caesar","Via Appia","Alpes Poeniae","Chance","Alpes Cottiae","Alpes Maritimae","See a battle","Arena","Aquitania","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Community Chest","Asia","Britannia","Free Market","Cilicia","Chance","Galatia","Cappadocia","Via Aemilia","Aegyptus","Arabia Petraea","Aqueducts","Syria","Go to the Arena","Macedonia","Epirus","Community Chest","Achaia","Via Popillia","Chance","Sicilia","Citizens Tax","Italia"};
+	//String[] board = {"Go","Germania Inferior","Community Chest","Germania Superior","Render unto Caesar","Via Appia","Alpes Poeniae","Chance","Alpes Cottiae","Alpes Maritimae","See a battle","Arena","Aquitania","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Community Chest","Asia","Britannia","Free Market","Cilicia","Chance","Galatia","Cappadocia","Via Aemilia","Aegyptus","Arabia Petraea","Aqueducts","Syria","Go to the Arena","Macedonia","Epirus","Community Chest","Achaia","Via Popillia","Chance","Sicilia","Citizens Tax","Italia"};
 	//token movement setBounds(x[Pos],y[Pos])
     int[] x = {9,96,152,208,264,320,376,432,488,544,660,600,600,600,600,600,600,600,600,600,600,600,543,488,432,376,320,264,208,152,96,9,52,52,52,52,52,52,52,52,52};
     int[] y = {11,11,11,11,11,11,11,11,11,11,1,35,97,154,209,265,322,377,432,490,544,601,601,601,601,601,601,601,601,601,601,601,545,489,434,377,322,265,209,154,97};
 	
     
 	public Board(Properties [] propArr, Players [] playArr) {	
-		this.prop = propArr;
-		this.play = playArr;
+	this.prop = propArr;
+	this.play = playArr;
 		
-		Players thePlayer = playArr[turnCounter]; 
-		//Properties theProperty = propArr[thePlayer.getPosition()];
+	Players thePlayer = playArr[turnCounter]; 
 		
 		//layout
-		boardFrame.setVisible(true);
-		boardFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		boardFrame.setResizable(false);
-		boardFrame.setLocation(700, 0);
-		boardFrame.setSize(351,728);
-		boardFrame.setBackground(Color.WHITE);
+	boardFrame.setVisible(true);
+	boardFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	boardFrame.setResizable(false);
+	boardFrame.setLocation(700, 0);
+	boardFrame.setSize(351,728);
+	boardFrame.setBackground(Color.WHITE);
 		
 	setTitle("Board");
 	getContentPane();
@@ -85,39 +76,40 @@ public class Board extends JFrame implements ActionListener {
 	boardFrame.add(stats);
 	stats.setOpaque(false);
 	front.setOpaque(false);
-	JLabel background=new JLabel(new ImageIcon("src/pieces/boardrotate.jpg"));
+	URL brd = Board.class.getResource("/pieces/boardrotate.jpg");
+	JLabel background=new JLabel(new ImageIcon(brd));
 	add(background);
 	background.setLayout(null);
-	
+
 	//if not applicable grey out buttons
 	rolling = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px 15px 5px 15px;\"><u>R</u>oll Dice</div>");
 	buying = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>B</u>uy Property</div>");
 	mortgage = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>M</u>ortgage</div>");
 	unmortgage = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>U</u>nMortgage</div>");
 	improve = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>I</u>mprovements</div>");
-	//sell = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>S</u>ell</div>");
+	sell = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>S</u>ell</div>");
+	trade = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>T</u>rade</div>");
 	ending = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>E</u>nd Turn</div>");
 	hmenu = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>H</u>elp Menu</div>");
 	mmenu = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>E</u>xit Game</div>");
-		rolling.setBackground(new Color(73,175,47));
+		rolling.setBackground(new Color(73,175,47)); //set the color of the buttons in rgb
 		buying.setBackground(new Color(167,39,88));
 		mortgage.setBackground(new Color(247, 153, 22));
 		unmortgage.setBackground(new Color(247, 153, 22));
 		improve.setBackground(new Color(68, 35, 90));
-		//sell.setBackground(new Color(71,71,255));
+		sell.setBackground(new Color(71,71,255));
+		trade.setBackground(new Color(71,71,255));
 		ending.setBackground(new Color(0, 0, 0));
 		hmenu.setBackground(new Color(0, 0, 0));
 		mmenu.setBackground(new Color(226, 40, 53));
 
-	//dice, cards, and token images	
-	JLabel die1=new JLabel(new ImageIcon("src/pieces/images/Dice"+dice1+".png"));
-	JLabel die2=new JLabel(new ImageIcon("src/pieces/images/Dice"+dice2+".png"));
-	//JLabel token1 = new JLabel(new ImageIcon("src/pieces/images/"+play[turnCounter].getToken()));
-	JLabel tdimg = new JLabel(new ImageIcon(""));
-	JLabel chanceimg = new JLabel(new ImageIcon(chaimg));
-	
+	JLabel die1=new JLabel(new ImageIcon("")); //dice images default
+	JLabel die2=new JLabel(new ImageIcon(""));
+	JLabel tdimg = new JLabel(new ImageIcon("")); //title deed image default
+	JLabel chanceimg = new JLabel(new ImageIcon("")); //Chance and Chest images default
+
 	//where images are stored
-	dicez = new JButton();
+	dicez = new JButton(); //dice
 	dice2thereckoning = new JButton();
 	token1 = new JButton(); //players 1-8, play[turnCounter].get array 0-7
 	token2 = new JButton();
@@ -127,27 +119,27 @@ public class Board extends JFrame implements ActionListener {
 	token6 = new JButton();
 	token7 = new JButton();
 	token8 = new JButton();
-	
 	tdbtn = new JButton();
 	chabtn = new JButton();
-	plbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName() + "<br/>" + "Balance: "+thePlayer.getBalance()+
-			" denarius <br/>Space: "+board[thePlayer.getPosition()]+
+	
+	plbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName() + "<br/>" + "Balance: "+thePlayer.getBalance()+" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
 			", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+thePlayer.getJail()+", Doubles Counter: "+thePlayer.getDoubles()+"</div></html>");
-	statusbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\"></div></html>");
+	statusbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player 1, click 'Roll Dice' to start the game.</div></html>"); //set status updates to default
 	dicez.add(die1);
 	dice2thereckoning.add(die2);
-	
-	rolling.addActionListener(this);
+
+	rolling.addActionListener(this); //ActionListerners for the board and updating in ActionListener
 	buying.addActionListener(this);
 	mortgage.addActionListener(this);
 	unmortgage.addActionListener(this);
 	improve.addActionListener(this);
-	//sell.addActionListener(this);
+	sell.addActionListener(this);
+	trade.addActionListener(this);
 	ending.addActionListener(this);
 	mmenu.addActionListener(this);
 	hmenu.addActionListener(this);
 	tdbtn.addActionListener(this);
-	token1.addActionListener(this); //tokens 1-8, add to ActionListener
+	token1.addActionListener(this);
 	token2.addActionListener(this);
 	token3.addActionListener(this);
 	token4.addActionListener(this);
@@ -156,7 +148,7 @@ public class Board extends JFrame implements ActionListener {
 	token7.addActionListener(this);
 	token8.addActionListener(this);
 	
-	background.add(token1); //add to the board in the jframe background
+	background.add(token1); //add to the board in the jFrame background
 	background.add(token2);
 	background.add(token3);
 	background.add(token4);
@@ -164,21 +156,20 @@ public class Board extends JFrame implements ActionListener {
 	background.add(token6);
 	background.add(token7);
 	background.add(token8);
-	
 	background.add(front);
 	background.add(tdbtn);
 	background.add(dicez);
 	background.add(dice2thereckoning);
-	stats.setBounds(60, 0, 300, 700);
+	stats.setBounds(60, 0, 300, 700); //set the size and position
 	front.setBounds(120, 369, 450, 200);
-	front.setBorder(null);
+	front.setBorder(null); //remove black border
 	dicez.setBorder(null);
 	tdbtn.setBorder(null);
 	chabtn.setBorder(null);
 	plbtn.setBorder(null);
 	statusbtn.setBorder(null);
 	dice2thereckoning.setBorder(null);
-	token1.setBorder(null); //remove black border
+	token1.setBorder(null);
 	token2.setBorder(null);
 	token3.setBorder(null);
 	token4.setBorder(null);
@@ -196,18 +187,19 @@ public class Board extends JFrame implements ActionListener {
 	token7.setBounds(x[thePlayer.getPosition()],y[thePlayer.getPosition()], 50, 56);
 	token8.setBounds(x[thePlayer.getPosition()],y[thePlayer.getPosition()], 50, 56);
 	
-	dicez.setBounds(259, 266, 50, 50);
+	dicez.setBounds(259, 266, 50, 50); //set size and position
 	dice2thereckoning.setBounds(309, 266, 50, 50);
 	tdbtn.setBounds(98,98,155,230); //on board
 	plbtn.setBounds(0,10,100,100);
 	chabtn.setBounds(230,170,50,230);
 	
-	front.add(rolling);
+	front.add(rolling); //add to JPanel in middle of the board
 	front.add(buying);
 	front.add(mortgage);
 	front.add(unmortgage);
 	front.add(improve);
-	//front.add(sell);
+	front.add(sell);
+	front.add(trade);
 	front.add(ending);
 	front.add(hmenu);
 	front.add(mmenu);
@@ -249,7 +241,7 @@ public class Board extends JFrame implements ActionListener {
 	dicez.setContentAreaFilled(false);
 	dice2thereckoning.setContentAreaFilled(false); //the sequel is never as good as the first
 	dice2thereckoning.setFocusPainted(false);
-	tdbtn.setContentAreaFilled(false); //totally not a button
+	tdbtn.setContentAreaFilled(false);
 	plbtn.setFocusPainted(false);
 	plbtn.setContentAreaFilled(false);
 	plbtn.setOpaque(false);
@@ -257,27 +249,23 @@ public class Board extends JFrame implements ActionListener {
 	statusbtn.setContentAreaFilled(false);
 	statusbtn.setOpaque(false);
 	
-	
-	rolling.setEnabled(true);
+	rolling.setEnabled(true); //default button, before the first roll
+	ending.setEnabled(false);
 	buying.setEnabled(false);
 	mortgage.setEnabled(false);
-	if(thePlayer.getOwner() == true);
-	{
-		mortgage.setEnabled(true);
-	}
+	improve.setEnabled(false);
+	sell.setEnabled(false);
+	trade.setEnabled(false);
 	unmortgage.setEnabled(false);
-	improve.setEnabled(true);
-	//sell.setEnabled(false);
-	ending.setEnabled(false);
 
 	//debugging, finding x,y positions on the board for every click
-    background.addMouseListener(new MouseAdapter() {
+    /*background.addMouseListener(new MouseAdapter() {
 	public void mouseClicked(MouseEvent e) {
 			System.out.println("x: "+e.getX()+", y: "+e.getY());
 			return;
 		}
     });
-	
+	*/
 	// refresh images after adding panels
     boardFrame.setSize(350,727);
 	setSize(701,728);
@@ -286,251 +274,742 @@ public class Board extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		Players thePlayer = play[turnCounter];
-		Properties theProperty = prop[thePlayer.getPosition()];
 		
 		if(e.getSource() == rolling) {
-			//start turn
-			rolling.setEnabled(false);
+			rolling.setEnabled(false); //start turn
 			buying.setEnabled(false);
-			mortgage.setEnabled(false);
-			if(thePlayer.getOwner() == true);
-			{
+			ending.setEnabled(true);
+			
+			if(thePlayer.getOwner() == true){
 				mortgage.setEnabled(true);
+				unmortgage.setEnabled(true);
+				improve.setEnabled(true);
+				sell.setEnabled(true);
+				trade.setEnabled(true);
 			}
-			ending.setEnabled(false);
+			if(thePlayer.getOwner() == false){
+				mortgage.setEnabled(false);
+				unmortgage.setEnabled(false);
+				improve.setEnabled(false);
+				sell.setEnabled(false);
+				trade.setEnabled(false);
+			}
 			
 			tdowned = ""; //set to blank
 			tdmort = "";
 			td = 0;
 			for(int i=0; i<prop.length; i++) {
-		         if(prop[i].getOwner() != 0 && prop[i].getMortgaged() != 0) {
-		        	 tdmort += (prop[i].getName()+" - "+play[prop[i].getMortgaged()-1].getName()+"<br/>"); td++;
+		         if(prop[i].getMortgaged() == true) {
+		        	 tdmort += (prop[i].getName()+"<br/>"); td++;
 		        }
-		    }
+		    } //populate owned items
 			
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
 		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>"); td++;
 		        }
-		    }  
+		    }  //populate mortgaged items
 			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
-		 //checks for owned properties and outputs to stats jframe
+					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>"); //checks for owned properties and outputs to stats jFrame
 
-			Prev = thePlayer.getPosition();
+			Prev = thePlayer.getPosition(); //get current player's previous position
 			Dice theDice = new Dice();
 		    dice1 = theDice.getDie1();
 		    dice2 = theDice.getDie2();
-		    if (j == 0) {
-			thePlayer.setPosition((Prev + dice1 + dice2) % 40);
-		    } //prevent token from moving out of jail, dice still need to roll
-			theTurn.TurnAction(prop, play, Prev, dice1, dice2, j, turnCounter);
-			j = theTurn.getTjail();
-		    
-			theTurn.setDice1(dice1);
-			theTurn.setDice2(dice2);
-			chaimg = theTurn.getChaimg();
+			k = (dice1 == dice2) ? k + 1 : 0;
+			k = k % 3; //doubles 0 none, 3 jail
+			if (k > 3) {k = k - 4;} //check for out of bounds
+			thePlayer.setDoubles(k);
+		    thePlayer.setPosition((Prev + dice1 + dice2) % 40); //add to the player's position to move them forward
+			theTurn.TurnAction(prop, play, Prev, dice1, dice2, turnCounter); //activate turn
+			if (dice1==dice2 || thePlayer.getPosition() == 31 || thePlayer.getPosition() == 11){
+			new Jail(play, turnCounter, dice1, dice2);
+			} //activate jail class
+			//j = theTurn.getTjail();
+			URL chimg = Board.class.getResource(theTurn.getChaimg());
+			chabtn.setIcon(new ImageIcon(chimg)); //doesn't work right now without a loop to update it
 			
-			if (Prev < 10 && thePlayer.getPosition() > 10) {
-				thePlayer.setPosition(12);
-				if (thePlayer.getPosition()> 39) {
-					thePlayer.setPosition(0);
-				}
+			/*if (Prev < 10 && thePlayer.getPosition() > 10) {
+				thePlayer.setPosition(thePlayer.getPosition()+1); //add one to dice roll so it doesn't land on 11
+				if (thePlayer.getPosition() > 40) {thePlayer.setPosition(thePlayer.getPosition()-41);} //keep board from going over 40
 			}
-			if (thePlayer.getPosition() == 31) {
-				thePlayer.setPosition(11); 
-			}
+			if (thePlayer.getPosition() == 31) {thePlayer.setPosition(11);} //go to the arena, redundancy in case Turn fails
+			*/
+			URL diw1 = Board.class.getResource("/pieces/images/Dice"+dice1+".png"); //update dice images number
+			URL diw2 = Board.class.getResource("/pieces/images/Dice"+dice2+".png");
+			dicez.setIcon(new ImageIcon(diw1)); //refresh img dice
+			dice2thereckoning.setIcon(new ImageIcon(diw2));
 			
-			dicez.setIcon(new ImageIcon("src/pieces/images/Dice"+dice1+".png")); //refresh img dice
-			dice2thereckoning.setIcon(new ImageIcon("src/pieces/images/Dice"+dice2+".png"));
-			tdbtn.setIcon(new ImageIcon("src/cards/images/"+prop[thePlayer.getPosition()].getImageName()));
+			URL td1 = Board.class.getResource("/cards/images/"+prop[thePlayer.getPosition()].getImageName());
+			if (td1 != null) {tdbtn.setIcon(new ImageIcon(td1));} //if image is null do not update and show the image
+			
 			if (turnCounter == 0) {
 			token1.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
-			token1.setIcon(new ImageIcon("src/pieces/images/"+play[turnCounter].getToken()));
+			URL tok1 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken());
+			token1.setIcon(new ImageIcon(tok1));
 			} //player 1 update token movement
 			if (turnCounter == 1) {
 				token2.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
-				token2.setIcon(new ImageIcon("src/pieces/images/"+play[turnCounter].getToken()));
+				URL tok2 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken());
+				token2.setIcon(new ImageIcon(tok2));
 			} //player 2 update token movement
 			if (turnCounter == 2) {
 				token3.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
-				token3.setIcon(new ImageIcon("src/pieces/images/"+play[turnCounter].getToken()));
+				URL tok3 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken());
+				token3.setIcon(new ImageIcon(tok3));
 			} //player 3 update token movement
 			if (turnCounter == 3) {
 				token4.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
-				token4.setIcon(new ImageIcon("src/pieces/images/"+play[turnCounter].getToken()));
+				URL tok4 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken());
+				token4.setIcon(new ImageIcon(tok4));
 			} //player 4 update token movement
 			if (turnCounter == 4) {
 				token5.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
-				token5.setIcon(new ImageIcon("src/pieces/images/"+play[turnCounter].getToken()));
+				URL tok5 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken());
+				token5.setIcon(new ImageIcon(tok5));
 			} //player 5 update token movement
 			if (turnCounter == 5) {
 				token6.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
-				token6.setIcon(new ImageIcon("src/pieces/images/"+play[turnCounter].getToken()));
+				URL tok6 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken());
+				token6.setIcon(new ImageIcon(tok6));
 			} //player 6 update token movement
 			if (turnCounter == 6) {
 				token7.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
-				token7.setIcon(new ImageIcon("src/pieces/images/"+play[turnCounter].getToken()));
+				URL tok7 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken());
+				token7.setIcon(new ImageIcon(tok7));
 			} //player 7 update token movement
 			if (turnCounter == 7) {
 				token8.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
-				token8.setIcon(new ImageIcon("src/pieces/images/"+play[turnCounter].getToken()));
+				URL tok8 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken());
+				token8.setIcon(new ImageIcon(tok8));
 			} //player 8 update token movement
 			
-			chabtn.setIcon(new ImageIcon(chaimg)); //doesn't work right now without a loop to update it
 			Prev = thePlayer.getPosition();
-			thePlayer.setPosition(Prev);
 			theTurn.setPrev(Prev);
 			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
 					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
-			
-			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+theTurn.getStatustxt()+"</div></html>");
+			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+theTurn.getStatustxt()+"</div></html>"); //print the status text in Turn
 			
 			if (prop[thePlayer.getPosition()].getPurchaseAllowed() != false && prop[thePlayer.getPosition()].getOwner() == 0) {
 				if (thePlayer.getBalance() >= prop[thePlayer.getPosition()].getCost()) {
 						buying.setEnabled(true);
 				} //if space isn't already purchased
-			} //must be ownable and not owned
-			/*
-			if (prop[thePlayer.getPosition()].getPurchaseAllowed() != false){
-				mortgage.setEnabled(true);
-				}*/
-            if (thePlayer.getBalance() >= prop[thePlayer.getPosition()].getMortgage()) {
-            	if (thePlayer.getBalance() < prop[thePlayer.getPosition()].getMortgage()) {
-    				mortgage.setEnabled(false);
-    				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">You do not have enough funds to mortgage this space.</div></html>");
-    				}
-            }
+			} //must be ownable and not owned        
             
 			if (prop[thePlayer.getPosition()].getPurchaseAllowed() != false) {
 				if(thePlayer.getPlayerNumber() != prop[thePlayer.getPosition()].getOwner()){
-					if(prop[thePlayer.getPosition()].getOwner() != 0 && prop[thePlayer.getPosition()].getMortgaged() == 0) {
+					if(prop[thePlayer.getPosition()].getOwner() != 0 && prop[thePlayer.getPosition()].getMortgaged() == false) {
 						Rent theRent = new Rent(play, prop, turnCounter,(dice1+dice2));
 						statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+theRent.getRenttxt()+"</div></html>");
 					} //if not owned by current person and is not mortgaged
 				}
 			} //pay rent
-			ending.setEnabled(true);
-			if (thePlayer.getBalance() <= 0) {
-				//System.out.println("Game over.");
-				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Game Over.</div></html>");
-				rolling.setEnabled(false);
-				buying.setEnabled(false);
-				mortgage.setEnabled(false);
-				if(thePlayer.getOwner() == true);
-				{
-					mortgage.setEnabled(true);
-				}
-				ending.setEnabled(false);
-				hmenu.setEnabled(false);
-			}
+			ending.setEnabled(true); //enable the player to end their turn
 		}
 		if(e.getSource() == buying) {
-			rolling.setEnabled(false);
-			buying.setEnabled(false);
-			mortgage.setEnabled(false);
-			if(thePlayer.getOwner() == true);
-			{
-				mortgage.setEnabled(true);
-			}
-			ending.setEnabled(true);
-			
+			buying.setEnabled(false); //buy a property		
 			new Purchase(thePlayer, prop[thePlayer.getPosition()], thePlayer.getBalance());
+			
 			tdowned = ""; //set to blank
 			td = 0;
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
 		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>"); td++;
 		        }
-		    }
+		    } //find all owned properties and update
 			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
 					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 		} //buy property
-		if(e.getSource() == mortgage) {
-            rolling.setEnabled(false);
-            buying.setEnabled(false);
-            mortgage.setEnabled(false);
-            if(thePlayer.getOwner() == true);
-        	{
-        		mortgage.setEnabled(true);
-        	}
-            ending.setEnabled(true);
-            
-            if(e.getSource() == mortgage) {
-                //mortgage property
-                rolling.setEnabled(false);
-                buying.setEnabled(false);
-                mortgage.setEnabled(false);
-                ending.setEnabled(true);
-
-                String[] choices = { "Germania Inferior", "Germania Superior", "Alps Poeniae", "Alps Cottiae", "Alps Maritimae", "Aquitanina","Belgica","Raetia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia","Aegyptus","Arabia Petraea","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
-                String input = (String) JOptionPane.showInputDialog(null, "Choose a property to mortgage","Properties", JOptionPane.QUESTION_MESSAGE, null,choices,choices[1]); // Initial choice
-                String propName = input;
+		if(e.getSource() == mortgage) {		
                 Properties mortProp = null;
-                for(int i = 0; i < prop.length; i++){
-                    if(propName == prop[i].getName()){
-                        mortProp = prop[i]; 
-                    } 
-                new Mortgage(thePlayer, mortProp);
+                String[] choices = {
+                	    "Germania Inferior","Germania Superior","Via Appia","Alps Poeniae","Alps Cottiae","Alps Maritimae",
+				"Aquitanina","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia",
+				"Via Aemilia","Aegyptus","Arabia Petraea","Aquaducts","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
+                String input = (String) JOptionPane.showInputDialog(null, "Choose a property to mortgage","Properties", JOptionPane.QUESTION_MESSAGE, null,choices,choices[1]); 
+                
+                if(input == "Germania Inferior"){
+                	mortProp = prop[1];
                 }
-
+                else if(input == "Germania Superior"){
+                	mortProp = prop[3];
+                }
+                else if(input == "Via Appia"){
+                	mortProp = prop[5];
+                }
+                else if(input == "Alps Poeniae"){
+                	mortProp = prop[6];
+                }
+                else if(input == "Alps Cottiae"){
+                	mortProp = prop[8];
+                }
+                else if(input == "Alps Maritimae"){
+                	mortProp = prop[9];
+                }
+                else if(input == "Aquitanina"){
+                	mortProp = prop[12];
+                }
+                else if(input == "Sewers"){
+                	mortProp = prop[13];
+                }
+                else if(input == "Belgica"){
+                	mortProp = prop[14];
+                }
+                else if(input == "Raetia"){
+                	mortProp = prop[15];
+                }
+                else if(input == "Via Flaminia"){
+                	mortProp = prop[16];
+                }
+                else if(input == "Africa Proconsularis"){
+                	mortProp = prop[17];
+                }
+                else if(input == "Asia"){
+                	mortProp = prop[19];
+                }
+                else if(input == "Britannia"){
+                	mortProp = prop[20];
+                }
+                else if(input == "Cilicia"){
+                	mortProp = prop[22];
+                }
+                else if(input == "Galatia"){
+                	mortProp = prop[24];
+                }
+                else if(input == "Cappadocia"){
+                	mortProp = prop[25];
+                }
+                else if(input == "Via Aemilia"){
+                	mortProp = prop[26];
+                }
+                else if(input == "Aegyptus"){
+                	mortProp = prop[27];
+                }
+                else if(input == "Arabia Petraea"){
+                	mortProp = prop[28];
+                }
+                else if(input == "Aquaducts"){
+                	mortProp = prop[29];
+                }
+                else if(input == "Syria"){
+                	mortProp = prop[30];
+                }
+                else if(input == "Macedonia"){
+                	mortProp = prop[32];
+                }
+                else if(input == "Epirus"){
+                	mortProp = prop[33];
+                }
+                else if(input == "Achaia"){
+                	mortProp = prop[35];
+                }
+                else if(input == "Via Popilia"){
+                	mortProp = prop[36];
+                }
+                else if(input == "Sicilia"){
+                	mortProp = prop[38];
+                }
+                else if(input == "Italia"){
+                	mortProp = prop[40];
+                }
+				
+				if (mortProp != null) {
+                new Mortgage(thePlayer,mortProp);
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+" "+"</div></html>"); //set to blank
+				} //if item is selected from the dialog box activate mortgage
+				else {
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+"You have cancelled mortgaging a property to the bank."+"</div></html>");
+				} //otherwise print status
+				
+                for(int i = 0; i< prop.length;i++){
+                	Properties mortgage = null;
+                	if(prop[i].getMortgaged() == true){
+                		mortgage = prop[i];
+                		tdmort += mortgage.getName();
+                	}
+                } //update mortgaged properties
                 plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-                        ", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
-            }
-   	    } //find all unowned properties
-		if(e.getSource() == hmenu) {
+                		", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+   	    }
+		if(e.getSource() == hmenu){
 			//user guide
 			new HelpMenu();
 		}
 		if(e.getSource()== mmenu){
+			//ask if you would like to exit
 			System.exit(0); //exit
 		}
 		if(e.getSource()== unmortgage){
-
+            Properties unmortProp = null;
+            String[] choices = {
+            	    "Germania Inferior","Germania Superior","Via Appia","Alps Poeniae","Alps Cottiae","Alps Maritimae",
+			"Aquitanina","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia",
+			"Via Aemilia","Aegyptus","Arabia Petraea","Aquaducts","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
+            String input = (String) JOptionPane.showInputDialog(null, "Choose a property to unmortgage","Properties", JOptionPane.QUESTION_MESSAGE, null,choices,choices[1]); 
+            
+            if(input == "Germania Inferior"){
+            	unmortProp = prop[1];
+            }
+            else if(input == "Germania Superior"){
+            	unmortProp = prop[3];
+            }
+            else if(input == "Via Appia"){
+            	unmortProp = prop[5];
+            }
+            else if(input == "Alps Poeniae"){
+            	unmortProp = prop[6];
+            }
+            else if(input == "Alps Cottiae"){
+            	unmortProp = prop[8];
+            }
+            else if(input == "Alps Maritimae"){
+            	unmortProp = prop[9];
+            }
+            else if(input == "Aquitanina"){
+            	unmortProp = prop[12];
+            }
+            else if(input == "Sewers"){
+            	unmortProp = prop[13];
+            }
+            else if(input == "Belgica"){
+            	unmortProp = prop[14];
+            }
+            else if(input == "Raetia"){
+            	unmortProp = prop[15];
+            }
+            else if(input == "Via Flaminia"){
+            	unmortProp = prop[16];
+            }
+            else if(input == "Africa Proconsularis"){
+            	unmortProp = prop[17];
+            }
+            else if(input == "Asia"){
+            	unmortProp = prop[19];
+            }
+            else if(input == "Britannia"){
+            	unmortProp = prop[20];
+            }
+            else if(input == "Cilicia"){
+            	unmortProp = prop[22];
+            }
+            else if(input == "Galatia"){
+            	unmortProp = prop[24];
+            }
+            else if(input == "Cappadocia"){
+            	unmortProp = prop[25];
+            }
+            else if(input == "Via Aemilia"){
+            	unmortProp = prop[26];
+            }
+            else if(input == "Aegyptus"){
+            	unmortProp = prop[27];
+            }
+            else if(input == "Arabia Petraea"){
+            	unmortProp = prop[28];
+            }
+            else if(input == "Aquaducts"){
+            	unmortProp = prop[29];
+            }
+            else if(input == "Syria"){
+            	unmortProp = prop[30];
+            }
+            else if(input == "Macedonia"){
+            	unmortProp = prop[32];
+            }
+            else if(input == "Epirus"){
+            	unmortProp = prop[33];
+            }
+            else if(input == "Achaia"){
+            	unmortProp = prop[35];
+            }
+            else if(input == "Via Popilia"){
+            	unmortProp = prop[36];
+            }
+            else if(input == "Sicilia"){
+            	unmortProp = prop[38];
+            }
+            else if(input == "Italia"){
+            	unmortProp = prop[40];
+            }
+			
+			if (unmortProp != null) {
+                new Unmortgage(thePlayer,unmortProp);
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+" "+"</div></html>"); //set to blank
+				} //if item is selected from the dialog box activate mortgage
+				else {
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+"You have cancelled unmortgaging a property from the bank."+"</div></html>");
+				} //otherwise print status
+            
+            for(int i = 0; i< prop.length;i++){
+            	Properties mortProp = null;
+            	if(prop[i].getMortgaged() == true){
+            		mortProp = prop[i];
+            		tdmort += mortProp.getName();
+            	}
+            } //check for item getting unmortgaged, it should become owned again
+            
+            plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+            		", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 		}
 		if(e.getSource()== improve) {
-			new Improvements(thePlayer, theProperty, play, prop);
+			 Properties improveProp = null;
+	            String[] choices = {
+	            	    "Germania Inferior","Germania Superior","Via Appia","Alps Poeniae","Alps Cottiae","Alps Maritimae",
+				"Aquitanina","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia",
+				"Via Aemilia","Aegyptus","Arabia Petraea","Aquaducts","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
+	            String input = (String) JOptionPane.showInputDialog(null, "Choose a property to improve","Properties", JOptionPane.QUESTION_MESSAGE, null,choices,choices[1]); 
+	            
+	            if(input == "Germania Inferior"){improveProp = prop[1];}
+	            else if(input == "Germania Superior"){improveProp = prop[3];}
+	            else if(input == "Via Appia"){improveProp = prop[5];}
+	            else if(input == "Alps Poeniae"){improveProp = prop[6];}
+	            else if(input == "Alps Cottiae"){improveProp = prop[8];}
+	            else if(input == "Alps Maritimae"){improveProp = prop[9];}
+	            else if(input == "Aquitanina"){improveProp = prop[12];}
+	            else if(input == "Sewers"){improveProp = prop[13];}
+	            else if(input == "Belgica"){improveProp = prop[14];}
+	            else if(input == "Raetia"){improveProp = prop[15];}
+	            else if(input == "Via Flaminia"){improveProp = prop[16];}
+	            else if(input == "Africa Proconsularis"){improveProp = prop[17];}
+	            else if(input == "Asia"){improveProp = prop[19];}
+	            else if(input == "Britannia"){improveProp = prop[20];}
+	            else if(input == "Cilicia"){improveProp = prop[22];}
+	            else if(input == "Galatia"){improveProp = prop[24];}
+	            else if(input == "Cappadocia"){improveProp = prop[25];}
+	            else if(input == "Via Aemilia"){improveProp = prop[26];}
+	            else if(input == "Aegyptus"){improveProp = prop[27];}
+	            else if(input == "Arabia Petraea"){improveProp = prop[28];}
+	            else if(input == "Aquaducts"){improveProp = prop[29];}
+	            else if(input == "Syria"){improveProp = prop[30];}
+	            else if(input == "Macedonia"){improveProp = prop[32];}
+	            else if(input == "Epirus"){improveProp = prop[33];}
+	            else if(input == "Achaia"){improveProp = prop[35];}
+	            else if(input == "Via Popilia"){improveProp = prop[36];}
+	            else if(input == "Sicilia"){improveProp = prop[38];}
+	            else if(input == "Italia"){improveProp = prop[40];}
+				
+				if (improveProp != null) {
+                new Improvements(thePlayer, improveProp, play, prop);
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+" "+"</div></html>"); //set to blank
+				} //if item is selected from the dialog box activate mortgage
+				else {
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+"You have cancelled improving a property."+"</div></html>");
+				} //otherwise print status
+				td=0;
+				for(int i = 0; i< prop.length; i++){
+                	if(prop[i].getVillas() > 0 || prop[i].getPantheons() > 0){
+                		printVillas += ()prop[i].getName()+" - Villas: "+prop[i].getVillas()+", Pantheons: "+prop[i].getPantheons()+"<br/>"); td++;
+                	}
+                } //update and print improved properties
+			
+	            plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+	            		", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/>Villas/Pantheons: "+printVillas+"<br/></div></html>"); 
 		} //villas and pantheons
-		//if(e.getSource()== sell) {}
-		if(e.getSource()== ending) {
-			//here it goes again
-			rolling.setEnabled(true);
-			ending.setEnabled(false);
-			buying.setEnabled(false);
-			mortgage.setEnabled(false);
-			if(thePlayer.getOwner() == true);
-			{
-				mortgage.setEnabled(true);
+		if(e.getSource()== sell) {
+			int buyCounter = 0;
+			Properties buyProp = null;
+			Players secondPlayer = null;
+	            String[] ownedProperty = {
+	            		"Germania Inferior","Germania Superior","Via Appia","Alps Poeniae","Alps Cottiae","Alps Maritimae",
+				"Aquitanina","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia",
+				"Via Aemilia","Aegyptus","Arabia Petraea","Aquaducts","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
+	            String input = (String) JOptionPane.showInputDialog(null, "Choose a property to buy from another Player","Properties", JOptionPane.QUESTION_MESSAGE, null,ownedProperty,ownedProperty[1]); 
+	            
+	            if(input == "Germania Inferior"){buyProp = prop[1];}
+	            else if(input == "Germania Superior"){buyProp = prop[3];}
+	            else if(input == "Via Appia"){buyProp = prop[5];}
+	            else if(input == "Alps Poeniae"){buyProp = prop[6];}
+	            else if(input == "Alps Cottiae"){buyProp = prop[8];}
+	            else if(input == "Alps Maritimae"){buyProp = prop[9];}
+	            else if(input == "Aquitanina"){buyProp = prop[12];}
+	            else if(input == "Sewers"){buyProp = prop[13];}
+	            else if(input == "Belgica"){buyProp = prop[14];}
+	            else if(input == "Raetia"){buyProp = prop[15];}
+	            else if(input == "Via Flaminia"){buyProp = prop[16];}
+	            else if(input == "Africa Proconsularis"){buyProp = prop[17];}
+	            else if(input == "Asia"){buyProp = prop[19];}
+	            else if(input == "Britannia"){buyProp = prop[20];}
+	            else if(input == "Cilicia"){buyProp = prop[22];}
+	            else if(input == "Galatia"){buyProp = prop[24];}
+	            else if(input == "Cappadocia"){buyProp = prop[25];}
+	            else if(input == "Via Aemilia"){buyProp = prop[26];}
+	            else if(input == "Aegyptus"){buyProp = prop[27];}
+	            else if(input == "Arabia Petraea"){buyProp = prop[28];}
+	            else if(input == "Aquaducts"){buyProp= prop[29];}
+	            else if(input == "Syria"){buyProp = prop[30];}
+	            else if(input == "Macedonia"){buyProp = prop[32];}
+	            else if(input == "Epirus"){buyProp = prop[33];}
+	            else if(input == "Achaia"){buyProp = prop[35];}
+	            else if(input == "Via Popilia"){buyProp = prop[36];}
+	            else if(input == "Sicilia"){buyProp = prop[38];}
+	            else if(input == "Italia"){buyProp= prop[40];}
+				
+				int ownerNumber = buyProp.getOwner();
+				if (input != null) {
+                new Buy(thePlayer,secondPlayer, play, buyProp,prop);
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+" "+"</div></html>"); //set to blank
+				} //if item is selected from the dialog box activate mortgage
+				else {
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+"You have cancelled selling a property."+"</div></html>");
+				} //otherwise print status
+	            
+	            if(e.getSource() == sell){buyCounter = 1;}
+	            if(buyCounter == 1){
+	            	buyCounter = 0;
+	            	buyProp.setOwner(thePlayer.getPlayerNumber());
+	            	int newPlayerBalance = thePlayer.getBalance() - buyProp.getCost();
+	            	int newSecondPlayerBalance = secondPlayer.getBalance() + buyProp.getCost();
+	            	thePlayer.setBalance(newPlayerBalance);
+	            	secondPlayer.setBalance(newSecondPlayerBalance);
+	            	thePlayer.setOwner(true);
+	            	for(int k = 0; k<prop.length; k++){
+	            		if(secondPlayer.getPlayerNumber() == prop[k].getOwner()){
+	            			secondPlayer.setOwner(true);
+	            			break;
+	            		} else{secondPlayer.setOwner(false);}
+	            	}
+	            }
+				
+	            for(int j = 0 ; j < play.length; j ++){
+	            	if(ownerNumber == play[j].getPlayerNumber()){
+	            		secondPlayer = play[j];
+	            	}
+	            } //find the player to sell to
+	            
+	            tdowned = ""; //set to blank
+				td = 0;
+				for(int i=0; i<prop.length; i++) {
+		         if(prop[i].getMortgaged() == true) {
+		        	 tdmort += (prop[i].getName()+"<br/>"); td++;
+					}
+				} //populate owned items
+	           
+	            plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+		} //sell property
+		if(e.getSource()== trade){			
+			int tradeCounter = 0;
+			Properties tradeProp = null;
+			Players secondPlayer = null;
+			Properties getProp = null;
+			if(tradeCounter == 0){
+	            String[] ownedProperty = {
+	            		"Germania Inferior","Germania Superior","Via Appia","Alps Poeniae","Alps Cottiae","Alps Maritimae",
+				"Aquitanina","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia",
+				"Via Aemilia","Aegyptus","Arabia Petraea","Aquaducts","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
+	            String input1 = (String) JOptionPane.showInputDialog(null, "Choose a property to trade with another Player","Properties", JOptionPane.QUESTION_MESSAGE, null,ownedProperty,ownedProperty[1]); 
+	            
+	            if(input1 == "Germania Inferior"){tradeProp  = prop[1];}
+	            else if(input1 == "Germania Superior"){tradeProp  = prop[3];}
+	            else if(input1 == "Via Appia"){tradeProp  = prop[5];}
+	            else if(input1 == "Alps Poeniae"){tradeProp  = prop[6];}
+	            else if(input1 == "Alps Cottiae"){tradeProp  = prop[8];}
+	            else if(input1 == "Alps Maritimae"){tradeProp = prop[9];}
+	            else if(input1 == "Aquitanina"){tradeProp = prop[12];}
+	            else if(input1 == "Sewers"){tradeProp = prop[13];}
+	            else if(input1 == "Belgica"){tradeProp = prop[14];}
+	            else if(input1 == "Raetia"){tradeProp = prop[15];}
+	            else if(input1 == "Via Flaminia"){tradeProp = prop[16];}
+	            else if(input1 == "Africa Proconsularis"){tradeProp = prop[17];}
+	            else if(input1 == "Asia"){tradeProp = prop[19];}
+	            else if(input1 == "Britannia"){tradeProp = prop[20];}
+	            else if(input1 == "Cilicia"){tradeProp = prop[22];}
+	            else if(input1 == "Galatia"){tradeProp = prop[24];}
+	            else if(input1 == "Cappadocia"){tradeProp = prop[25];}
+	            else if(input1 == "Via Aemilia"){tradeProp = prop[26];}
+	            else if(input1 == "Aegyptus"){tradeProp = prop[27];}
+	            else if(input1 == "Arabia Petraea"){tradeProp = prop[28];}
+	            else if(input1 == "Aquaducts"){tradeProp = prop[29];}
+	            else if(input1 == "Syria"){tradeProp = prop[30];}
+	            else if(input1 == "Macedonia"){tradeProp = prop[32];}
+	            else if(input1 == "Epirus"){tradeProp = prop[33];}
+	            else if(input1 == "Achaia"){tradeProp = prop[35];}
+	            else if(input1 == "Via Popilia"){tradeProp = prop[36];}
+	            else if(input1 == "Sicilia"){tradeProp = prop[38];}
+	            else if(input1 == "Italia"){tradeProp = prop[40];}
+				
+	            String[] desiredProperty = {
+	            		"Germania Inferior","Germania Superior","Via Appia","Alps Poeniae","Alps Cottiae","Alps Maritimae",
+				"Aquitanina","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia",
+				"Via Aemilia","Aegyptus","Arabia Petraea","Aquaducts","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
+	            String input2 = (String) JOptionPane.showInputDialog(null, "Choose a property to trade with another Player","Properties", JOptionPane.QUESTION_MESSAGE, null,desiredProperty,desiredProperty[1]); 
+	            
+	            if(input2 == "Germania Inferior"){getProp = prop[1];}
+	            else if(input2 == "Germania Superior"){getProp  = prop[3];}
+	            else if(input2 == "Via Appia"){getProp = prop[5];}
+	            else if(input2 == "Alps Poeniae"){getProp = prop[6];}
+	            else if(input2 == "Alps Cottiae"){getProp  = prop[8];}
+	            else if(input2 == "Alps Maritimae"){getProp = prop[9];}
+	            else if(input2 == "Aquitanina"){getProp = prop[12];}
+	            else if(input2 == "Sewers"){getProp = prop[13];}
+	            else if(input2 == "Belgica"){getProp = prop[14];}
+	            else if(input2 == "Raetia"){getProp = prop[15];}
+	            else if(input2 == "Via Flaminia"){getProp = prop[16];}
+	            else if(input2 == "Africa Proconsularis"){getProp = prop[17];}
+	            else if(input2 == "Asia"){getProp = prop[19];}
+	            else if(input2 == "Britannia"){getProp = prop[20];}
+	            else if(input2 == "Cilicia"){getProp = prop[22];}
+	            else if(input2 == "Galatia"){getProp = prop[24];}
+	            else if(input2 == "Cappadocia"){getProp = prop[25];}
+	            else if(input2 == "Via Aemilia"){getProp = prop[26];}
+	            else if(input2 == "Aegyptus"){getProp = prop[27];}
+	            else if(input2 == "Arabia Petraea"){getProp = prop[28];}
+	            else if(input2 == "Aquaducts"){getProp = prop[29];}
+	            else if(input2 == "Syria"){getProp = prop[30];}
+	            else if(input2 == "Macedonia"){getProp = prop[32];}
+	            else if(input2 == "Epirus"){getProp = prop[33];}
+	            else if(input2 == "Achaia"){getProp = prop[35];}
+	            else if(input2 == "Via Popilia"){getProp = prop[36];}
+	            else if(input2 == "Sicilia"){getProp = prop[38];}
+	            else if(input2 == "Italia"){getProp = prop[40];}
+				
+	            int getPropCurrentOwner = getProp.getOwner();
+	            for(int i = 0; i<play.length; i++){
+	            	if(getPropCurrentOwner == play[i].getPlayerNumber()){
+	            		play[i] = secondPlayer;
+	            	}
+	            }
+	            new Trade(thePlayer, secondPlayer, play, tradeProp, getProp, prop);
 			}
+			if(e.getSource() == trade){
+	            if(tradeCounter == 1){
+	            	tradeCounter = 0;
+	            	tradeProp.setOwner(secondPlayer.getPlayerNumber());
+	            	getProp.setOwner(thePlayer.getPlayerNumber());
+	            	thePlayer.setOwner(true);
+	            }	            
+	            tdowned = ""; //set to blank
+				td = 0;
+				for(int i=0; i<prop.length; i++) {
+		         if(prop[i].getMortgaged() == true) {
+		        	 tdmort += (prop[i].getName()+"<br/>"); td++;
+					}
+				} //populate owned items
+			}
+	            plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+	            		", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+			
+		} //trade property
+		if(e.getSource()== ending) {
+			ending.setEnabled(false);
+			rolling.setEnabled(true); //here it goes again
+			
+			if(thePlayer.getOwner() == true){
+				mortgage.setEnabled(true);
+				unmortgage.setEnabled(true);
+				improve.setEnabled(true);
+				sell.setEnabled(true);
+				trade.setEnabled(true);
+			}
+			if(thePlayer.getOwner() == false){
+				mortgage.setEnabled(false);
+				unmortgage.setEnabled(false);
+				improve.setEnabled(false);
+				sell.setEnabled(false);
+				trade.setEnabled(false);
+			}
+			
 			tdbtn.setIcon(new ImageIcon("")); //you get nothing
 			chabtn.setIcon(new ImageIcon(""));
 			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\"></div></html>");
 			
-			if(turnCounter < 7){
-				turnCounter++;
-			} else {
-				turnCounter = 0;
+			if(turnCounter < 7){turnCounter++;} //set the turnCounter to the next player
+			else {turnCounter = 0;}
+			
+			if (thePlayer.getBalance() < 0) {
+				setTitle("Mortgage");
+				setSize(200,250); //window size
+				setLocation(255,290);
+				setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				setVisible(true);
+				setLayout(new BorderLayout());
+				JPanel front = new JPanel();
+				front.setLayout(null);
+				add(front, BorderLayout.CENTER);
+				
+				JLabel status;
+				String statustxt = "You owe money, if you end the turn you will loose and the game will end, are you sure?";
+			
+				String button1 = "<u>Y</u>es";
+				String button2 = "<u>N</u>o";
+				JButton yes =new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 14pt; padding: 5px 10px 5px 10px;\">"+button1+"</div>");
+				JButton no =new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 14pt; padding: 5px 10px 5px 10px;\">"+button2+"</div>");
+				status=new JLabel("<html><center><div style=\"color: black; font-family: verdana; font-size: 11pt; padding: 5px;\">"+statustxt+"</div>");
+				yes.setBackground(new Color(73,175,47));
+				no.setBackground(new Color(73,175,47));
+				
+				front.add(status);
+				front.add(yes);
+				front.add(no);
+			
+				status.setBounds(20,0,150,50);
+				yes.setBounds(20, 60, 150, 50);
+				no.setBounds(20, 60, 150, 50);
+			
+				yes.addActionListener(this);
+				no.addActionListener(this);
+				repaint();
+				
+				if(e.getSource() == yes){
+					statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Game Over. <br/>Please click the exit button to close the game.</div></html>");
+					rolling.setEnabled(false);
+					buying.setEnabled(false);
+					mortgage.setEnabled(false);
+					improve.setEnabled(false);
+					sell.setEnabled(false);
+					trade.setEnabled(false);
+					unmortgage.setEnabled(false);
+				}
+				if(e.getSource() == no){
+					statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Please sell, trade or mortgage a property to continue the game.</div></html>");
+					dispose();
+					rolling.setEnabled(false);
+					buying.setEnabled(false);
+					mortgage.setEnabled(true);
+					improve.setEnabled(false);
+					sell.setEnabled(false);
+					trade.setEnabled(false);
+					unmortgage.setEnabled(false);
+				}
 			}
+			else if(thePlayer.getBalance() >= 0){
+				rolling.setEnabled(true);
+				ending.setEnabled(false);
+				if(play[turnCounter].getOwner() == false){
+					buying.setEnabled(false);
+					mortgage.setEnabled(false);
+					improve.setEnabled(false);
+					sell.setEnabled(false);
+					trade.setEnabled(false);
+					unmortgage.setEnabled(false);
+				}
+				else if(play[turnCounter].getOwner() == true){
+					buying.setEnabled(true);
+					mortgage.setEnabled(true);
+					improve.setEnabled(true);
+					sell.setEnabled(true);
+					trade.setEnabled(true);
+					unmortgage.setEnabled(true);
+				}
+			}
+			
 			tdowned = ""; //set to blank
 			tdmort = "";
 			td = 0;
 			for(int i=0; i<prop.length; i++) {
-		         if(prop[i].getOwner() != 0 && prop[i].getMortgaged() != 0) {
-		        	 tdmort += (prop[i].getName()+" - "+play[prop[i].getMortgaged()-1].getName()+"<br/>"); td++;
+		         if(prop[i].getMortgaged() == true) {
+		        	 tdmort += (prop[i].getName()+"<br/>"); td++;
 		        }
-		    }
+		    } //owners print to stats
 			
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
 		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>"); td++;
 		        }
-		    }  
-			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
-		}//ends current turn
-		
+		    }  //mortgaged print to stats
+			
+			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +play[turnCounter].getName()+  "<br/>" + "Balance: "+play[turnCounter].getBalance()+	" denarius <br/>Space: "+prop[play[turnCounter].getPosition()].getName()+
+					", <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+		} //ends current turn
     } //ends Action	
-	public int getTurnCounter(){
-		return this.turnCounter;
-	}
+	public int getTurnCounter(){return this.turnCounter;} //pull turnCounter into other classes	
 } //end of class
