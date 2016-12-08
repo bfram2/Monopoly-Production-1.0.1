@@ -584,6 +584,7 @@ public class Board extends JFrame implements ActionListener {
 				} //otherwise print status
 				
 				td=0;
+				printVillas = "";
 				for(int i = 0; i< prop.length; i++){
                 	if(prop[i].getVillas() > 0 || prop[i].getPantheons() > 0){
                 		printVillas += ()prop[i].getName()+" - Villas: "+prop[i].getVillas()+", Pantheons: "+prop[i].getPantheons()+"<br/>"); td++;
