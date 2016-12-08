@@ -1,5 +1,5 @@
 package events;
-import events.*;
+import events.Players;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,13 +76,13 @@ public class Jail extends JFrame implements ActionListener {
 				play.setDoubles(0);
 				statustxt = "Leave the Arena. You have "+play.getOutJail()+" cards left."; //message that they used their card
 			} //click yes JButton
-			else{rollTheDice(play, dice1, dice2);}
+			else{rollTheDice(play);}
 		}
-		else{rollTheDice(play, dice1, dice2);} //roll the dice
+		else{rollTheDice(play);} //roll the dice
 		status.repaint();
 	}
 
-public void rollTheDice(Players play, dice1, dice2) {
+public void rollTheDice(Players play) {
 		k = play.getDoubles();
 		
 		//if (k == 1) {statustxt = "Doubles! Roll again.";}
