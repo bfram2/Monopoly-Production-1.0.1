@@ -13,14 +13,19 @@ public class Jail extends JFrame implements ActionListener {
 	String answer; //yes or no
 	String btnyes; //yes or no button text
 	String btnno;
-	String statustxt = "Would you like to use your Get out of the Arena free card?";
+	String statustxt = "";
 	int k = 0;
 	Players [] play;
 	int counter;
 	int dice1;
 	int dice2;
 	
-	public Jail(Players play, int counter, int dice1, int dice2) {
+	public Jail(Players[] play, int counter, int dice1, int dice2) {
+		this.counter = counter;
+		this.dice1 = dice1;
+		this.dice2 = dice2;
+		Players play = play[counter];
+		
 			setTitle("Jail");
 			setSize(200,250); //window size
 			setLocation(255,290);
@@ -52,7 +57,7 @@ public class Jail extends JFrame implements ActionListener {
 			
 			yes.addActionListener(this);
 			no.addActionListener(this);
-			status.addActionListener(this);
+			//status.addActionListener(this);
 			repaint(); //add all items to JFrame with refresh
 
 		if (play.getOutJail() > 0) {
@@ -75,10 +80,8 @@ public class Jail extends JFrame implements ActionListener {
 		this.statustxt = statustxt;
 	}
 	
-public void rollTheDice(Players play, dice1, dice2) {
+public void rollTheDice(Players[] play, counter, dice1, dice2) {
 		//Dice dice = new Dice();
-		die1 = dice1;
-		die2 = dice2;
 		k = play.getDoubles();
 		
 		//if (k == 1) {statustxt = "Doubles! Roll again.";}
@@ -110,7 +113,7 @@ public void rollTheDice(Players play, dice1, dice2) {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		
+		Players[] play;
 		if(e.getSource() == yes) {
 			answer = "yes";
 			//play.setOutJail(lay.getOutJail() - 1);
