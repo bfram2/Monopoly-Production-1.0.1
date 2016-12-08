@@ -324,9 +324,10 @@ public class Board extends JFrame implements ActionListener {
 			} //activate jail class
 			//j = theTurn.getTjail();
 			chaimg = theTurn.getChaimg();
-			URL chimg = Board.class.getResource(chaimg);
+			if (chaimg != null) {
+			URL chimg = Board.class.getResource("cards/images/"+chaimg);
 			chabtn.setIcon(new ImageIcon(chimg)); //doesn't work right now without a loop to update it
-			
+			}
 			/*if (Prev < 10 && thePlayer.getPosition() > 10) {
 				thePlayer.setPosition(thePlayer.getPosition()+1); //add one to dice roll so it doesn't land on 11
 				if (thePlayer.getPosition() > 40) {thePlayer.setPosition(thePlayer.getPosition()-41);} //keep board from going over 40
