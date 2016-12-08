@@ -336,16 +336,13 @@ public class Board extends JFrame implements ActionListener {
 			} //activate jail class
 			//j = theTurn.getTjail();
 			chaimg = theTurn.getChaimg();
-			//if (chaimg != null) {
-			//URL chimg = Board.class.getResource("cards/images/"+chaimg);
-			//chabtn.setIcon(new ImageIcon(chimg)); //doesn't work right now without a loop to update it
-			//}
-			/*if (Prev < 10 && thePlayer.getPosition() > 10) {
-				thePlayer.setPosition(thePlayer.getPosition()+1); //add one to dice roll so it doesn't land on 11
-				if (thePlayer.getPosition() > 40) {thePlayer.setPosition(thePlayer.getPosition()-41);} //keep board from going over 40
+			if (chaimg != null) {
+				if (thePlayer.getPosition() == 2 || thePlayer.getPosition() == 7 || thePlayer.getPosition() == 18 || thePlayer.getPosition() == 23 || thePlayer.getPosition() == 34 || thePlayer.getPosition() == 37) {
+					URL chimg = Board.class.getResource("cards/images/"+chaimg);
+					chabtn.setIcon(new ImageIcon(chimg)); //doesn't work right now without a loop to update it
+				}
 			}
-			if (thePlayer.getPosition() == 31) {thePlayer.setPosition(11);} //go to the arena, redundancy in case Turn fails
-			*/
+
 			URL diw1 = Board.class.getResource("/pieces/images/Dice"+dice1+".png"); //update dice images number
 			URL diw2 = Board.class.getResource("/pieces/images/Dice"+dice2+".png");
 			dicez.setIcon(new ImageIcon(diw1)); //refresh img dice
