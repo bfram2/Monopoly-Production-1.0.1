@@ -85,6 +85,9 @@ public class Players {
 	public boolean getCurrentPlayer(){
 		return currentPlayer;
 	}
+	public void setCurrentPlayer(boolean currentPlayer){
+		this.currentPlayer = currentPlayer;
+	}
 	public int getJailCounter(){
 		return jailCounter;
 	}

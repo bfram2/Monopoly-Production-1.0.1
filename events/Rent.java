@@ -1,10 +1,6 @@
 package events;
 import tile.*;
-
-//import events.Turn;
-//import events.Players;
-//import events.Buy;
-//import tile.*;
+//import events.*;
 
 public class Rent {
 	String statustxt = "";
@@ -15,7 +11,6 @@ public class Rent {
 		Players currentPlayer;
 		Players ownerPlayer;
 		Properties currentProperty;
-		
 		
 		currentPlayer = playArr[playerNumber];
 		int position = currentPlayer.getPosition();

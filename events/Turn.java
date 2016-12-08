@@ -11,7 +11,7 @@ public class Turn {
 	int dice2 = 0;    //0 is no visible dice image
 	int Prev;        //previous position in Board
 	         //current rolled position from Board
-	int j = 0;        //jail
+	//int j = 0;        //jail
 	int escha = 0; //get out of jail free chance card counter
 	int esche = 0; //get out of jail free chest card counter
 	int jtotal = 0; //total get out of jail counter
@@ -34,31 +34,28 @@ public class Turn {
 	public void setPrev(int Prev) {this.Prev = Prev;}
 	public void setDice1(int dice1) {this.dice1 = dice1;}
 	public void setDice2(int dice2) {this.dice2 = dice2;}
-	public void setJTotal(int jtotal) {this.jtotal = jtotal;}
 	public Turn() {
 	}
-	public Turn(Properties [] prop, Players [] play,  String statustxt, int dice1, int dice2, int j, String chaimg) {
+	public Turn(Properties [] prop, Players [] play,  String statustxt, int dice1, int dice2, String chaimg) {
 		this.statustxt = statustxt;
 		this.dice1 = dice1;
 		this.dice2 = dice2;
-		this.j = j;
 		this.chaimg = chaimg;
 	}
-	public void TurnAction(Properties [] prop, Players [] play, int Prev, int dice1, int dice2, int j, int counter) {
+	public void TurnAction(Properties [] prop, Players [] play, int Prev, int dice1, int dice2, int counter) {
 		for (int i=0; i<1; i++) {
 			int pno = counter;
 			Players p = play[pno];
 			statustxt = "";
 			//System.out.println(play[pno].getName()+", Position: "+p.getPosition());
 		
-		int[] jail = new int[4];
+		//int[] jail = new int[4];
 		int[] doubles = new int[3]; //test for errors when doubles > 3
 		
 		k = p.getDoubles();
-		
 		//j = j % 4; //jail 0 not, 4 leave
-	    k = (dice1 == dice2) ? k++ : 0; //if matching dice roles: k++
-		k = k % 3; //doubles 0 none, 3 jail
+	    //k = (dice1 == dice2) ? k++ : 0; //if matching dice roles: k++
+		//k = k % 3; //doubles 0 none, 3 jail
 		
 		if (k == 1) {
 		statustxt = "Doubles! Roll again.";
@@ -69,14 +66,14 @@ public class Turn {
 			p.setPosition(11);
 			k = 0;    //roll doubles within 3 turns
 		}
-		if (j == 0) {
+		//if (j == 0) {
 	    	if (Prev < 10 && p.getPosition()> 10) {
 	    		int currentPos = p.getPosition();
 	    		p.setPosition(currentPos+1);
 				
 			} //if Pos is less than 10 and will become greater than 10, add one to skip jail (Pos = 11)
-	    	if (p.getPosition() > 39) {
-				p.setPosition(0);
+	    	if (p.getPosition() > 40) {
+				p.setPosition(p.getPosition()-41);
 			}
 			if (p.getPosition() != 0 && Prev != 0) {
 			    if ((Prev > p.getPosition()) && (j == 0)) {
@@ -95,12 +92,18 @@ public class Turn {
 			if (p.getPosition() == 31) {
 				statustxt = "Go to the Arena.";
 				p.setPosition(11);
-	    		j = 1;
+				p.setDoubles(0); //k = 0;
+				p.getJailCounter(1); //j = 1;
 			}
 			if (p.getPosition() == 39) {
 				int currentBal = p.getBalance();
 				p.setBalance(currentBal - 100);
 				statustxt = "Citizen's Tax";
+			}
+			if (p.getPosition() == 4) {
+				int currentBal = p.getBalance();
+				p.setBalance(currentBal - 200);
+				statustxt = "Render unto Caesar 200 denarius.";
 			}
 			if (p.getPosition() == 2 || p.getPosition() == 18 || p.getPosition() == 34) {
 				CommunityChest theChest = new CommunityChest(p, play, prop); //community class
@@ -126,8 +129,8 @@ public class Turn {
 				statustxt = "Draw a Chance card. "+chaout;
 				//System.out.println("Chance: "+chacard+", "+chaout);
 			} //chance card
-			
-		} //j=0; if not in jail
+		//} //j=0; if not in jail
+		/*
 		if(j > 0 && j < 4) {
 			statustxt = "You are in the Arena. Turns until free: "+(4-j);
 			j++;
@@ -143,11 +146,12 @@ public class Turn {
 			p.setBalance(currentBalance -  50);
 			j = 0;
 		}
+		*/
 		if (k > 3) {
 			k = 4 - k;
 		} //keep doubles from going out of bounds
 		Prev = p.getPosition();
-		jail[j]++;
+		//jail[j]++;
 	    doubles[k]++;
 	    p.setDoubles(k);
 	    jtotal += (escha+esche);
