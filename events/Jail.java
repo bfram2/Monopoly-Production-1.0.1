@@ -3,7 +3,7 @@ import events.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import pieces.Dice;
+//import pieces.Dice;
 import java.awt.*;
 
 public class Jail extends JFrame implements ActionListener {
@@ -99,7 +99,7 @@ public void rollTheDice(play, counter, dice1, dice2) {
 			play.setJailCounter(0); //display message that they rolled doubles and got out for free
 			play.setDoubles(0);
 		}
-		else if (play.getPosition() == 11 && die1 != die2) {
+		else if (play.getPosition() == 11 && dice1 != dice2) {
 			statustxt = "You are in the Arena. Turns until free: "+(4-play.getJailCounter())+".";
 			play.setJailCounter(play.getJailCounter() + 1);
 			if(play.getJailCounter() > 2){
