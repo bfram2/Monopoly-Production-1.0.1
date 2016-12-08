@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import pieces.Dice;
 import java.awt.*;
-//jail lines 77,79,83 and 117
+
 public class Jail extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	JButton yes, no, status;
