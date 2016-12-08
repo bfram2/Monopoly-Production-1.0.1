@@ -60,6 +60,7 @@ public class Purchase extends JFrame implements ActionListener {
 		else{
 			currentBalance = currentPlayer.getBalance() - currentProperty.getCost(); 
 			currentPlayer.setBalance(currentBalance);
+			currentPlayer.setOwner(true);
 			prop.setOwner(currentPlayer.getPlayerNumber());
 			play.setBalance(currentPlayer.getBalance());
 		}

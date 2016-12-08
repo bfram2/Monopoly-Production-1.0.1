@@ -112,11 +112,11 @@ public void actionPerformed(ActionEvent e) {
 		front.setLayout(null);
 		add(front, BorderLayout.CENTER);
 		
-		Properties tradeProp = null;
+		//Properties tradeProp = null;
 		
 		String[] choices = { "Germania Inferior", "Germania Superior", "Alps Poeniae", "Alps Cottiae", "Alps Maritimae", "Aquitanina","Belgica","Raetia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia","Aegyptus","Arabia Petraea","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
         String input = (String) JOptionPane.showInputDialog(null, "Player "+currentPlayer.getPlayerNumber() +" what property would you like to trade for" + currentProperty.getName() + "?","Properties", JOptionPane.QUESTION_MESSAGE, null,choices,choices[1]); // Initial choice
-        String propName = input;
+        //String propName = input;
  		
  		for(int i = 0; i<pa.length; i++){
  			if(pa[i].getName() == input){
@@ -134,7 +134,7 @@ public void actionPerformed(ActionEvent e) {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 		setLayout(new BorderLayout());
-		JPanel front1 = new JPanel();
+		//JPanel front1 = new JPanel();
 		front.setLayout(null);
 		add(front, BorderLayout.CENTER);
 		
@@ -159,8 +159,8 @@ public void actionPerformed(ActionEvent e) {
          	
 	}
 	if(e.getSource() == yesBuy){
-		int newBalance1 = currentPlayer.getBalance() - currentProperty.getCost();
-		int newBalance2 = secondPlayer.getBalance() + currentProperty.getCost();
+		//int newBalance1 = currentPlayer.getBalance() - currentProperty.getCost();
+		//int newBalance2 = secondPlayer.getBalance() + currentProperty.getCost();
 		currentProperty.setOwner(currentPlayer.getPlayerNumber());
 		repaint();
 		dispose();
