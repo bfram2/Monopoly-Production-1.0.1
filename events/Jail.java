@@ -14,7 +14,8 @@ public class Jail extends JFrame implements ActionListener {
 	String btnno;
 	String statustxt = "";
 	int k = 0;
-	Players [] play;
+	Players [] playArr;
+	Players play;
 	int counter;
 	int dice1;
 	int dice2;
