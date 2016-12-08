@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import pieces.Dice;
 import java.awt.*;
-
+//jail lines 77,79,83 and 117
 public class Jail extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	JButton yes, no, status;
@@ -69,14 +69,15 @@ public class Jail extends JFrame implements ActionListener {
 			status.setEnabled(true);
 			statustxt = "Would you like to use your 'Get out of the Arena' card?"; //message with JButton to ask if they want to use their card
 			if (answer == "yes") {
-				//play.setOutJail(play.getOutJail() - 1);
+				play.setOutJail(play.getOutJail() - 1);
 				play.setPosition(10);
 				play.setJailCounter(0);
+				play.setDoubles(0);
 				statustxt = "Leave the Arena. You have "+play.getOutJail()+" cards left."; //message that they used their card
 			} //click yes JButton
-			else{rollTheDice(play, counter, dice1, dice2);}
+			else{rollTheDice(Players play, counter, dice1, dice2);}
 		}
-		else{rollTheDice(play, counter, dice1, dice2);} //roll the dice
+		else{rollTheDice(Players play, counter, dice1, dice2);} //roll the dice
 		status.repaint();
 	}
 
@@ -113,14 +114,8 @@ public void rollTheDice(Players play, counter, dice1, dice2) {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		Players[] play;
-		Players play = play[counter];
 		if(e.getSource() == yes) {
 			answer = "yes";
-			//play.setOutJail(lay.getOutJail() - 1);
-			play.setPosition(10);
-			play.setJailCounter(0);
-			statustxt = "Leave the Arena. You have "+play.getOutJail()+" cards left."; //message that they used their card
 			status.setText("<html><center><div style=\"color: black; font-family: verdana; font-size: 11pt; padding: 5px;\">"+statustxt+"</div>");
 			dispose();
 		}
