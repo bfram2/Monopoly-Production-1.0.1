@@ -81,7 +81,7 @@ public class Jail extends JFrame implements ActionListener {
 		status.repaint();
 	}
 
-public void rollTheDice(play, dice1, dice2) {
+public void rollTheDice(Players play, dice1, dice2) {
 		k = play.getDoubles();
 		
 		//if (k == 1) {statustxt = "Doubles! Roll again.";}
