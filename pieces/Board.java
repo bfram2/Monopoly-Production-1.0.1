@@ -37,13 +37,7 @@ public class Board extends JFrame implements ActionListener {
 	int diet; //total of dice 1 and dice2
 	Properties [] prop; //property objects, 41
 	Players [] play; //players objects, 8
-    
-	//the name of the spaces with title deeds
-    //String[] tdPlaces = {"Germania Inferior","Germania Superior","Alpes Poeniae","Alpes Cottiae","Aples Maritimae","Aquitania","Belgica","Raetia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia","Aegyptus","Arabia Petraea","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia","Sewers","Aqueducts","Via Appia","Via Flaminia","Via Aemilia","Via Popillia",""};
-	//title deed card image names
-	//String[] tdimages = {"Purple_GermaniaI","Purple_GermaniaS","BBlue_APoeniae","BBlue_ACottiae","BBlue_AMaritimae","DPink_Aquitania","DPink_Belgica","DPink_Raetia","Orange_AProconsularis","Orange_Asia","Orange_Britannia","Red_Cilicia","Red_Galatia","Red_Cappadocia","Yellow_Aegyptus","Yellow_APetraea","Yellow_Syria","Green_Macedonia","Green_Epirus","Green_Achaia","Blue_Sicilia", "Blue_Italia","Utility_Sewers","Utility_Aqueducts","Via_Appia","Via_Flaminia","Via_Aemilia","Via_Popillia",""};
-	//all spaces
-	//String[] board = {"Go","Germania Inferior","Community Chest","Germania Superior","Render unto Caesar","Via Appia","Alpes Poeniae","Chance","Alpes Cottiae","Alpes Maritimae","See a battle","Arena","Aquitania","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Community Chest","Asia","Britannia","Free Market","Cilicia","Chance","Galatia","Cappadocia","Via Aemilia","Aegyptus","Arabia Petraea","Aqueducts","Syria","Go to the Arena","Macedonia","Epirus","Community Chest","Achaia","Via Popillia","Chance","Sicilia","Citizens Tax","Italia"};
+     
 	//token movement setBounds(x[Pos],y[Pos])
     int[] x = {9,96,152,208,264,320,376,432,488,544,660,600,600,600,600,600,600,600,600,600,600,600,543,488,432,376,320,264,208,152,96,9,52,52,52,52,52,52,52,52,52};
     int[] y = {11,11,11,11,11,11,11,11,11,11,1,35,97,154,209,265,322,377,432,490,544,601,601,601,601,601,601,601,601,601,601,601,545,489,434,377,322,265,209,154,97};
@@ -64,7 +58,6 @@ public class Board extends JFrame implements ActionListener {
 	getContentPane();
 	setLocation(0, 0);
 	pack();
-	//setExtendedState(Frame.MAXIMIZED_BOTH);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	setVisible(true);
 	setSize(700,729);
@@ -326,6 +319,9 @@ public class Board extends JFrame implements ActionListener {
 		    dice1 = theDice.getDie1();
 		    dice2 = theDice.getDie2();
 			k = (dice1 == dice2) ? k + 1 : 0;
+			if (k > 0) {
+				rolling.setEnabled(true);
+			}
 			k = k % 3; //doubles 0 none, 3 jail
 			if (k > 3) {k = k - 4;} //check for out of bounds
 			thePlayer.setDoubles(k);
@@ -412,6 +408,7 @@ public class Board extends JFrame implements ActionListener {
 					} //if not owned by current person and is not mortgaged
 				}
 			} //pay rent
+			rolling.setEnabled(false);
 			ending.setEnabled(true); //enable the player to end their turn
 		}
 		if(e.getSource() == buying) {
