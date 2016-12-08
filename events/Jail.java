@@ -1,5 +1,5 @@
 package events;
-import events.Players;
+import events.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +20,7 @@ public class Jail extends JFrame implements ActionListener {
 	int dice1;
 	int dice2;
 	
-	public Jail(Players play, counter, dice1, dice2) {
+	public Jail(Players play, int counter, int dice1, int dice2) {
 			setTitle("Jail");
 			setSize(200,250); //window size
 			setLocation(255,290);

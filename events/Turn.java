@@ -76,7 +76,7 @@ public class Turn {
 				p.setPosition(p.getPosition()-41);
 			}
 			if (p.getPosition() != 0 && Prev != 0) {
-			    if ((Prev > p.getPosition()) && (j == 0)) {
+			    if (Prev > p.getPosition()) {
 			    int currentBal = p.getBalance();
 			    statustxt = "Pass Rome, Collect 200 denarius.";
 				p.setBalance(currentBal + 200);
@@ -93,7 +93,7 @@ public class Turn {
 				statustxt = "Go to the Arena.";
 				p.setPosition(11);
 				p.setDoubles(0); //k = 0;
-				p.getJailCounter(1); //j = 1;
+				p.setJailCounter(1); //j = 1;
 			}
 			if (p.getPosition() == 39) {
 				int currentBal = p.getBalance();
@@ -161,7 +161,7 @@ public class Turn {
 	//get & set
 	public int getJTotal() {return jtotal;}
 	public int getOutJail() {return escha+esche;}
-	public int getTjail() {return j;}
+	//public int getTjail() {return j;}
 	public String getStatustxt() {
 		//TurnAction(prop, play, Prev, dice1, dice2, jtotal); 
 	return statustxt;}
