@@ -8,8 +8,7 @@ import java.awt.*;
 
 public class Jail extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	JButton yes, no;
-	JLabel status;
+	JButton yes, no, status;
 	String answer; //yes or no
 	String btnyes; //yes or no button text
 	String btnno;
@@ -20,11 +19,12 @@ public class Jail extends JFrame implements ActionListener {
 	int dice1;
 	int dice2;
 	
-	public Jail(Players[] play, int counter, int dice1, int dice2) {
+	public Jail(String statustxt) {this.statustxt = statustxt;}
+	public Jail(Players[] playArr, int counter, int dice1, int dice2) {
 		this.counter = counter;
 		this.dice1 = dice1;
 		this.dice2 = dice2;
-		Players play = play[counter];
+		Players play = playArr[counter];
 		
 			setTitle("Jail");
 			setSize(200,250); //window size
@@ -40,7 +40,7 @@ public class Jail extends JFrame implements ActionListener {
 			btnno = "<u>S</u>tay in the Arena";
 			yes=new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 14pt; padding: 5px 10px 5px 10px;\">"+btnyes+"</div>");
 			no=new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 14pt; padding: 5px;\">"+btnno+"</div>");
-			status=new JLabel("<html><center><div style=\"color: black; font-family: verdana; font-size: 11pt; padding: 5px;\">"+statustxt+"</div>");
+			status=new JButton("<html><center><div style=\"color: black; font-family: verdana; font-size: 11pt; padding: 5px;\">"+statustxt+"</div>");
 			yes.setBackground(new Color(73,175,47));
 			no.setBackground(new Color(128,0,0));
 			
@@ -54,10 +54,13 @@ public class Jail extends JFrame implements ActionListener {
 			yes.setEnabled(false); //not available till needed
 			no.setEnabled(false);
 			status.setEnabled(false);
+			status.setFocusPainted(false);
+			status.setContentAreaFilled(false);
+			status.setOpaque(false);
 			
 			yes.addActionListener(this);
 			no.addActionListener(this);
-			//status.addActionListener(this);
+			status.addActionListener(this);
 			repaint(); //add all items to JFrame with refresh
 
 		if (play.getOutJail() > 0) {
@@ -71,16 +74,13 @@ public class Jail extends JFrame implements ActionListener {
 				play.setJailCounter(0);
 				statustxt = "Leave the Arena. You have "+play.getOutJail()+" cards left."; //message that they used their card
 			} //click yes JButton
-			else{rollTheDice(play);}
+			else{rollTheDice(play, counter, dice1, dice2);}
 		}
-		else{rollTheDice(play);} //roll the dice
+		else{rollTheDice(play, counter, dice1, dice2);} //roll the dice
 		status.repaint();
 	}
-	public Jail(String statustxt) {
-		this.statustxt = statustxt;
-	}
-	
-public void rollTheDice(Players[] play, counter, dice1, dice2) {
+
+public void rollTheDice(Players play, counter, dice1, dice2) {
 		//Dice dice = new Dice();
 		k = play.getDoubles();
 		
@@ -114,7 +114,7 @@ public void rollTheDice(Players[] play, counter, dice1, dice2) {
 
 	public void actionPerformed(ActionEvent e) {
 		Players[] play;
-		play = play[counter];
+		Players play = play[counter];
 		if(e.getSource() == yes) {
 			answer = "yes";
 			//play.setOutJail(lay.getOutJail() - 1);
