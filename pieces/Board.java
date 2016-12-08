@@ -30,6 +30,7 @@ public class Board extends JFrame implements ActionListener {
 	String tdowned = " "; //print owned spaces
 	String tdmort = " "; //print mortgaged spaces
 	String printVillas = " "; //print the properties with villas
+	int newSecondPlayerBalance = 0; //sell and trade secondary player
 	String chaimg; //chance and chest images
 	int dice1 = 1; //dice 1 and 2 updated by dice class
 	int dice2 = 1;
@@ -84,7 +85,7 @@ public class Board extends JFrame implements ActionListener {
 	mortgage = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>M</u>ortgage</div>");
 	unmortgage = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>U</u>nMortgage</div>");
 	improve = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>I</u>mprovements</div>");
-	sell = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>S</u>ell</div>");
+	sell = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>S</u>ell Property</div>");
 	trade = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>T</u>rade</div>");
 	ending = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>E</u>nd Turn</div>");
 	hmenu = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>H</u>elp Menu</div>");
@@ -121,7 +122,7 @@ public class Board extends JFrame implements ActionListener {
 	
 	plbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName() + "<br/>" + "Balance: "+thePlayer.getBalance()+" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
 			", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+thePlayer.getJail()+", Doubles Counter: "+thePlayer.getDoubles()+"</div></html>");
-	statusbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player 1, click 'Roll Dice' to start the game.</div></html>"); //set status updates to default
+	statusbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\"><br/><br/>Player 1, click 'Roll Dice' to start the game.</div></html>"); //set status updates to default
 	dicez.add(die1);
 	dice2thereckoning.add(die2);
 
@@ -207,8 +208,18 @@ public class Board extends JFrame implements ActionListener {
 	chabtn.add(chanceimg); //chance cards
 	stats.add(chabtn);
 	
-	//nope totally not buttons
-	token1.setOpaque(false);
+	
+	rolling.setFocusPainted(false);
+	hmenu.setFocusPainted(false);
+	ending.setFocusPainted(false);
+	sell.setFocusPainted(false);
+	trade.setFocusPainted(false);
+	improve.setFocusPainted(false);
+	buying.setFocusPainted(false);
+	mortgage.setFocusPainted(false);
+	unmortgage.setFocusPainted(false);
+	
+	token1.setOpaque(false); //nope totally not buttons
 	token1.setFocusPainted(false);
 	token1.setContentAreaFilled(false);
 	token2.setOpaque(false);
@@ -268,6 +279,7 @@ public class Board extends JFrame implements ActionListener {
 	setSize(701,728);
 	}
 	//button actions
+	@SuppressWarnings("null")
 	public void actionPerformed(ActionEvent e) {
 		
 		Players thePlayer = play[turnCounter];
@@ -319,15 +331,15 @@ public class Board extends JFrame implements ActionListener {
 			thePlayer.setDoubles(k);
 		    thePlayer.setPosition((Prev + dice1 + dice2) % 40); //add to the player's position to move them forward
 			theTurn.TurnAction(prop, play, Prev, dice1, dice2, turnCounter); //activate turn
-			if (dice1==dice2 || thePlayer.getPosition() == 31 || thePlayer.getPosition() == 11){
+			if (k > 2 || thePlayer.getPosition() == 31 || thePlayer.getPosition() == 11){
 			new Jail(play, turnCounter, dice1, dice2);
 			} //activate jail class
 			//j = theTurn.getTjail();
 			chaimg = theTurn.getChaimg();
-			if (chaimg != null) {
-			URL chimg = Board.class.getResource("cards/images/"+chaimg);
-			chabtn.setIcon(new ImageIcon(chimg)); //doesn't work right now without a loop to update it
-			}
+			//if (chaimg != null) {
+			//URL chimg = Board.class.getResource("cards/images/"+chaimg);
+			//chabtn.setIcon(new ImageIcon(chimg)); //doesn't work right now without a loop to update it
+			//}
 			/*if (Prev < 10 && thePlayer.getPosition() > 10) {
 				thePlayer.setPosition(thePlayer.getPosition()+1); //add one to dice roll so it doesn't land on 11
 				if (thePlayer.getPosition() > 40) {thePlayer.setPosition(thePlayer.getPosition()-41);} //keep board from going over 40
@@ -408,7 +420,7 @@ public class Board extends JFrame implements ActionListener {
 		if(e.getSource() == buying) {
 			buying.setEnabled(false); //buy a property		
 			new Purchase(thePlayer, prop[thePlayer.getPosition()], thePlayer.getBalance());
-			
+			thePlayer.setOwner(true);
 			tdowned = ""; //set to blank
 			td = 0;
 			for(int i=0; i<prop.length; i++) {
@@ -647,7 +659,7 @@ public class Board extends JFrame implements ActionListener {
 	            	buyCounter = 0;
 	            	buyProp.setOwner(thePlayer.getPlayerNumber());
 	            	int newPlayerBalance = thePlayer.getBalance() - buyProp.getCost();
-	            	int newSecondPlayerBalance = secondPlayer.getBalance() + buyProp.getCost();
+	            	newSecondPlayerBalance = secondPlayer.getBalance() + buyProp.getCost();
 	            	thePlayer.setBalance(newPlayerBalance);
 	            	secondPlayer.setBalance(newSecondPlayerBalance);
 	            	thePlayer.setOwner(true);
