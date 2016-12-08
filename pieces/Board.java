@@ -347,7 +347,7 @@ public class Board extends JFrame implements ActionListener {
 			URL diw2 = Board.class.getResource("/pieces/images/Dice"+dice2+".png");
 			dicez.setIcon(new ImageIcon(diw1)); //refresh img dice
 			dice2thereckoning.setIcon(new ImageIcon(diw2));
-			
+
 			URL td1 = Board.class.getResource("/cards/images/"+prop[thePlayer.getPosition()].getImageName());
 			if (td1 != null) {tdbtn.setIcon(new ImageIcon(td1));} //if image is null do not update and show the image
 			
