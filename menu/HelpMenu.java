@@ -23,7 +23,7 @@ public class HelpMenu extends JFrame implements ActionListener {
 		//pack();
 		//setLayout(new BorderLayout());
 		setSize(575, 400); //window size
-		setLocationRelativeTo(null);
+		setLocation(40, 150);
 		
 		//HelpMenu hMenu = new HelpMenu();
 		createActions();

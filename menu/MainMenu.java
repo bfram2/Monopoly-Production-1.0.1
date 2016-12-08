@@ -16,11 +16,11 @@ import java.awt.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
+import java.net.URL;
 
 import events.Players;
+//import pieces.Board;
 
-import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
 
 
@@ -38,7 +38,8 @@ JButton game, set, help, bear;
 	setLocation(40, 150);
 	//pack();
 	setLayout(new BorderLayout());
-	JLabel background=new JLabel(new ImageIcon("src/menu/menu.jpg"));
+	URL mnu = MainMenu.class.getResource("/menu/menu.jpg");
+	JLabel background=new JLabel(new ImageIcon(mnu));
 	add(background);
 	background.setLayout(new FlowLayout());
 	
