@@ -46,16 +46,13 @@ public class Board extends JFrame implements ActionListener {
 	//token movement setBounds(x[Pos],y[Pos])
     int[] x = {9,96,152,208,264,320,376,432,488,544,660,600,600,600,600,600,600,600,600,600,600,600,543,488,432,376,320,264,208,152,96,9,52,52,52,52,52,52,52,52,52};
     int[] y = {11,11,11,11,11,11,11,11,11,11,1,35,97,154,209,265,322,377,432,490,544,601,601,601,601,601,601,601,601,601,601,601,545,489,434,377,322,265,209,154,97};
-	
-    
+	    
 	public Board(Properties [] propArr, Players [] playArr) {	
 	this.prop = propArr;
-	this.play = playArr;
-		
+	this.play = playArr;	
 	Players thePlayer = playArr[turnCounter]; 
-		
-		//layout
-	boardFrame.setVisible(true);
+
+	boardFrame.setVisible(true); //layout starts here
 	boardFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	boardFrame.setResizable(false);
 	boardFrame.setLocation(700, 0);
@@ -326,7 +323,8 @@ public class Board extends JFrame implements ActionListener {
 			new Jail(play, turnCounter, dice1, dice2);
 			} //activate jail class
 			//j = theTurn.getTjail();
-			URL chimg = Board.class.getResource(theTurn.getChaimg());
+			chaimg = theTurn.getChaimg();
+			URL chimg = Board.class.getResource(chaimg);
 			chabtn.setIcon(new ImageIcon(chimg)); //doesn't work right now without a loop to update it
 			
 			/*if (Prev < 10 && thePlayer.getPosition() > 10) {
@@ -428,90 +426,34 @@ public class Board extends JFrame implements ActionListener {
 				"Via Aemilia","Aegyptus","Arabia Petraea","Aquaducts","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
                 String input = (String) JOptionPane.showInputDialog(null, "Choose a property to mortgage","Properties", JOptionPane.QUESTION_MESSAGE, null,choices,choices[1]); 
                 
-                if(input == "Germania Inferior"){
-                	mortProp = prop[1];
-                }
-                else if(input == "Germania Superior"){
-                	mortProp = prop[3];
-                }
-                else if(input == "Via Appia"){
-                	mortProp = prop[5];
-                }
-                else if(input == "Alps Poeniae"){
-                	mortProp = prop[6];
-                }
-                else if(input == "Alps Cottiae"){
-                	mortProp = prop[8];
-                }
-                else if(input == "Alps Maritimae"){
-                	mortProp = prop[9];
-                }
-                else if(input == "Aquitanina"){
-                	mortProp = prop[12];
-                }
-                else if(input == "Sewers"){
-                	mortProp = prop[13];
-                }
-                else if(input == "Belgica"){
-                	mortProp = prop[14];
-                }
-                else if(input == "Raetia"){
-                	mortProp = prop[15];
-                }
-                else if(input == "Via Flaminia"){
-                	mortProp = prop[16];
-                }
-                else if(input == "Africa Proconsularis"){
-                	mortProp = prop[17];
-                }
-                else if(input == "Asia"){
-                	mortProp = prop[19];
-                }
-                else if(input == "Britannia"){
-                	mortProp = prop[20];
-                }
-                else if(input == "Cilicia"){
-                	mortProp = prop[22];
-                }
-                else if(input == "Galatia"){
-                	mortProp = prop[24];
-                }
-                else if(input == "Cappadocia"){
-                	mortProp = prop[25];
-                }
-                else if(input == "Via Aemilia"){
-                	mortProp = prop[26];
-                }
-                else if(input == "Aegyptus"){
-                	mortProp = prop[27];
-                }
-                else if(input == "Arabia Petraea"){
-                	mortProp = prop[28];
-                }
-                else if(input == "Aquaducts"){
-                	mortProp = prop[29];
-                }
-                else if(input == "Syria"){
-                	mortProp = prop[30];
-                }
-                else if(input == "Macedonia"){
-                	mortProp = prop[32];
-                }
-                else if(input == "Epirus"){
-                	mortProp = prop[33];
-                }
-                else if(input == "Achaia"){
-                	mortProp = prop[35];
-                }
-                else if(input == "Via Popilia"){
-                	mortProp = prop[36];
-                }
-                else if(input == "Sicilia"){
-                	mortProp = prop[38];
-                }
-                else if(input == "Italia"){
-                	mortProp = prop[40];
-                }
+                if(input == "Germania Inferior"){mortProp = prop[1];}
+                else if(input == "Germania Superior"){mortProp = prop[3];}
+                else if(input == "Via Appia"){mortProp = prop[5];}
+                else if(input == "Alps Poeniae"){mortProp = prop[6];}
+                else if(input == "Alps Cottiae"){mortProp = prop[8];}
+                else if(input == "Alps Maritimae"){mortProp = prop[9];}
+                else if(input == "Aquitanina"){mortProp = prop[12];}
+                else if(input == "Sewers"){mortProp = prop[13];}
+                else if(input == "Belgica"){mortProp = prop[14];}
+                else if(input == "Raetia"){mortProp = prop[15];}
+                else if(input == "Via Flaminia"){mortProp = prop[16];}
+                else if(input == "Africa Proconsularis"){mortProp = prop[17];}
+                else if(input == "Asia"){mortProp = prop[19];}
+                else if(input == "Britannia"){mortProp = prop[20];}
+                else if(input == "Cilicia"){mortProp = prop[22];}
+                else if(input == "Galatia"){mortProp = prop[24];}
+                else if(input == "Cappadocia"){mortProp = prop[25];}
+                else if(input == "Via Aemilia"){mortProp = prop[26];}
+                else if(input == "Aegyptus"){mortProp = prop[27];}
+                else if(input == "Arabia Petraea"){mortProp = prop[28];}
+                else if(input == "Aquaducts"){mortProp = prop[29];}
+                else if(input == "Syria"){mortProp = prop[30];}
+                else if(input == "Macedonia"){mortProp = prop[32];}
+                else if(input == "Epirus"){mortProp = prop[33];}
+                else if(input == "Achaia"){mortProp = prop[35];}
+                else if(input == "Via Popilia"){mortProp = prop[36];}
+                else if(input == "Sicilia"){mortProp = prop[38];}
+                else if(input == "Italia"){mortProp = prop[40];}
 				
 				if (mortProp != null) {
                 new Mortgage(thePlayer,mortProp);
@@ -547,90 +489,34 @@ public class Board extends JFrame implements ActionListener {
 			"Via Aemilia","Aegyptus","Arabia Petraea","Aquaducts","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
             String input = (String) JOptionPane.showInputDialog(null, "Choose a property to unmortgage","Properties", JOptionPane.QUESTION_MESSAGE, null,choices,choices[1]); 
             
-            if(input == "Germania Inferior"){
-            	unmortProp = prop[1];
-            }
-            else if(input == "Germania Superior"){
-            	unmortProp = prop[3];
-            }
-            else if(input == "Via Appia"){
-            	unmortProp = prop[5];
-            }
-            else if(input == "Alps Poeniae"){
-            	unmortProp = prop[6];
-            }
-            else if(input == "Alps Cottiae"){
-            	unmortProp = prop[8];
-            }
-            else if(input == "Alps Maritimae"){
-            	unmortProp = prop[9];
-            }
-            else if(input == "Aquitanina"){
-            	unmortProp = prop[12];
-            }
-            else if(input == "Sewers"){
-            	unmortProp = prop[13];
-            }
-            else if(input == "Belgica"){
-            	unmortProp = prop[14];
-            }
-            else if(input == "Raetia"){
-            	unmortProp = prop[15];
-            }
-            else if(input == "Via Flaminia"){
-            	unmortProp = prop[16];
-            }
-            else if(input == "Africa Proconsularis"){
-            	unmortProp = prop[17];
-            }
-            else if(input == "Asia"){
-            	unmortProp = prop[19];
-            }
-            else if(input == "Britannia"){
-            	unmortProp = prop[20];
-            }
-            else if(input == "Cilicia"){
-            	unmortProp = prop[22];
-            }
-            else if(input == "Galatia"){
-            	unmortProp = prop[24];
-            }
-            else if(input == "Cappadocia"){
-            	unmortProp = prop[25];
-            }
-            else if(input == "Via Aemilia"){
-            	unmortProp = prop[26];
-            }
-            else if(input == "Aegyptus"){
-            	unmortProp = prop[27];
-            }
-            else if(input == "Arabia Petraea"){
-            	unmortProp = prop[28];
-            }
-            else if(input == "Aquaducts"){
-            	unmortProp = prop[29];
-            }
-            else if(input == "Syria"){
-            	unmortProp = prop[30];
-            }
-            else if(input == "Macedonia"){
-            	unmortProp = prop[32];
-            }
-            else if(input == "Epirus"){
-            	unmortProp = prop[33];
-            }
-            else if(input == "Achaia"){
-            	unmortProp = prop[35];
-            }
-            else if(input == "Via Popilia"){
-            	unmortProp = prop[36];
-            }
-            else if(input == "Sicilia"){
-            	unmortProp = prop[38];
-            }
-            else if(input == "Italia"){
-            	unmortProp = prop[40];
-            }
+            if(input == "Germania Inferior"){unmortProp = prop[1];}
+            else if(input == "Germania Superior"){unmortProp = prop[3];}
+            else if(input == "Via Appia"){unmortProp = prop[5];}
+            else if(input == "Alps Poeniae"){unmortProp = prop[6];}
+            else if(input == "Alps Cottiae"){unmortProp = prop[8];}
+            else if(input == "Alps Maritimae"){unmortProp = prop[9];}
+            else if(input == "Aquitanina"){unmortProp = prop[12];}
+            else if(input == "Sewers"){unmortProp = prop[13];}
+            else if(input == "Belgica"){unmortProp = prop[14];}
+            else if(input == "Raetia"){unmortProp = prop[15];}
+            else if(input == "Via Flaminia"){unmortProp = prop[16];}
+            else if(input == "Africa Proconsularis"){unmortProp = prop[17];}
+            else if(input == "Asia"){unmortProp = prop[19];}
+            else if(input == "Britannia"){unmortProp = prop[20];}
+            else if(input == "Cilicia"){unmortProp = prop[22];}
+            else if(input == "Galatia"){unmortProp = prop[24];}
+            else if(input == "Cappadocia"){unmortProp = prop[25];}
+            else if(input == "Via Aemilia"){unmortProp = prop[26];}
+            else if(input == "Aegyptus"){unmortProp = prop[27];}
+            else if(input == "Arabia Petraea"){unmortProp = prop[28];}
+            else if(input == "Aquaducts"){unmortProp = prop[29];}
+            else if(input == "Syria"){unmortProp = prop[30];}
+            else if(input == "Macedonia"){unmortProp = prop[32];}
+            else if(input == "Epirus"){unmortProp = prop[33];}
+            else if(input == "Achaia"){unmortProp = prop[35];}
+            else if(input == "Via Popilia"){unmortProp = prop[36];}
+            else if(input == "Sicilia"){unmortProp = prop[38];}
+            else if(input == "Italia"){unmortProp = prop[40];}
 			
 			if (unmortProp != null) {
                 new Unmortgage(thePlayer,unmortProp);
@@ -695,6 +581,7 @@ public class Board extends JFrame implements ActionListener {
 				else {
 				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+"You have cancelled improving a property."+"</div></html>");
 				} //otherwise print status
+				
 				td=0;
 				for(int i = 0; i< prop.length; i++){
                 	if(prop[i].getVillas() > 0 || prop[i].getPantheons() > 0){
