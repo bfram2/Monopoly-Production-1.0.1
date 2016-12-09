@@ -61,7 +61,11 @@ JButton game, set, help, bear;
 	background.add(game);
 	background.add(help);
 	background.add(bear);
-
+	
+	game.setFocusPainted(false); //disable focus border
+	help.setFocusPainted(false);
+	bear.setFocusPainted(false);
+	
 	// refresh, DO NOT remove
 	setSize(610,455);
 	}
