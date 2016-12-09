@@ -831,14 +831,14 @@ public class Board extends JFrame implements ActionListener {
 			else {turnCounter = 0;}
 			
 //player 1-8 update token images to dark versions
-URL tok1 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token1.setIcon(new ImageIcon(tok1));
-URL tok2 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token2.setIcon(new ImageIcon(tok2));
-URL tok3 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token3.setIcon(new ImageIcon(tok3));
-URL tok4 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token4.setIcon(new ImageIcon(tok4));
-URL tok5 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token5.setIcon(new ImageIcon(tok5));
-URL tok6 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token6.setIcon(new ImageIcon(tok6));
-URL tok7 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token7.setIcon(new ImageIcon(tok7));
-URL tok8 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token8.setIcon(new ImageIcon(tok8));
+if (turnCounter != 0) {URL tok1 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token1.setIcon(new ImageIcon(tok1));} 
+if (turnCounter != 1) {URL tok2 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token2.setIcon(new ImageIcon(tok2));}
+if (turnCounter != 2) {URL tok3 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token3.setIcon(new ImageIcon(tok3));}
+if (turnCounter != 3) {URL tok4 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token4.setIcon(new ImageIcon(tok4));}
+if (turnCounter != 4) {URL tok5 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token5.setIcon(new ImageIcon(tok5));}
+if (turnCounter != 5) {URL tok6 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token6.setIcon(new ImageIcon(tok6));}
+if (turnCounter != 6) {URL tok7 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token7.setIcon(new ImageIcon(tok7));}
+if (turnCounter != 7) {URL tok8 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token8.setIcon(new ImageIcon(tok8));}
 
 //update tokens to brighter versions
 if (turnCounter == 0) {URL tok1 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token1.setIcon(new ImageIcon(tok1));} 
