@@ -2,8 +2,8 @@ package pieces;
 //Loading the board [fonts for board.jpg: Verdana 8pt, 6pt, 11pt bold]
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter; //debugging tokens
-import java.awt.event.MouseEvent;
+//import java.awt.event.MouseAdapter; //debugging tokens
+//import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -266,13 +266,13 @@ public class Board extends JFrame implements ActionListener {
 	unmortgage.setEnabled(false);
 
 	//debugging, finding x,y positions on the board for every click
-    background.addMouseListener(new MouseAdapter() {
+    /*background.addMouseListener(new MouseAdapter() {
 	public void mouseClicked(MouseEvent e) {
 			System.out.println("x: "+e.getX()+", y: "+e.getY());
 			return;
 		}
     });
-	
+	*/
 	// refresh images after adding panels
     boardFrame.setSize(350,727);
 	setSize(701,728);
