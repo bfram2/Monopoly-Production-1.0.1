@@ -831,7 +831,7 @@ public class Board extends JFrame implements ActionListener {
 			else {turnCounter = 0;}
 			
 			//player 1-8 update token images to dark versions
-tok1 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token1.setIcon(new ImageIcon(tok1));
+URL tok1 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token1.setIcon(new ImageIcon(tok1));
 URL tok2 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token2.setIcon(new ImageIcon(tok2));
 URL tok3 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token3.setIcon(new ImageIcon(tok3));
 URL tok4 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token4.setIcon(new ImageIcon(tok4));
