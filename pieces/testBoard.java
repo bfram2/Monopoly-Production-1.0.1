@@ -831,24 +831,24 @@ public class Board extends JFrame implements ActionListener {
 			else {turnCounter = 0;}
 			
 //player 1-8 update token images to dark versions
-if (turnCounter != 0) {URL tok1 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token1.setIcon(new ImageIcon(tok1));} 
-if (turnCounter != 1) {URL tok2 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token2.setIcon(new ImageIcon(tok2));}
-if (turnCounter != 2) {URL tok3 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token3.setIcon(new ImageIcon(tok3));}
-if (turnCounter != 3) {URL tok4 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token4.setIcon(new ImageIcon(tok4));}
-if (turnCounter != 4) {URL tok5 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token5.setIcon(new ImageIcon(tok5));}
-if (turnCounter != 5) {URL tok6 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token6.setIcon(new ImageIcon(tok6));}
-if (turnCounter != 6) {URL tok7 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token7.setIcon(new ImageIcon(tok7));}
-if (turnCounter != 7) {URL tok8 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token8.setIcon(new ImageIcon(tok8));}
+if (turnCounter != 0) {URL tokd1 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token1.setIcon(new ImageIcon(tokd1));} 
+if (turnCounter != 1) {URL tokd2 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token2.setIcon(new ImageIcon(tokd2));}
+if (turnCounter != 2) {URL tokd3 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token3.setIcon(new ImageIcon(tokd3));}
+if (turnCounter != 3) {URL tokd4 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token4.setIcon(new ImageIcon(tokd4));}
+if (turnCounter != 4) {URL tokd5 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token5.setIcon(new ImageIcon(tokd5));}
+if (turnCounter != 5) {URL tokd6 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token6.setIcon(new ImageIcon(tokd6));}
+if (turnCounter != 6) {URL tokd7 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token7.setIcon(new ImageIcon(tokd7));}
+if (turnCounter != 7) {URL tokd8 = Board.class.getResource("/pieces/images/D"+play[turnCounter].getToken()); token8.setIcon(new ImageIcon(tokd8));}
 
 //update tokens to brighter versions
-if (turnCounter == 0) {URL tok1 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token1.setIcon(new ImageIcon(tok1));} 
-if (turnCounter == 1) {URL tok2 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token2.setIcon(new ImageIcon(tok2));}
-if (turnCounter == 2) {URL tok3 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token3.setIcon(new ImageIcon(tok3));}
-if (turnCounter == 3) {URL tok4 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token4.setIcon(new ImageIcon(tok4));}
-if (turnCounter == 4) {URL tok5 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token5.setIcon(new ImageIcon(tok5));}
-if (turnCounter == 5) {URL tok6 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token6.setIcon(new ImageIcon(tok6));}
-if (turnCounter == 6) {URL tok7 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token7.setIcon(new ImageIcon(tok7));}
-if (turnCounter == 7) {URL tok8 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token8.setIcon(new ImageIcon(tok8));}
+if (turnCounter == 0) {URL tokb1 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token1.setIcon(new ImageIcon(tokb1));} 
+if (turnCounter == 1) {URL tokb2 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token2.setIcon(new ImageIcon(tokb2));}
+if (turnCounter == 2) {URL tokb3 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token3.setIcon(new ImageIcon(tokb3));}
+if (turnCounter == 3) {URL tokb4 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token4.setIcon(new ImageIcon(tokb4));}
+if (turnCounter == 4) {URL tokb5 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token5.setIcon(new ImageIcon(tokb5));}
+if (turnCounter == 5) {URL tokb6 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token6.setIcon(new ImageIcon(tokb6));}
+if (turnCounter == 6) {URL tokb7 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token7.setIcon(new ImageIcon(tokb7));}
+if (turnCounter == 7) {URL tokb8 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken()); token8.setIcon(new ImageIcon(tokb8));}
 			
 			if (thePlayer.getBalance() < 0) {
 				setTitle("Mortgage");
