@@ -27,6 +27,7 @@ public class Jail extends JFrame implements ActionListener {
 		this.dice2 = dice2;
 		Players play = playArr[counter];
 		
+		if (play.getOutJail() != 0) {
 			setTitle("Jail");
 			setSize(200,250); //window size
 			setLocation(255,290);
@@ -76,22 +77,14 @@ public class Jail extends JFrame implements ActionListener {
 				play.setDoubles(0);
 				statustxt = "Leave the Arena. You have "+play.getOutJail()+" cards left."; //message that they used their card
 			} //click yes JButton
-			else{rollTheDice(play, dice1, dice2);}
+			//else{rollTheDice(play, dice1, dice2);}
 		}
-		else{rollTheDice(play, dice1, dice2);} //roll the dice
+		//else{rollTheDice(play, dice1, dice2);} //roll the dice
 		status.repaint();
+	 }
 	}
-
 public void rollTheDice(Players play, int die1, int die2) {
 		k = play.getDoubles();
-
-		//if (k == 1) {statustxt = "Doubles! Roll again.";}
-		/*if (k > 2) {
-			statustxt = "You have rolled doubles 3 times, Go to the Arena.";
-			play.setPosition(11); //go to the arena
-			play.setDoubles(0);
-			play.setJailCounter(1);
-		}*/
 
 		if(play.getPosition() == 11 && k > 0 & play.getJailCounter() < 3) {
 			statustxt = "You rolled a double, escape the Arena.";
