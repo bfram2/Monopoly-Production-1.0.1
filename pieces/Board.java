@@ -367,6 +367,15 @@ public class Board extends JFrame implements ActionListener {
 				}
 			}
 			
+			if (turnCounter != 0) {URL tokd1 = Board.class.getResource("/pieces/images/D"+play[0].getToken()); token1.setIcon(new ImageIcon(tokd1));} 
+			if (turnCounter != 1) {URL tokd2 = Board.class.getResource("/pieces/images/D"+play[1].getToken()); token2.setIcon(new ImageIcon(tokd2));}
+			if (turnCounter != 2) {URL tokd3 = Board.class.getResource("/pieces/images/D"+play[2].getToken()); token3.setIcon(new ImageIcon(tokd3));}
+			if (turnCounter != 3) {URL tokd4 = Board.class.getResource("/pieces/images/D"+play[3].getToken()); token4.setIcon(new ImageIcon(tokd4));}
+			if (turnCounter != 4) {URL tokd5 = Board.class.getResource("/pieces/images/D"+play[4].getToken()); token5.setIcon(new ImageIcon(tokd5));}
+			if (turnCounter != 5) {URL tokd6 = Board.class.getResource("/pieces/images/D"+play[5].getToken()); token6.setIcon(new ImageIcon(tokd6));}
+			if (turnCounter != 6) {URL tokd7 = Board.class.getResource("/pieces/images/D"+play[6].getToken()); token7.setIcon(new ImageIcon(tokd7));}
+			if (turnCounter != 7) {URL tokd8 = Board.class.getResource("/pieces/images/D"+play[7].getToken()); token8.setIcon(new ImageIcon(tokd8));}
+			
 			if (turnCounter == 0) {
 			token1.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
 			URL tok1 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken());
@@ -407,6 +416,9 @@ public class Board extends JFrame implements ActionListener {
 				URL tok8 = Board.class.getResource("/pieces/images/"+play[turnCounter].getToken());
 				token8.setIcon(new ImageIcon(tok8));
 			} //player 8 update token movement
+			
+			//player 1-8 update token images to dark versions
+			
 			
 			Prev = thePlayer.getPosition();
 			theTurn.setPrev(Prev);
