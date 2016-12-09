@@ -23,15 +23,15 @@ public class Board extends JFrame implements ActionListener {
 
 	int turnCounter = 0; //counter to switch players
 	int buymort = 0; //counter for buy or mortgage
+	int Pos;
 	public int Prev; //board positions
 	int k = 0; //doubles counter
 	//int j = 0; //jail counter
-	int td = 0; //count owned items
+	String statustxt = " ";
 	String tdowned = " "; //print owned spaces
 	String tdmort = " "; //print mortgaged spaces
 	String printVillas = " "; //print the properties with villas
 	int newSecondPlayerBalance = 0; //sell and trade secondary player
-	String chaimg; //chance and chest images
 	int dice1 = 1; //dice 1 and 2 updated by dice class
 	int dice2 = 1;
 	int diet; //total of dice 1 and dice2
@@ -114,7 +114,7 @@ public class Board extends JFrame implements ActionListener {
 	chabtn = new JButton();
 	
 	plbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName() + "<br/>" + "Balance: "+thePlayer.getBalance()+" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-			", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+thePlayer.getJail()+", Doubles Counter: "+thePlayer.getDoubles()+"</div></html>");
+			", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/></div></html>");
 	statusbtn = new JButton("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\"><br/><br/>Player 1, click 'Roll Dice' to start the game.</div></html>"); //set status updates to default
 	dicez.add(die1);
 	dice2thereckoning.add(die2);
@@ -299,16 +299,15 @@ public class Board extends JFrame implements ActionListener {
 			
 			tdowned = ""; //set to blank
 			tdmort = "";
-			td = 0;
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getMortgaged() == true) {
-		        	 tdmort += (prop[i].getName()+"<br/>"); td++;
+		        	 tdmort += (prop[i].getName()+"<br/>");
 		        }
 		    } //populate owned items
 			
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
-		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>"); td++;
+		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>");
 		        }
 		    }  //populate mortgaged items
 			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
@@ -318,27 +317,26 @@ public class Board extends JFrame implements ActionListener {
 			Dice theDice = new Dice();
 		    dice1 = theDice.getDie1();
 		    dice2 = theDice.getDie2();
-			k = (dice1 == dice2) ? k + 1 : 0;
-			if (k > 0) {
-				rolling.setEnabled(true);
-			}
-			k = k % 3; //doubles 0 none, 3 jail
-			if (k > 3) {k = k - 4;} //check for out of bounds
-			thePlayer.setDoubles(k);
-		    thePlayer.setPosition((Prev + dice1 + dice2) % 40); //add to the player's position to move them forward
-			theTurn.TurnAction(prop, play, Prev, dice1, dice2, turnCounter); //activate turn
-			if (k > 2 || thePlayer.getPosition() == 31 || thePlayer.getPosition() == 11){
-			new Jail(play, turnCounter, dice1, dice2);
-			} //activate jail class
-			//j = theTurn.getTjail();
-			chaimg = theTurn.getChaimg();
-			if (chaimg != null) {
-				if (thePlayer.getPosition() == 2 || thePlayer.getPosition() == 7 || thePlayer.getPosition() == 18 || thePlayer.getPosition() == 23 || thePlayer.getPosition() == 34 || thePlayer.getPosition() == 37) {
-					URL chimg = Board.class.getResource("cards/images/"+chaimg);
-					chabtn.setIcon(new ImageIcon(chimg)); //doesn't work right now without a loop to update it
-				}
-			}
 
+			Pos = (Prev + dice1 + dice2) % 40;
+			if (Pos == 11) {Pos = 10; thePlayer.setPosition(10);} //if rolls into jail put into see a battle
+		    thePlayer.setPosition(Pos); //add to the player's position to move them forward
+			theTurn.TurnAction(prop, play, Prev, dice1, dice2, turnCounter); //activate turn
+			statustxt = theTurn.getStatustxt();
+			if (thePlayer.getPosition() == 11) {
+				new Jail(play, turnCounter, dice1, dice2);
+			} //activate jail class
+	
+
+			
+			 if (thePlayer.getPosition() != 11 && Pos != thePlayer.getPosition()) {
+				 if (thePlayer.getPosition() != 2 || thePlayer.getPosition() != 18 || thePlayer.getPosition() != 34 || thePlayer.getPosition() != 7 || thePlayer.getPosition() != 23 || thePlayer.getPosition() != 37) {
+					 theTurn.TurnAction(prop, play, Prev, dice1, dice2, turnCounter); //activate turn
+					 statustxt += "<br/>"+theTurn.getStatustxt();
+				 }
+					
+				} //if you go back 3 spaces run turn again
+			
 			URL diw1 = Board.class.getResource("/pieces/images/Dice"+dice1+".png"); //update dice images number
 			URL diw2 = Board.class.getResource("/pieces/images/Dice"+dice2+".png");
 			dicez.setIcon(new ImageIcon(diw1)); //refresh img dice
@@ -346,6 +344,20 @@ public class Board extends JFrame implements ActionListener {
 
 			URL td1 = Board.class.getResource("/cards/images/"+prop[thePlayer.getPosition()].getImageName());
 			if (td1 != null) {tdbtn.setIcon(new ImageIcon(td1));} //if image is null do not update and show the image
+			
+
+			if (theTurn.getChest() != 0 && theTurn.getChest() > 16) {
+				if (thePlayer.getPosition() == 2 || thePlayer.getPosition() == 18 || thePlayer.getPosition() == 34) {
+					URL chimg = Board.class.getResource("cards/images/Chest"+theTurn.getChest()+".PNG"); //Chest
+					chabtn.setIcon(new ImageIcon(chimg)); 
+				}
+			}
+			if (theTurn.getChance() != 0 && theTurn.getChance() > 16) {
+				if (thePlayer.getPosition() == 7 || thePlayer.getPosition() == 23 || thePlayer.getPosition() == 37) {
+					URL chimg = Board.class.getResource("cards/images/Chance"+theTurn.getChance()+".PNG");
+					chabtn.setIcon(new ImageIcon(chimg)); //doesn't work right now without a loop to update it
+				}
+			}
 			
 			if (turnCounter == 0) {
 			token1.setBounds(x[thePlayer.getPosition()], y[thePlayer.getPosition()], 50, 56);
@@ -391,15 +403,16 @@ public class Board extends JFrame implements ActionListener {
 			Prev = thePlayer.getPosition();
 			theTurn.setPrev(Prev);
 			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
-			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+theTurn.getStatustxt()+"</div></html>"); //print the status text in Turn
-			
+					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
+					"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+statustxt+"</div></html>"); //print the status text in Turn
+
 			if (prop[thePlayer.getPosition()].getPurchaseAllowed() != false && prop[thePlayer.getPosition()].getOwner() == 0) {
 				if (thePlayer.getBalance() >= prop[thePlayer.getPosition()].getCost()) {
 						buying.setEnabled(true);
 				} //if space isn't already purchased
-			} //must be ownable and not owned        
-            
+			} //must be ownable and not owned 
+			
 			if (prop[thePlayer.getPosition()].getPurchaseAllowed() != false) {
 				if(thePlayer.getPlayerNumber() != prop[thePlayer.getPosition()].getOwner()){
 					if(prop[thePlayer.getPosition()].getOwner() != 0 && prop[thePlayer.getPosition()].getMortgaged() == false) {
@@ -408,22 +421,38 @@ public class Board extends JFrame implements ActionListener {
 					} //if not owned by current person and is not mortgaged
 				}
 			} //pay rent
+			if (dice1 == dice2) {
+				if (thePlayer.getPosition() == 11 || thePlayer.getPosition() == 31) {
+					rolling.setEnabled(false);
+					ending.setEnabled(true);
+				
+				} else {
+					rolling.setEnabled(true);
+					statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+statustxt+"<br/>Doubles! Click 'Roll Dice' to take another turn.</div></html>");
+					ending.setEnabled(false);
+				}
+			}
+			if (dice1 != dice2) {
 			rolling.setEnabled(false);
-			ending.setEnabled(true); //enable the player to end their turn
-		}
+			ending.setEnabled(true); 
+			} //enable the player to end their turn
+			
+			
+			
+		} //end rolling
 		if(e.getSource() == buying) {
 			buying.setEnabled(false); //buy a property		
 			new Purchase(thePlayer, prop[thePlayer.getPosition()], thePlayer.getBalance());
 			thePlayer.setOwner(true);
 			tdowned = ""; //set to blank
-			td = 0;
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
-		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>"); td++;
+		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>");
 		        }
 		    } //find all owned properties and update
 			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
+					"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 		} //buy property
 		if(e.getSource() == mortgage) {		
                 Properties mortProp = null;
@@ -477,8 +506,9 @@ public class Board extends JFrame implements ActionListener {
                 		tdmort += mortgage.getName();
                 	}
                 } //update mortgaged properties
-                plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-                		", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+                plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+    					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
+    					"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
    	    }
 		if(e.getSource() == hmenu){
 			//user guide
@@ -541,8 +571,9 @@ public class Board extends JFrame implements ActionListener {
             	}
             } //check for item getting unmortgaged, it should become owned again
             
-            plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-            		", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+            plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
+					"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 		}
 		if(e.getSource()== improve) {
 			 Properties improveProp = null;
@@ -589,16 +620,16 @@ public class Board extends JFrame implements ActionListener {
 				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+"You have cancelled improving a property."+"</div></html>");
 				} //otherwise print status
 				
-				td=0;
 				printVillas = "";
 				for(int i = 0; i< prop.length; i++){
                 	if(prop[i].getVillas() > 0 || prop[i].getPantheons() > 0){
-                		printVillas += prop[i].getName()+" - Villas: "+prop[i].getVillas()+", Pantheons: "+prop[i].getPantheons()+"<br/>"; td++;
+                		printVillas += prop[i].getName()+" - Villas: "+prop[i].getVillas()+", Pantheons: "+prop[i].getPantheons()+"<br/>";
                 	}
                 } //update and print improved properties
 			
-	            plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-	            		", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/>Villas/Pantheons: "+printVillas+"<br/></div></html>"); 
+				plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+						", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
+						"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/>Properties with Villas/Pantheons: "+printVillas+"<br/><br/></div></html>");
 		} //villas and pantheons
 		if(e.getSource()== sell) {
 			int buyCounter = 0;
@@ -672,14 +703,15 @@ public class Board extends JFrame implements ActionListener {
 	            } //find the player to sell to
 	            
 	            tdowned = ""; //set to blank
-				td = 0;
 				for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getMortgaged() == true) {
-		        	 tdmort += (prop[i].getName()+"<br/>"); td++;
+		        	 tdmort += (prop[i].getName()+"<br/>");
 					}
 				} //populate owned items
 	           
-	            plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+				plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+						", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
+						"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 		} //sell property
 		if(e.getSource()== trade){			
 			int tradeCounter = 0;
@@ -763,7 +795,9 @@ public class Board extends JFrame implements ActionListener {
 	            		play[i] = secondPlayer;
 	            	}
 	            }
+	            if (input1 != null && input2 != null) {
 	            new Trade(thePlayer, secondPlayer, play, tradeProp, getProp, prop);
+	            }
 			}
 			if(e.getSource() == trade){
 	            if(tradeCounter == 1){
@@ -773,20 +807,21 @@ public class Board extends JFrame implements ActionListener {
 	            	thePlayer.setOwner(true);
 	            }	            
 	            tdowned = ""; //set to blank
-				td = 0;
 				for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getMortgaged() == true) {
-		        	 tdmort += (prop[i].getName()+"<br/>"); td++;
+		        	 tdmort += (prop[i].getName()+"<br/>");
 					}
 				} //populate owned items
 			}
-	            plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+    " denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
-	            		", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
+					"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 			
 		} //trade property
 		if(e.getSource()== ending) {
 			ending.setEnabled(false);
 			rolling.setEnabled(true); //here it goes again
+			buying.setEnabled(false);
 			
 			if(thePlayer.getOwner() == true){
 				mortgage.setEnabled(true);
@@ -870,7 +905,6 @@ public class Board extends JFrame implements ActionListener {
 				rolling.setEnabled(true);
 				ending.setEnabled(false);
 				if(play[turnCounter].getOwner() == false){
-					buying.setEnabled(false);
 					mortgage.setEnabled(false);
 					improve.setEnabled(false);
 					sell.setEnabled(false);
@@ -878,7 +912,6 @@ public class Board extends JFrame implements ActionListener {
 					unmortgage.setEnabled(false);
 				}
 				else if(play[turnCounter].getOwner() == true){
-					buying.setEnabled(true);
 					mortgage.setEnabled(true);
 					improve.setEnabled(true);
 					sell.setEnabled(true);
@@ -889,21 +922,20 @@ public class Board extends JFrame implements ActionListener {
 			
 			tdowned = ""; //set to blank
 			tdmort = "";
-			td = 0;
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getMortgaged() == true) {
-		        	 tdmort += (prop[i].getName()+"<br/>"); td++;
+		        	 tdmort += (prop[i].getName()+"<br/>");
 		        }
 		    } //owners print to stats
-			
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getOwner() != 0 && prop[i].getPurchaseAllowed() != false) {
-		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>"); td++;
+		        	 tdowned += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>");
 		        }
 		    }  //mortgaged print to stats
 			
-			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +play[turnCounter].getName()+  "<br/>" + "Balance: "+play[turnCounter].getBalance()+	" denarius <br/>Space: "+prop[play[turnCounter].getPosition()].getName()+
-					", <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
+			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
+					"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 		} //ends current turn
     } //ends Action	
 	public int getTurnCounter(){return this.turnCounter;} //pull turnCounter into other classes	
