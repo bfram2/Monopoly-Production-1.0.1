@@ -29,7 +29,7 @@ import tile.Properties;
 		public void pull(Players p, Players [] play, Properties [] prop) {
 		Players thePlayer = p;
 		chanceno = (int)(Math.random()*16) + 1;
-		imgname = "Chance"+chanceno+".PNG";
+		//imgname = "Chance"+chanceno+".PNG";
 			if (chanceno == 1) {
 					if (thePlayer.getPosition()> 5) {
 					int changeBalance = thePlayer.getBalance() + 200;
@@ -40,18 +40,18 @@ import tile.Properties;
 			}
 			if (chanceno == 2 || chanceno == 3) {
 				outcome = "Advance to the nearest Via. If UNOWNED, you may buy it from the Bank. If OWNED, pay owner twice the rental to which they are otherwise entitled.";
-				if (thePlayer.getPosition() > 35 || thePlayer.getPosition() < 5) {
+				if (thePlayer.getPosition() > 35 && thePlayer.getPosition() < 5) {
 					thePlayer.setPosition(5); //Via Appia
 					int changeBalance = thePlayer.getBalance() + 200;
 					thePlayer.setBalance(changeBalance);
 				}
-				if (thePlayer.getPosition() > 4 || thePlayer.getPosition() < 16) {
+				if (thePlayer.getPosition() > 4 && thePlayer.getPosition() < 16) {
 					thePlayer.setPosition(16); //Via Flaminia
 				}
-				if (thePlayer.getPosition() > 15 || thePlayer.getPosition() < 26) {
+				if (thePlayer.getPosition() > 15 && thePlayer.getPosition() < 26) {
 					thePlayer.setPosition(26); //Via Aemilia
 				}
-				if (thePlayer.getPosition()> 25 || thePlayer.getPosition() < 36) {
+				if (thePlayer.getPosition()> 25 && thePlayer.getPosition() < 36) {
 					thePlayer.setPosition(36); //Via Popillia
 				}
 			} //nearest Via, if owned: pay 2(rent), if unowned can buy
@@ -134,7 +134,8 @@ import tile.Properties;
 			}
 			if (chanceno == 16) {
 				outcome = "You have been elected a Senator, pay each player 50 denarius.";
-				int changeBalance = thePlayer.getBalance() - 350;
+				
+				int changeBalance = thePlayer.getBalance() - 400;
 				thePlayer.setBalance(changeBalance);//fine of 50
 				for(int i = 0; i < play.length; i++){
 					if(play[i].getCurrentPlayer() == false){

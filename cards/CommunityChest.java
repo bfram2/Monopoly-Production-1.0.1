@@ -24,7 +24,7 @@ public class CommunityChest {
 	public void heartofcards(Players p, Players [] play, Properties [] prop) {
 		Players thePlayer = p;
 		chestno = (int)(Math.random()*16) + 1;
-		imgname = "Chest"+chestno+".PNG";
+		//imgname = "Chest"+chestno+".PNG";
 			if (chestno == 1) {
 				outcome = "Bank error in your favor. Collect 200 denarius.";
 				int changeBalance = thePlayer.getBalance() + 200;
@@ -62,7 +62,7 @@ public class CommunityChest {
 				thePlayer.setBalance(changeBalance);
 			}
 			if (chestno == 8) {
-				outcome = "Roman official assesses you for street repairs: 40 per villa, 115 per pantheon. No villas or pantheons pay 100 denarius";
+				outcome = "Roman official assesses you for street repairs: 40 per villa, 115 per pantheon.";
 				int villas = 0;
 				int pantheon = 0;
 				for(int i = 0; i < prop.length; i++){
@@ -90,20 +90,19 @@ public class CommunityChest {
 				thePlayer.setBalance(changeBalance);
 			}
 			if (chestno == 12) {
-			outcome = "Pay farmer's tax of $25.";
+			outcome = "Pay farmer's tax of 25 denarius.";
 			int changeBalance = thePlayer.getBalance() - 25;
 			thePlayer.setBalance(changeBalance);
 			}
 			if (chestno == 13) {
 			outcome = "You have a coming of age party, Collect 10 denarius from every player.";
+			int changeBalance = thePlayer.getBalance() + 80;
+			thePlayer.setBalance(changeBalance);//fine of 50
 			for(int i = 0; i < play.length; i++){
 				if(play[i].getCurrentPlayer() == false){
-					int add = thePlayer.getBalance() + 10;
-					int subtract = play[i].getBalance() - 10;
-					thePlayer.setBalance(add);
-					play[i].setBalance(subtract);
+					play[i].setBalance(play[i].getBalance()-10);
 				}
-			}
+			} //pay each player 50 denarius
 			}
 			if (chestno == 14) {
 			outcome = "Pay school fees of 50 denarius.";
