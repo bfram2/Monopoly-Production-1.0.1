@@ -309,7 +309,7 @@ public class Board extends JFrame implements ActionListener {
 			tdmort = "";
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getMortgaged() == true) {
-		        	 tdmort += (prop[i].getName()+"<br/>");
+		        	 tdmort += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>");
 		        }
 		    } //populate owned items
 			
@@ -518,12 +518,11 @@ public class Board extends JFrame implements ActionListener {
 				else {
 				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+"You have cancelled mortgaging a property to the bank."+"</div></html>");
 				} //otherwise print status
-				
                 for(int i = 0; i< prop.length;i++){
                 	Properties mortgage = null;
                 	if(prop[i].getMortgaged() == true){
                 		mortgage = prop[i];
-                		tdmort += mortgage.getName();
+                		tdmort += (mortgage.getName()+" - "+play[mortgage.getOwner()-1].getName()+"<br/>");
                 	}
                 } //update mortgaged properties
                 plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
@@ -829,10 +828,10 @@ public class Board extends JFrame implements ActionListener {
 	            	getProp.setOwner(thePlayer.getPlayerNumber());
 	            	thePlayer.setOwner(true);
 	            }	            
-	            tdowned = ""; //set to blank
+	            tdmort = ""; //set to blank
 				for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getMortgaged() == true) {
-		        	 tdmort += (prop[i].getName()+"<br/>");
+		        	 tdmort += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>");
 					}
 				} //populate owned items
 			}
@@ -953,7 +952,7 @@ public class Board extends JFrame implements ActionListener {
 			tdmort = "";
 			for(int i=0; i<prop.length; i++) {
 		         if(prop[i].getMortgaged() == true) {
-		        	 tdmort += (prop[i].getName()+"<br/>");
+		        	 tdmort += (prop[i].getName()+" - "+play[prop[i].getOwner()-1].getName()+"<br/>");
 		        }
 		    } //owners print to stats
 			for(int i=0; i<prop.length; i++) {
