@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+color: black;
+font-family: verdana;
+padding: 5px;
+margin: 5px;
+}
+h2 {
+text-align: center;
+}
+div {
+font-size: 10pt;
+}
+p {
+font-weight: bold;
+font-size: 10pt;
+}
+ul, ol {
+font-size: 10pt;
+}
+td {
+text-align: left;
+min-width: 200px;
+vertical-align: top;
+padding: 0px 15px 0px 15px;
+}
+.shift {
+margin-left: 20px;
+}
+</style>
+<meta charset="UTF-8">
+<title>Roman Monopoly</title>
+</head>
+<body>
+<h2>Monopoly Roman Empire Edition</h2>
+<div style="text-align: center">Documentation overview of the project. All project items are grouped together as a zip file and uploaded to <a href="https://github.com/bfram2/Monopoly-Production-1.0.1">GitHub</a>.<br/>Roman Monopoly is currently working on version 2.3.37.</div><br/>
+
+<table><tbody><tr>
+<td></td>
+<td><h4>Deliverables</h4>
+<ul><li><a href="#plan">Project Plan</a></li>
+<li><a href="#guide">Programmer's Guide</a></li>
+<li><a href="#user">User Documentation</a></li>
+<li><a href="#final">Final Product</a></li></ul></td>
+
+<td><h4>Other Documentation</h4>
+<ul><li><a href="#tool">Tools and Standards</a></li>
+<li><a href="#config">Configuration Management Plan</a></li>
+<li><a href="#conv">Roman Monopoly Conversion</a></li>
+<li><a href="#code">Pseudocode</a></li>
+</ul></td>
+
+<td><img src="https://github.com/bfram2/Monopoly-Production-1.0.1/blob/master/menu/menu.png?raw=true" style="max-width: 300px;"/></td>
+</tr></tbody></table><br/>
+
+
+
+<h4 id="plan">Project Plan</h4>
+<p>1. Scope Statement</p>
+<div>Project Premise: Roman Empire version Monopoly<br/>
+Platform: Windows (7 and 10)<br/>
+Functionality: Stand-alone, no network connection required<br/>
+Other software: None that have been identified at this time<br/>
+Player support: One real life, non-computer generated player, with the option of 1-7 computer generated players that will not be true AI players<br/>
+Programming language: Java Interface: GUI</div><br/>
+
+<p>2. Organizational Chart</p>
+<div>Project Lead - Brittany Frampton<br/>
+Documentation Specialist - Kevin Dalton<br/>
+Architect - Nancy Planinsek, Brittany Frampton<br/>
+Coder - Nancy Planinsek, Brittany Frampton<br/>
+Tester - Kevin Dalton</div><br/>
+
+<p>3. Gnatt Chart</p>
+<img alt="GnattChart.PNG" src="https://github.com/bfram2/Monopoly-Production-1.0.1/blob/master/project-documents/GnattChart.PNG?raw=true" style="max-width: 700px;"/><br/><br/>
+<div>Basic Timeline:<br/>
+Week 6: Gather Requirements / Design Architecture & Design 1st set of coding / Begin Programmer's Manual & User Documentation<br/>
+Week 7-8: 1st set of coding & black/white box testing (simple monopoly with Roman conversion and computer players)<br/>
+Week 9-10: Test 1st set / Update Programmer Manual & User Documentation<br/>
+Week 11-12: Design 2nd set & Code 2nd set (mortgaging, auction & multiple human players)<br/>
+Week 13-14: Test 2nd set of coding / Update Programmer Manual & User Documentation<br/>
+Week 15: Final coding and document changes and tests<br/>
+Week 16: Project Due Monday, 12/5 (there will be no time for additional changes)<br/>
+Updated! Week 17: Final Test and Debugging, project extended 12/13/16</div><br/>
+
+<p>4. Tools and Standards</p>
+<div>Editors: Eclipse & GitHub<br/>
+Documentation Standards: GitHub versioning tools, commenting changes with line number in a read text document (due to multiple coders)</div><br/>
+
+<p>5. Configuration Management Plan</p>
+<div>Versioning will be completely new copies of major versions and noted changes for minor versions with comments stated what was done. Major versions will be for changes in the main functionality. Things like changes in graphic or test corrections will be minor versions. There will be a read only file for this with person's name, comments, file and the lines changed for minor and major versions. The archives for major versions will be on GitHub as whole other projects, sandbox versus production for testing will be two separate projects. File versioning example: Roman_Monopoly_2.1.1 (build 1-2.major.minor).</div><br/>
+
+<p>6. Weekly Status Reports</p>
+<div>Kevin will email weekly Sunday reports to the teacher, from a discussion group thread dedicated to providing updates.</div><br/>
+
+<h4 id="guide">Programmer's Guide</h4>
+<p>Main, default package</p>
+<div>StartGame.java - initializes the game from main and holds all objects in the Players and Properties class.</div><br/>
+
+<p>Menu package</p>
+<div>MainMenu.java - initiated by StartGame and the first thing a user will see, this allows a person to start a new game, see the help menu or exit completely.</div>
+<div>HelpMenu.java - an interactive JMenu with alt+[letter] functionality and a drop down menu on top.</div><br/>
+
+<p>Pieces Package</p>
+<div>Board.java - this is the hub of everything. It initiates all other classes using buttons and action listeners. There are two JFrames. One holds all images and buttons. The other, stats holds all information for current events happening in the game. The top updates based on the current player, then below it updates the properties that are bought, mortgaged and have Villas or Pantheons. The last bit is a status text that outputs from the individual class that has been activated by clicking a button.</div><div>Dice.java - simple class with random integers 1-6, this allows Board to find dice images and to increment the player position upward. Dice total is used for utilities in the properties class.</div><br/>
+
+<p>Events Package</p>
+<div>Turn.java - starts in Board when JButton rolling is clicked, this activates if statements based on where the token moves and updates the current player based on the turnCounter in Board, it also activates chance and community chest classes and pulls them back into Board.</div>
+<div>Rent.java - this looks for the current player, the positon they landed on from the player object updated by Board and Dice classes, finds the owner in the properties class and takes away the rent amount in the property object found and increments up to the owner of the property. This is automatic and prints a response in the stats jframe.</div>
+<div>Jail.java - searches dice for doubles, checks token for property object 31 and puts player token into jail for certain number of rounds or until doubles is found.</div>
+<div>Player.java - a setter and getter that links to the StartGame class. It holds the array of objects 0-7, for players I-VIII. It can update the Balance and position. It gets most other integers and strings.</div><br/>
+
+<p>Own Package</p>
+<div>Buy.java – starts in Board when JButton buying is clicked, this sets the Properties array item to switch owners and increments the player’s balance up and the owner that it switched to, gets their balance incremented down. This will make a confirmBuy button visible to complete the action.</div>
+<div>Purchase.java - starts in Board when JButton purchase is clicked, this sets the Properties array item to bought 1-8 for each player and increments the player's balance down and Board updates by searching through the current Player object.</div>
+<div>Sell.java - starts in Board when JButton sell is clicked, allows a player to sell item for full price only to a second player, changing the getOwner() integer to the new owner's number.</div>
+<div>Trade.java - starts in Board when JButton trade is clicked, allows a property to be swapped between the current player and the second player. This will make a confirmTrade button visible to complete the action.</div>
+<div>Mortgage.java - starts in Board when JButton mortgage is clicked, this allows a player to mortgage a Properties array item that they own to the bank and to later unMortgage it from the bank with interest, this is in the player object as a boolean.</div>
+<div>Unmortgage.java - starts in Board when JButton unmortgage is clicked, this allows a player to buy back their property and rent can be collected again.</div>
+<div>Improvements.java - starts in Board when JButton improve is clicked, holds all updates to villas and pantheons allowing the current player to update a owned property with a Villa or Pantheon, this outputs to the stats jFrame in the Board class.</div>
+<div>SellImprovements.java – starts in Board when JButton simprove is clicked, holds the functions to remove updates to villas and pantheons allowing the current player to sell their Villa or Pantheon to the bank.</div><br/>
+
+<p>Cards Package</p>
+<div>Chance.java - starts in Turn when landing on the Chance space, rolls a random dice to pull a chance card out of the stack and to move the player's token position, give a get out of jail card, or to increment the player balance up or down.</div>
+<div>CommunityChest.java - starts in Turn when landing on the Community Chest space, rolls a random dice to pull a chest card out of the stack and to move the player's token position, give a get out of jail card, or to increment the player balance up or down.</div><br/>
+
+<p>Tile Package</p>
+<div>Properties.java - this is the getter and setter for the Property objects in StartGame. This is just as much of a hub of the game as Board. Each property defines a space to move. There are 0-40 spaces. There are only 27 properties that can be bought, mortgaged, unmortgaged, sold, traded, or rented.</div><br/>
+
+<p>Location of Images</p>
+<div>
+<ul><li>Board - /pieces/boardrotate.jpg</li>
+<li>Villas, Pantheons, & Dice - /pieces/images/[imagetitle].png</li>
+<li>Chance & Chest cards - /cards/images/[imagetitle].png</li>
+<li>Title Deed spaces - /cards/images/[image title defined in Properties class].PNG</li>
+<li>Main Menu image - /menu/menu.jpg</li></ul>
+</div>
+<br/>
+
+<h4 id="user">User Documentation</h4>
+<ul>
+<li><a href="#setup">Installation / Setup</a></li>
+<li><a>How to play</a>
+<ul>
+<li><a href="#win">Winning</a></li>
+<li><a href="#move">Movement</a></li>
+<li><a href="#turn">Player Turn</a></li>
+<li><a href="#space">Board Space</a></li>
+<li><a href="#manage">Property Management</a></li>
+</ul></li>
+<li><a href="#refer">References and credits</a></li>
+<li><a href="#bug">Known Bugs and Issues</a></li>
+</ul>
+
+<p id="setup">Installation / Setup</p>
+<div>This is a Java game, and will need to have Java installed to operate.<br/>
+Java is available from Oracle’s website here: <a href="https://java.com/en/download/">java.com</a>.<br/>
+Alternatively, you can use the “jxpiinstall.exe” file distributed with this software, if you are using a Windows Operating System.<br/>
+Once you have Java installed, you are ready to extract and run the game.<br/>
+This game is contained entirely within “Monopoly Roman Edition.jar” file. Extract the JAR file from the included Team3.zip file to a desired location, and open “Monopoly Roman Edition.jar”.<br/>
+Java JAR files are portable executables, which can be run without running a typical software installation. The portable executable can be run from anywhere that allows writing to the where folder it is located.<br/>
+</div><br/>
+
+<p id="win">Winning</p>
+<div>The object of the game is to have the most money compared to any other player by buying and renting property (Parker Brothers, 1995). The game will end when any player reaches 0 remaining funds.  The winner is the player with the most money at that point.</div><br/>
+
+<p id="move">Movement</p>
+<div><u>Rolling Dice and moving your token:</u> Your turn will begin with the ability to roll the dice and move your token to a new space on the board.  Click the “Roll Dice” button near the top-center of the screen to begin your movement, and the game will automatically move your token to the correct space.<br/>
+Any card that sends you to a specific place on the board is reached by moving clockwise, as normal. You will never move backwards. This could force you to go past Rome and collect $200.</div><br/>
+<div><u>Doubles:</u> If you roll Doubles, you will be able to roll again. However, if you roll doubles to get out of The Arena, you do not get to roll again. If you roll doubles a third time, you will be sent to The Arena without passing Rome.</div><br/>
+<div><u>Passing or landing on Rome:</u> The moment your token touches Rome, you will automatically receive $200. If you happen to land on Rome, you will receive $200 at that point.  However, you will not receive another $200 for leaving Rome after landing there. If a chance card sends you back to or through Rome, you will receive another $200. Chance card movement is always clockwise.</div><br/>
+<div><u>Landing on The Arena:</u> When you land on The Arena, you are there to simply “See a battle” and nothing happens. You will be free to move on your next turn.</div><br/>
+<div><u>Landing on “Go To The Arena”:</u> When you land on the “Go to the Arena” space, you must go to participate in The Arena.  Your turn immediately ends, and you will remain in The Arena until you escape. See “Board Space - The Arena” for more information about The Arena.</div><br/>
+<div><u>Landing on Unowned Property:</u> When you land on property that has not yet been purchased, you will be given the choice of purchasing it from the bank at the cost shown on the board. Press the Buy button to purchase the property.</div><br/>
+<div><u>Landing on other’s owned property:</u> When you land on property that has already been purchased by another player, you will need to pay them rent. This rent will change depending upon many factors. If the property is currently under Mortgage, no rent is due. If the owner has all of the properties for that section or color, the price will be doubled. A Villa or Pantheon will also increase the price of rent. This amount will automatically be deducted from your total funds. If you do not have enough money, you will be prompted with options to acquire the necessary funds. If you have no way of acquiring additional funds, you have gone bankrupt and lost the game.</div><br/>
+<div><u>Landing on Property you already own:</u> If you already own the space you land on, you pay no rent. You can finish your turn as normal.</div><br/>
+<div><u>Landing on other’s owned VIA:</u> There are 4 VIAs in this game. The amount of rent due for landing on a VIA owned by someone else will change depending upon how many VIAs that player owns at that time. Rent is as follows: 1 owned - $25, 2 owned - $50, 3 owned - $100, 4 owned - $200.  There are no Villa or Pantheon upgrades for railroads.</div><br/>
+<div><u>Landing on other’s owned Utility:</u> There are two utilities in this game, the Aqueducts or the Sewers. They can be purchased and mortgaged like any other property. However, they do not have Villas or Pantheons. Rent on a utility is paid by multiplying the die roll by 4 if the owner has just one utility, and multiplying by 10 if he or she has both. This is the die roll that forced the player to land on a utility, and will automatically be calculated and transferred.</div><br/>
+<div><u>Landing on Chance:</u> When landing on Chance the top card of a shuffled Chance Deck is shown to the player.  Whatever the card says must be done immediately. If the card directs you to go to a specific space and you pass or land on Rome moving clockwise, you will receive $200 for passing or landing on Rome. However, if the card says to go to The Arena, as stated on the card, you will not collect $200 for passing Rome</div><br/>
+<div><u>Landing on Community Chest:</u> When landing on Chance the top card of a shuffled Chance Deck is shown to the player.  Whatever the card says must be done immediately. If the card directs you to go to a specific space and you pass or land on Rome moving clockwise, you will receive $200 for passing or landing on Rome. However, if the card says to go to The Arena, as stated on the card, you will not collect $200 for passing Rome.</div><br/>
+<div><u>Landing on Citizen’s Tax:</u> Landing on this space will automatically deduct $100, which is paid to the bank.</div><br/>
+<div><u>Landing on Render Unto Caesar:</u> Landing on this space will automatically deduct $200, which is paid to the bank.</div><br/>
+<div><u>Landing on Free Market:</u> Landing on this space cost no rent, and forces no additional actions. You can finish your turn as normal.</div><br/>
+
+<p id="turn">Player Turn</p>
+<div><u>Begin movement:</u> Your turn will begin with the ability to roll the dice and move your token to a new space on the board.  Click the “Roll Dice” button near the top-center of the screen to begin your movement, and the game will automatically move your token to the correct space. Any card that sends you to a specific place on the board is reached by moving clockwise, as normal. You will never move backwards. This could force you to go past Rome and collect $200.<br/>
+If you roll Doubles, you will be able to roll again. However, if you roll doubles to get out of The Arena, you do not get to roll again. If you roll doubles a third time, you will be sent to The Arena without passing Rome.</div><br/>
+<div><u>Landing space decisions:</u> When you land on a space, you will need to take the appropriate action for that space. Please refer to Movement and the specific space for more detail.</div><br/>
+<div><u>Property Management:</u> There are many property management options depending upon what you and others currently own. Please refer to specific actions in the Property Management section of the Help Menu.</div><br/>
+<div><u>End Turn:</u> When you are ready to end your turn, click the End Turn button near the <em>bottom right</em>.</div><br/>
+
+<p id="space">Board Space</p>
+<div><u>General:</u> Where you land on the board will change the options that appear to you on this turn. For information about a specific space, please refer to the user manual or help – board space section. Choose the type of space from the help menu for additional help.</div><br/>
+<div><u>The Arena:</u> If you land on The Arena, you are just watching a battle.  You will not pay rent or fees, and you can finish your turn as normal. You can continue your next turn as normal as well.<br/>
+However, if you are sent to The Arena, you are stuck inside and end your turn immediately. You also do not collect $200, even if you pass Rome to get to The Arena.<br/>
+You will need to roll a double (both dice roll to the same number) in order to be released free of charge. If you fail to roll a double on your first or second attempt, you will end your turn without moving. Upon a third failed attempt to roll a double, you will pay $50 to be released from The Arena.<br/>
+When you are released from The Arena, you will move the number of spaces that you rolled. If you rolled doubles to get out, you will not roll again.
+</div><br/>
+<div><u>Citizen’s Tax/Render unto Caesar:</u> Landing on this space will automatically deduct 100/200 denarius, which is paid to the bank.</div><br/>
+<div><u>Utility – Aqueducts or Sewers:</u> There are two utilities in this game, the Aqueducts or the Sewers. They can be purchased and mortgaged like any other property. However, they do not have Villas or Pantheons. Rent on a utility is paid by multiplying the die roll by 4 if the owner has just one utility, and multiplying by 10 if he or she has both. This is the die roll that forced the player to land on a utility, and will automatically be calculated and transferred.</div><br/>
+<div><u>VIA’s:</u> There are 4 VIAs in this game. The amount of rent due for landing on a VIA owned by someone else will change depending upon how many VIAs that player owns at that time. Rent is as follows: 1 owned - $25, 2 owned - $50, 3 owned - $100, 4 owned - $200.  There are no Villa or Pantheon upgrades for railroads.</div><br/>
+<div><u>Chance:</u> When landing on Chance the top card of a shuffled Chance Deck is shown to the player.  Whatever the card says must be done immediately. If the card directs you to go to a specific space and you pass or land on Rome moving clockwise, you will receive $200 for passing or landing on Rome. However, if the card says to go to The Arena, as stated on the card, you will not collect $200 for passing Rome.</div><br/>
+<div><u>Community Chest:</u> When landing on Community Chest the top card of a shuffled Community Chest Deck is shown to the player.  Whatever the card says must be done immediately. If the card directs you to go to a specific space and you pass or land on Rome moving clockwise, you will receive $200 for passing or landing on Rome. However, if the card says to go to The Arena, as stated on the card, you will not collect $200 for passing Rome.</div><br/>
+
+<p id="manage">Property Management</p>
+<div><u>Buy/Purchase Property:</u> When you land on property that has not yet been purchased, you will be given the choice of purchasing it from the bank at the cost shown on the board and right hand stats bar.</div><br/>
+<div><u>Mortgage your property:</u> A property can be mortgaged if you cannot afford rent of any other payment due. You cannot mortgage a property that currently has Villas or a Pantheon. You will first need to Downgrade the property group to an unimproved state, which may provide the funds you seek without a mortgage.<br/>
+The bank will pay the mortgage amount shown on the specific property card (typically half the original property cost) to the player. While a property is under mortgage, no rent can be collected for that specific space.</div><br/>
+<div><u>Pay off your mortgaged property:</u> To pay off your mortgaged property, you must pay the bank the mortgage amount listed on the property, plus 10% interest.</div><br/>
+
+<h4 id="refer">References and Credits</h4>
+<div><u>The Original Monopoly Game</u><br/> Darrow, Charles B. Monopoly. Beverly, MA: Parker Brothers, 1995. Board Game.</div><br/>
+
+<div><u>Images</u></div><br/>
+<div>menu.jpg:</div>
+<div class="shift">http://www.atlasobscura.com/articles/ancient-rome-once-filled-the-colosseum-up-with-water-and-staged-epic-mock-sea-battle</div>
+<div class="shift">http://assets.atlasobscura.com/article_images/23730/image.jpg</div><br/>
+
+<div>board.jpg:</div><br/>
+<div>Original Monopoly Board:</div>
+<div class="shift">http://koaning.io/monopoly-simulations.html</div>
+<div class="shift">http://koaning.io/theme/images/monopoly.jpg</div><br/>
+
+<div>Jail or Arena:</div>
+<div class="shift">http://www.clker.com/clipart-11369.html</div>
+<div class="shift">http://www.clker.com/cliparts/0/f/6/a/11954370221420304073johnny_automatic_roman_coliseum.svg.med.png</div><br/>
+
+<div>Chance:</div>
+<div class="shift">http://www.supercoloring.com/coloring-pages/countries-cultures</div>
+<div class="shift">http://www.supercoloring.com/sites/default/files/styles/coloring_thumbnail/public/cif/2016/04/spartan-warrior-coloring-page.png</div><br/>
+
+<div>Community Chest:</div>
+<div class="shift">http://www.supercoloring.com/coloring-pages/countries-cultures</div>
+<div class="shift">http://www.supercoloring.com/sites/default/files/styles/coloring_medium/public/cif/2016/04/galius-julius-caesar-coloring-page.png</div><br/>
+
+<div>Go to Jail or Go to The Arena:</div>
+<div class="shift">https://www.pinterest.com/pin/304696731010688055</div>
+<div class="shift">https://s-media-cache-ak0.pinimg.com/564x/c2/68/12/c2681277317db043220d7aeaa62761d8.jpg</div><br/>
+
+<div>Railroads or VIAs:</div>
+<div class="shift">http://www.rocamix.com/estabilizacion.php?l=en</div>
+<div class="shift">http://www.rocamix.com/images/acueducto_romano.jpg</div><br/>
+
+<div>Sewers:</div>
+<div class="shift">http://www.sewerhistory.org/photosgraphics/ancient-rome-and-the-roman-empire-800-bce-300-ce/</div>
+<div class="shift">http://www.sewerhistory.org/wp-content/uploads/2014/12/510_wemi0254a01479e6f5d-160x120.jpg</div><br/>
+
+<div>Citizen's Tax:</div>
+<div class="shift">http://www.clipartkid.com/coin-clip-art-for-kids-clipart-panda-free-clipart-images-k07rnR-clipart/</div>
+<div class="shift">http://www.clipartkid.com/images/160/coin-clip-art-for-kids-clipart-panda-free-clipart-images-k07rnR-clipart.gif</div><br/>
+
+<div>Free Market:</div>
+<div class="shift">https://www.forumancientcoins.com/numiswiki/view.asp?key=life%20in%20ancient%20rome</div>
+<div class="shift">https://www.forumancientcoins.com/numiswiki/images/articlesinaromanhousehold2.jpg</div><br/>
+
+<div>Conversion of monopoly terms:</div>
+<ol><li>http://www.dl.ket.org/latinlit/mores/currency/currency.htm</li>
+<li>http://www.ancient.eu/article/638/</li>
+<li>http://www.romae-vitam.com/ancient-roman-mills.html</li>
+<li>http://factsanddetails.com/world/cat56/sub369/item2073.html</li>
+<li>https://en.wikipedia.org/wiki/Colosseum</li>
+<li>http://www.unrv.com/government/roman-prisons.php</li>
+<li>http://www.ancient.eu/article/758/</li>
+<li>http://www.crystalinks.com/romeclothing.html</li>
+<li>https://en.wikipedia.org/wiki/Chariot_racing</li>
+<li>http://persweb.wabash.edu/facstaff/royaltyr/AncientCities/web/bradleyj/Project%201/Games.html</li>
+<li>https://en.wikipedia.org/wiki/Roman_Empire</li>
+<li>https://en.wikipedia.org/wiki/Constantinople</li>
+<li>http://www.crystalinks.com/romebuildings.html</li>
+<li>http://www.ancient.eu/Pantheon/</li>
+<li>http://www.vox.com/2014/9/10/6131393/39-maps-that-explain-the-roman-empire</li>
+<li>https://en.wikipedia.org/wiki/Render_unto_Caesar</li>
+<li>http://forum.allaboutcircuits.com/proxy.php?image=http%3A%2F%2Fs3images.coroflot.com%2Fuser_files%2Findividual_files%2Foriginal_350136_JmlCJZGA5U6EggqGysPR4_1u3.jpg&hash=479afa1451ccf37bfe9c33be5bef36ea</li>
+<li>http://www.hasbro.com/common/instruct/00009.pdf</li>
+<li>https://en.wikipedia.org/wiki/Roman_Empire#Census_rank</li></ol>
+
+<div>Coding Sources:</div>
+<div class="shift">http://stackoverflow.com/questions/20028272/syntax-and-logic-for-moving-player-around-game-board-array-using-do-while-loop-j</div>
+<div class="shift">http://stackoverflow.com/questions/19995998/moving-a-player-around-a-2d-monopoly-game-array</div>
+<div class="shift">http://stackoverflow.com/questions/17599674/best-way-to-move-around-a-2d-array-board-game</div>
+<div class="shift">http://stackoverflow.com/questions/36440270/monopoly-game-while-loop</div>
+<div class="shift">http://gamedev.stackexchange.com/questions/33721/im-making-a-board-game-who-should-manage-the-player-move-if-the-board-has-spec</div>
+<div class="shift">https://github.com/T1m1/de.htwg.se.monopoly</div>
+<div class="shift">https://github.com/donmc/Monopoly-Solution</div>
+<div class="shift">https://github.com/szamani20/Monopoly</div>
+<div class="shift">https://github.com/gmiggan/Monopoly</div>
+<div class="shift">https://github.com/DepthDeluxe/Monopoly</div>
+<div class="shift">https://github.com/PedroFariaa/Monopoly</div>
+<div class="shift">https://github.com/jacobantoine/Monopoly</div>
+<div class="shift">https://github.com/peterthiemann/monopoly</div><br/>
+
+<p id="bug">Known Bugs and Issues</p>
+<div><u>Bugs:</u></div>
+<div class="shift">Dice not entirely random</div>
+<div class="shift">Sell's Player array ‘secondPlayer’ is null</div>
+<div class="shift">3 Doubles lets the player roll again, then go to Jail</div>
+<div class="shift">Bug makes it hard for Mortgage or Unmortgage to update on Board before End Turn, does update when End Turn is clicked</div>
+<div class="shift">Improvements class ‘printVillas’ doesn't properly print to stats JFrame, works in background</div><br/>
+
+<div><u>Broken Functions / Issues:</u></div>
+<div class="shift">Improvements</div>
+<div class="shift">Sell Improvements</div><br/>
+
+<div><u>Desired in future version:</u></div>
+<div class="shift">Computer Players</div>
+<div class="shift">Auction</div>
+<div class="shift">Free Market giving out collected taxes</div>
+<div class="shift">Selling Villas and Pantheons</div><br/>
+
+<h4 id="final">Final Product</h4>
+<p>The project has been compiled into a runnable JAR file for easy user access. The source files have been grouped together as their own zip file for ease of use. All other documents are grouped in an over all zip file and sorted in folders.</p><br/>
+
+<h4 id="tool">Tool and Standards</h4>
+<div>Communication: Blackboard – Discussion Board & Wiki, Discord<br/>
+Blackboard Wiki and Discussion Board were used in the beginning. During the project we moved to using the Discord application for faster communication and sharing capabilities.<br/>
+Programming Tools: Notepad++ and Eclipse<br/>
+Compression Tools: Winrar, Winzip, or other similar Zip compression capable tools<br/>
+Project Plan: Microsoft Project<br/>
+Version control: Github</div><br/>
+
+<h4 id="config">Configuration Management Plan</h4>
+<div>Github will exclusively be used for version control and Configuration Management.<br/>
+Comments will be made when anything is updated or added to the project. These comments will explain what has been changed to keep everyone informed.
+When anyone needs an update and Github is not working for them, we can zip the current version and share on discord or through email directly.<br/>
+<br/>
+<u>Github:</u><br/>
+Build 1: https://github.com/bfram2/Monopoly-Sandbox-1.0.1<br/>
+Build 2: https://github.com/bfram2/Monopoly-Production-1.0.1
+</div>
+
+<h4 id="conv">Monopoly to Roman Empire Conversion</h4>
+<div>There are 40 spaces on the board. Those spaces are as follows: 22 streets, 4 railroads, 2 utilities, 2 tax spaces, 1 go space, 1 jail space, 1 go to jail space, 1 free parking, 3 chance spaces, and 3 community chest spaces. The total pieces are: 32 houses, 12 hotels, 8 player tokens, 28 title deed cards, 16 chance cards, and 16 community chest spaces.</div><br/><br/>
+<div><b>Properties </b>[15]<br/>
+<u>Purple (#44235A)</u><br/></div>
+<div class="shift">Mediterranean Avenue = Germania Inferior ($60, $30 mortgaged)</div>
+<div class="shift">Baltic Avenue = Germania Superior ($60, $30 mortgaged)</div>
+<div><u>Baby Blue (#C4C8E5)</u></div>
+<div class="shift">Oriental Avenue = Alpes Poeniae ($100, $50 mortgaged)</div>
+<div class="shift">Vermont Avenue = Alpes Cottiae ($100, $50 mortgaged)</div>
+<div class="shift">Connecticut Avenue = Aples Maritimae ($120, $60 mortgaged)</div>
+<div><u>Dark Pink (#A72758)</u></div>
+<div class="shift">St. Charles Place = Aquitania ($140, $70 mortgaged)</div>
+<div class="shift">States Avenue = Belgica ($140, $70 mortgaged)</div>
+<div class="shift">Virginia Avenue = Raetia ($160, $80 mortgaged)</div>
+<div><u>Orange (#F19749)</u></div>
+<div class="shift">St. James Place = Africa Proconsularis ($180, $90 mortgaged)</div>
+<div class="shift">Tennessee Avenue = Asia ($180, $90 mortgaged)</div>
+<div class="shift">New York Avenue = Britannia ($200, $100 mortgaged)</div>
+<div><u>Red (#E22835)</u></div>
+<div class="shift">Kentucky Avenue = Cilicia ($220, $110 mortgaged)</div>
+<div class="shift">Indiana Avenue = Galatia ($220, $110 mortgaged)</div>
+<div class="shift">Illinois Avenue = Cappadocia ($240, $120 mortgaged)</div>
+<div><u>Yellow (#F8F37B)</u></div>
+<div class="shift">Atlantic Avenue = Aegyptus ($260, $130 mortgaged)</div>
+<div class="shift">Ventnor Avenue = Arabia Petraea ($260, $130 mortgaged)</div>
+<div class="shift">Marvin Gardens = Syria ($280, $140 mortgaged)</div>
+<div><u>Green (#448364)</u></div>
+<div class="shift">Pacific Avenue = Macedonia ($300, $150 mortgaged)</div>
+<div class="shift">North Carolina Avenue = Epirus ($300, $150 mortgaged)</div>
+<div class="shift">Pennsylvania Avenue = Achaia ($320, $160 mortgaged)</div>
+<div><u>Blue (#413382)</u></div>
+<div class="shift">Park Place = Sicilia ($350, $175 mortgaged)</div>
+<div class="shift">Boardwalk = Italia ($400, $200 mortgaged)</div>
+<br/>
+<div>(Alternatives, fillers: 22 colored streets: Curcus Maximus (Chariot races), Campus (track & field), Rome, Alexandria, and Antioc, Constantinople, [10, 11, 12])</div>
+<div>Railroads [7, 15] ($200 buy, $100 mortgaged, $25 rent [2 roads: $50, 3 roads: $100, 4 roads: $200]) </div>
+<div>Reading Railroad = Via Appia</div>
+<div>Pennsylvania Railroad = Via Flaminia</div>
+<div>B&D Railroad = Via Aemilia</div>
+<div>Short Line = Via Popillia</div><br/>
+
+<div>2 Utilities ($150 buy, $75 mortgaged, rent 4 times dice roll [2 owned, 10 times dice roll]) [4, 15]</div>
+<div class="shift">Aqueducts</div>
+<div class="shift">Sewage</div>
+<div>1 Luxury tax space = Citizen’s Tax Pay $100</div>
+<div>1 Income tax space = Render unto Caesar $200 [16]</div>
+<div>1 Go (collect $200) = Go to Rome</div>
+<div>1 Jail/Just Visiting = Roman Colosseum: Enter Gladiatorial Arena/See a Battle [5]</div>
+<div>1 Free Parking = Free Local Market (Nundinae) Trade [2]</div>
+<div>1 Go to Jail = Become a Carcer (Go to the Arena); (Alternative: Become a Publica Vincula) [6]</div><br/>
+
+<div><b>Board Pieces</b></div>
+<div>2- 6 sided dice</div>
+<div>Villas (houses) [13]</div>
+<div>Pantheon (hotels) [14]</div>
+<div>8 tokens: soldier, senator in toga, women in stola, merchant & cart, chariot, sandal, coin, horse [8, 9]</div><br/>
+
+<div><b>16 Chance cards</b> [18]</div>
+<div class="shift">Take a trip to Via Appia. If you pass Rome collect $200.</div>
+<div class="shift">2x Advance to the nearest Via. If UNOWNED, you may buy it from the Bank. If OWNED, pay owner twice the rental to which they are otherwise entitled.</div>
+<div class="shift">Gain a favor with a Senator, get out of the Gladiatorial Arena for free. This card may be kept until needed or traded.</div>
+<div class="shift">Advance to the nearest Utility. If UNOWNED, you may buy it from the Bank. If OWNED, throw dice and pay owner a total ten times amount thrown.</div>
+<div class="shift">Advance to Rome. Collect $200.</div>
+<div class="shift">A new road is built near your Villa raising its value, collect $150.</div>
+<div class="shift">Go back 3 spaces.</div>
+<div class="shift">Make general repairs on all of your properties: For each villa pay $25, For each hotel pay $100.</div>
+<div class="shift">Advance to Italia.</div>
+<div class="shift">Recent investment in more merchant carts gains you $50.</div>
+<div class="shift">Your horses escape into the city. Pay a $15 fine.</div>
+<div class="shift">Go to the Gladiatorial Arena. Go directly to the arena, DO NOT pass Rome, DO NOT collect $200.</div>
+<div class="shift">Advance to Aquitania. If you pass Rome, Collect $200.</div>
+<div class="shift">Advance to Cappadocia. If you pass Rome, Collect $200.</div>
+<div class="shift">You have been elected a Senator, pay each player $50.</div><br/>
+<div><b>16 Community Chest cards </b>[18]</div>
+<div class="shift">Bank error in your favor. Collect $200.</div>
+<div class="shift">Pay private physician fees of $100.</div>
+<div class="shift">From sale of merchant carts, you get $50.</div>
+<div class="shift">You inherit a small Villa, gain $100.</div>
+<div class="shift">Go to the Gladiatorial Arena. Go directly to the arena, DO NOT pass Rome, DO NOT collect $200.</div>
+<div class="shift">Advance to Rome. Collect $200.</div>
+<div class="shift">Render too much unto Caesar, Collect $200.</div>
+<div class="shift">Roman official assesses you for street repairs: $40 per villa, $115 per hotel.</div>
+<div class="shift">You have won the second price in the Campus Track & Field foot race. Collect $10.</div>
+<div class="shift">Your properties and assets mature, join the Equestrian Order. Collect $100. [19]</div>
+<div class="shift">Sell bulk staples to the bank, receive $100.</div>
+<div class="shift">Pay farmer’s tax of $25.</div>
+<div class="shift">You have a coming of age party, Collect $10 from every player.</div>
+<div class="shift">Pay school fees of $50.</div>
+<div class="shift">Medical institution fees, pay $50.</div>
+<div class="shift">Gain a favor with a Senator, get out of the Gladiatorial Arena for free. This card may be kept until needed or traded.</div><br/>
+<div><b>Property cards</b> [18]</div>
+<div class="shift">Aqueducts: (If one “Utility” is owned, rent is 4 times amount shown on dice. If both “Utilities” are owned, rent is 10 times amount shown on dice. Mortgage Value $75)</div>
+<div class="shift">City Sewage: (If one “Utility” is owned, rent is 4 times amount shown on dice. If both “Utilities” are owned, rent is 10 times amount shown on dice. Mortgage Value $75)</div><br/>
+<div><b>Title Deeds:</b> [18] </div>
+<div>(On all cards: If a player owns all the sites of any color group, the rent is doubled on unimproved sites in that group.)</div>
+<div class="shift">Germania Inferior: Rent $2, With 1 Villa $10, With 2 Villas $30, With 3 Villas $90 With 4 Villas $160, with Pantheon $250, Mortgage Value $30, Houses cost $50 each, Hotels: $50 each plus 4 houses</div><br/>
+<div class="shift"> Germania Superior: Rent $4, With 1 Villa $20, With 2 Villas $60, With 3 Villas $180 With 4 Villas $320, with Pantheon $450, Mortgage Value $30, Houses cost $50 each, Hotels: $50 each plus 4 houses</div><br/>
+<div class="shift">Alpes Poeniae: Rent $6, With 1 Villa $30, With 2 Villas $90, With 3 Villas $270 With 4 Villas $400, with Pantheon $550, Mortgage Value $50, Houses cost $50 each, Hotels: $50 each plus 4 houses</div><br/>
+<div class="shift">Alpes Cottiae: Rent $6, With 1 Villa $30, With 2 Villas $90, With 3 Villas $270 With 4 Villas $400, with Pantheon $550, Mortgage Value $50, Houses cost $50 each, Hotels: $50 each plus 4 houses</div><br/>
+<div class="shift">Aples Maritimae: Rent $8, With 1 Villa $40, With 2 Villas $100, With 3 Villas $300 With 4 Villas $450, with Pantheon $600, Mortgage Value $60, Houses cost $50 each, Hotels: $50 each plus 4 houses</div><br/>
+<div class="shift">Aquitania: Rent $10, With 1 Villa $50, With 2 Villas $150, With 3 Villas $450 With 4 Villas $625, with Pantheon $750, Mortgage Value $70, Houses cost $100 each, Hotels: $100 each plus 4 houses</div><br/>
+<div class="shift">Belgica: Rent $10, With 1 Villa $50, With 2 Villas $150, With 3 Villas $450 With 4 Villas $625, with Pantheon $750, Mortgage Value $70, Houses cost $100 each, Hotels: $100 each plus 4 houses</div><br/>
+<div class="shift">Raetia: Rent $12, With 1 Villa $60, With 2 Villas $180, With 3 Villas $500 With 4 Villas $700, with Pantheon $900, Mortgage Value $80, Houses cost $100 each, Hotels: $100 each plus 4 houses</div><br/>
+<div class="shift">Africa Proconsularis: Rent $14, With 1 Villa $70, With 2 Villas $200, With 3 Villas $550 With 4 Villas $750, with Pantheon $950, Mortgage Value $90, Houses cost $100 each, Hotels: $100 each plus 4 houses</div><br/>
+<div class="shift">Asia: Rent $14, With 1 Villa $70, With 2 Villas $200, With 3 Villas $550 With 4 Villas $750, with Pantheon $950, Mortgage Value $90, Houses cost $100 each, Hotels: $100 each plus 4 houses</div><br/>
+<div class="shift">Britannia: Rent $16, With 1 Villa $80, With 2 Villas $220, With 3 Villas $600 With 4 Villas $800, with Pantheon $1000, Mortgage Value $100, Houses cost $100 each, Hotels: $100 each plus 4 houses</div><br/>
+<div class="shift">Cilicia: Rent $18, With 1 Villa $90, With 2 Villas $250, With 3 Villas $700 With 4 Villas $875, with Pantheon $1050, Mortgage Value $110, Houses cost $150 each, Hotels: $150 each plus 4 houses</div><br/>
+<div class="shift">Galatia: Rent $18, With 1 Villa $90, With 2 Villas $250, With 3 Villas $700 With 4 Villas $875, with Pantheon $1050, Mortgage Value $110, Houses cost $150 each, Hotels: $150 each plus 4 houses</div><br/>
+<div class="shift">Cappadocia: Rent $20, With 1 Villa $100, With 2 Villas $300, With 3 Villas $750 With 4 Villas $925, with Pantheon $1100, Mortgage Value $120, Houses cost $150 each, Hotels: $150 each plus 4 houses</div><br/>
+<div class="shift">Aegyptus: Rent $22, With 1 Villa $110, With 2 Villas $330, With 3 Villas $800 With 4 Villas $975, with Pantheon $1150, Mortgage Value $130, Houses cost $150 each, Hotels: $150 each plus 4 houses </div><br/>
+<div class="shift">Arabia Petraea: Rent $22, With 1 Villa $110, With 2 Villas $330, With 3 Villas $800 With 4 Villas $975, with Pantheon $1150, Mortgage Value $130, Houses cost $150 each, Hotels: $150 each plus 4 houses</div><br/>
+<div class="shift">Syria: Rent $24, With 1 Villa $120, With 2 Villas $360, With 3 Villas $850 With 4 Villas $1025, with Pantheon $1200, Mortgage Value $140, Houses cost $150 each, Hotels: $150 each plus 4 houses</div><br/>
+<div class="shift">Macedonia: Rent $26, With 1 Villa $130, With 2 Villas $390, With 3 Villas $900 With 4 Villas $1100, with Pantheon $1275, Mortgage Value $150, Houses cost $200 each, Hotels: $200 each plus 4 houses</div><br/>
+<div class="shift">Epirus: Rent $26, With 1 Villa $130, With 2 Villas $390, With 3 Villas $900 With 4 Villas $1100, with Pantheon $1275, Mortgage Value $150, Houses cost $200 each, Hotels: $200 each plus 4 houses</div><br/>
+<div class="shift">Achaia: Rent $28, With 1 Villa $150, With 2 Villas $450, With 3 Villas $1000 With 4 Villas $1200, with Pantheon $1400, Mortgage Value $160, Houses cost $200 each, Hotels: $200 each plus 4 houses</div><br/>
+<div class="shift">Sicilia: Rent $35, With 1 Villa $175, With 2 Villas $500, With 3 Villas $1100 With 4 Villas $1300, with Pantheon $1500, Mortgage Value $175, Houses cost $200 each, Hotels: $200 each plus 4 houses </div><br/>
+<div class="shift">Italia: Rent $50, With 1 Villa $200, With 2 Villas $600, With 3 Villas $1400 With 4 Villas $1700, with Pantheon $2000, Mortgage Value $200, Houses cost $200 each, Hotels: $200 each plus 4 houses</div><br/><br/>
+
+<div><b>Monetary</b> [1]</div><br/>
+<div>20 $500 Bills (orange) = aureus</div>
+<div>20 $100 Bills (beige) = denarius</div>
+<div>30 $50 Bills (blue) = sestertius</div>
+<div>50 $20 Bills (green) = dupondius</div>
+<div>40 $10 Bills (yellow) = as</div>
+<div>40 $5 Bills (pink) = semis</div>
+<div>40 $1 Bills (white) = triens</div>
+</div>
+
+<h4 id="code">Pseudocode / UML Diagram</h4>
+<div>19 Java files are included in the attached code as Pseudocode for easy reading of the source code. This code is located in the pseudocode folder.<br/> Additionally, since Board is the hub of the program, a UML Diagram has been included in the documents.</div>
+
+</body>
+</html>
