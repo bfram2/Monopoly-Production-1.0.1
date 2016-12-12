@@ -5,7 +5,6 @@ import tile.Properties;
 
 public class Unmortgage {
 	String statustxt = "";
-	String button1, button2;
 	Players currentPlayer;
 	Properties currentProperty;
 	
@@ -14,13 +13,19 @@ public class Unmortgage {
 		this.currentProperty = prop;
 		
 		if(currentPlayer.getPlayerNumber() != currentProperty.getOwner()){
-			if(currentProperty.getOwner() != currentPlayer.getPlayerNumber()){statustxt = "You do not own this property.";}
+			if(currentProperty.getOwner() != currentPlayer.getPlayerNumber()){
+				statustxt = "You do not own this property.";
+			}
 		}
 		else if(currentProperty.getMortgaged() == false){
-			if(currentProperty.getOwner() != currentPlayer.getPlayerNumber()){statustxt = "This property is not mortgaged.";}
+			if(currentProperty.getOwner() != currentPlayer.getPlayerNumber()){
+				statustxt = "This property is not mortgaged.";
+			}
 		}
 		else if(currentPlayer.getBalance() < currentProperty.getUnMortgaged()){
-			if(currentProperty.getOwner() != currentPlayer.getPlayerNumber()){statustxt = "You do not have enough money to unmortgage this property.";}
+			if(currentProperty.getOwner() != currentPlayer.getPlayerNumber()){
+				statustxt = "You do not have enough money to unmortgage this property.";
+			}
 		}
 		else{
 			statustxt = "You have unmortgaged "+currentProperty.getName()+".";

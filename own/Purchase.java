@@ -35,7 +35,7 @@ public class Purchase extends JFrame implements ActionListener {
 				front.setLayout(null);
 				add(front, BorderLayout.CENTER);
 				
-				statustxt = "You do not have enough money to buy this property";
+				statustxt = "You do not have enough money to buy this property.";
 				
 				close=new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 14pt; padding: 5px 10px 5px 10px;\">Close</div>");
 				status=new JLabel("<html><center><div style=\"color: black; font-family: verdana; font-size: 11pt; padding: 5px;\">"+statustxt+"</div>");
