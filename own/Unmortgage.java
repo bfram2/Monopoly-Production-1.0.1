@@ -27,7 +27,6 @@ public class Unmortgage {
 			int newBalance = currentPlayer.getBalance() - currentProperty.getUnMortgaged();
 			currentPlayer.setBalance(newBalance);
 			currentProperty.setMortgaged(false);
-			dispose();
 			}	
 	}
 	public String getStatusTxt() {return statustxt;}
