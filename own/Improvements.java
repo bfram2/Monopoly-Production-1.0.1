@@ -67,19 +67,14 @@ public class Improvements extends JFrame implements ActionListener {
 					if(propArr[k].getGroup() == group){
 					match1 = propArr[k];
 					this.m1 = match1;
-					}
-				}
-			}
-			for(int j = 0; j < propArr.length; j ++){
-				if(propArr[j] != currentProperty){
+					j += k+1;
 					if(propArr[j].getGroup() == group){
-					match2 = propArr[j];
+					match2 = propArr[k];
 					this.m2 = match2;
 					}
+					}
 				}
-			}
-		}
-		
+			}	
 		
 		boolean totalGroup = checkGroup(currentProperty, propArr);
 			if(totalGroup == true) {
