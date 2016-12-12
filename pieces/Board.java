@@ -619,11 +619,49 @@ public class Board extends JFrame implements ActionListener {
 					"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 		}
 		if(e.getSource()== simprove) {
+			Properties siProp = null;
+            String[] choices = {
+            	    "Germania Inferior","Germania Superior","Alps Poeniae","Alps Cottiae","Alps Maritimae",
+			"Aquitanina","Belgica","Raetia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia",
+			"Aegyptus","Arabia Petraea","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
+            String input = (String) JOptionPane.showInputDialog(null, "Choose a property to mortgage","Properties", JOptionPane.QUESTION_MESSAGE, null,choices,choices[1]); 
+            
+            if(input == "Germania Inferior"){siProp = prop[1];}
+            else if(input == "Germania Superior"){siProp = prop[3];}
+            else if(input == "Alps Poeniae"){siProp = prop[6];}
+            else if(input == "Alps Cottiae"){siProp = prop[8];}
+            else if(input == "Alps Maritimae"){siProp = prop[9];}
+            else if(input == "Aquitanina"){siProp = prop[12];}
+            else if(input == "Belgica"){siProp = prop[14];}
+            else if(input == "Raetia"){siProp = prop[15];}
+            else if(input == "Africa Proconsularis"){siProp = prop[17];}
+            else if(input == "Asia"){siProp = prop[19];}
+            else if(input == "Britannia"){siProp = prop[20];}
+            else if(input == "Cilicia"){siProp = prop[22];}
+            else if(input == "Galatia"){siProp = prop[24];}
+            else if(input == "Cappadocia"){siProp = prop[25];}
+            else if(input == "Aegyptus"){siProp = prop[27];}
+            else if(input == "Arabia Petraea"){siProp = prop[28];}
+            else if(input == "Syria"){siProp = prop[30];}
+            else if(input == "Macedonia"){siProp = prop[32];}
+            else if(input == "Epirus"){siProp = prop[33];}
+            else if(input == "Achaia"){siProp = prop[35];}
+            else if(input == "Sicilia"){siProp = prop[38];}
+            else if(input == "Italia"){siProp = prop[40];}
+			
+            if (siProp != null) {
+               new SellImprovements(siProp, prop, thePlayer);
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+" "+"</div></html>"); //set to blank
+				} //if item is selected from the dialog box activate mortgage
+				else {
+				statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+"You have cancelled mortgaging a property to the bank."+"</div></html>");
+				}
 		//sell improvements
 		}
 		if(e.getSource()== improve) {
-			//villas and pantheons
-		}
+			
+
+		} //villas and pantheons
 		if(e.getSource()== buying) {
 			int counter = 0;
 			int buyCounter;
