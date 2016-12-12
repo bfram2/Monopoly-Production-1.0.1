@@ -25,7 +25,6 @@ public class Players {
         k = 0;                 //counters
         j = 0;
         oj = 0;	
-        
         player = (name+token+position+balance);
 	}
 	

@@ -69,11 +69,7 @@ public class Turn {
 			j = 1;
 		}
 		
-		if (Prev < 10 && p.getPosition() > 10) {
-    		int currentPos = p.getPosition();
-    		p.setPosition(currentPos+1);
-			
-		} //if Pos is less than 10 and will become greater than 10, add one to skip jail (Pos = 11)
+		//if (Prev < 10 && p.getPosition() > 10) {int currentPos = p.getPosition(); p.setPosition(currentPos+1);} //if Pos is less than 10 and will become greater than 10, add one to skip jail (Pos = 11)
 		if (j == 0) {
 	    	if (p.getPosition() > 40) {
 				p.setPosition(p.getPosition()-41);
