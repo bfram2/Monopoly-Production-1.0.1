@@ -284,6 +284,11 @@ public class HelpMenu extends JFrame implements ActionListener {
         helpMenuItem.setMnemonic(KeyEvent.VK_D);
         helpSubmenu.add(helpMenuItem);
         
+     	helpMenuItem = new JMenuItem();
+        helpMenuItem.setAction(H26);
+        helpMenuItem.setMnemonic(KeyEvent.VK_T);
+        helpSubmenu.add(helpMenuItem);
+        
         //Add property management sub-menu to main help menu.
         helpMenu.add(helpSubmenu);
         
@@ -578,7 +583,12 @@ public class HelpMenu extends JFrame implements ActionListener {
         				+ "will first need to downgrade the property "
         				+ "group to an unimproved state, which may "
         				+ "provide the funds you seek without a "
-        				+ "mortgage.");
+        				+ "mortgage.\n\nThe bank will pay the "
+        				+ "mortgage amount shown on the specific "
+        				+ "property card (typically half the original"
+        				+ " property cost) to the player. While a "
+        				+ "property is under mortgage, no rent can be"
+        				+ " collected for that specific space.");
         	}
         };
 
@@ -620,6 +630,18 @@ public class HelpMenu extends JFrame implements ActionListener {
         	}
         };
 
+        H26 = new AbstractAction("Trading Property between players "
+        		, null) {
+        	public void actionPerformed(ActionEvent e1) {
+        		output.setText("Properties can be traded between "
+        				+ "players.  Use the Trade button to begin "
+        				+ "a trade with another player. Choose the "
+        				+ "properties you wish to trade and for. "
+        				+ "Ensure the other player agrees with this"
+        				+ " trade. You may cancel a trade at any "
+        				+ "time.");
+        	}
+        };
         /*   Quick template for new action
         H## = new AbstractAction("Item_Text_Here", null) {
         	public void actionPerformed(ActionEvent e1) {
