@@ -299,7 +299,7 @@ public class Board extends JFrame implements ActionListener {
 	setSize(701,728);
 	}
 	//button actions
-	//@SuppressWarnings("null")
+	@SuppressWarnings("null")
 	public void actionPerformed(ActionEvent e) {
 		
 		Players thePlayer = play[turnCounter];
@@ -499,7 +499,7 @@ public class Board extends JFrame implements ActionListener {
 					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
 					"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 		} //buy property
-		if(e.getSource() == mortgage) {	
+		if(e.getSource() == mortgage) {
                 Properties mortProp = null;
                 String[] choices = {
                 	    "Germania Inferior","Germania Superior","Via Appia","Alps Poeniae","Alps Cottiae","Alps Maritimae",
@@ -659,7 +659,60 @@ public class Board extends JFrame implements ActionListener {
 		//sell improvements
 		}
 		if(e.getSource()== improve) {
+			Properties improveProp = null;
+            String[] choices = {
+            	    "Germania Inferior","Germania Superior","Via Appia","Alps Poeniae","Alps Cottiae","Alps Maritimae",
+			"Aquitanina","Sewers","Belgica","Raetia","Via Flaminia","Africa Proconsularis","Asia","Britannia","Cilicia","Galatia","Cappadocia",
+			"Via Aemilia","Aegyptus","Arabia Petraea","Aquaducts","Syria","Macedonia","Epirus","Achaia","Sicilia","Italia"};
+            String input = (String) JOptionPane.showInputDialog(null, "Choose a property to improve","Properties", JOptionPane.QUESTION_MESSAGE, null,choices,choices[1]); 
+            
+            if(input == "Germania Inferior"){improveProp = prop[1];}
+            else if(input == "Germania Superior"){improveProp = prop[3];}
+            else if(input == "Via Appia"){improveProp = prop[5];}
+            else if(input == "Alps Poeniae"){improveProp = prop[6];}
+            else if(input == "Alps Cottiae"){improveProp = prop[8];}
+            else if(input == "Alps Maritimae"){improveProp = prop[9];}
+            else if(input == "Aquitanina"){improveProp = prop[12];}
+            else if(input == "Sewers"){improveProp = prop[13];}
+            else if(input == "Belgica"){improveProp = prop[14];}
+            else if(input == "Raetia"){improveProp = prop[15];}
+            else if(input == "Via Flaminia"){improveProp = prop[16];}
+            else if(input == "Africa Proconsularis"){improveProp = prop[17];}
+            else if(input == "Asia"){improveProp = prop[19];}
+            else if(input == "Britannia"){improveProp = prop[20];}
+            else if(input == "Cilicia"){improveProp = prop[22];}
+            else if(input == "Galatia"){improveProp = prop[24];}
+            else if(input == "Cappadocia"){improveProp = prop[25];}
+            else if(input == "Via Aemilia"){improveProp = prop[26];}
+            else if(input == "Aegyptus"){improveProp = prop[27];}
+            else if(input == "Arabia Petraea"){improveProp = prop[28];}
+            else if(input == "Aquaducts"){improveProp = prop[29];}
+            else if(input == "Syria"){improveProp = prop[30];}
+            else if(input == "Macedonia"){improveProp = prop[32];}
+            else if(input == "Epirus"){improveProp = prop[33];}
+            else if(input == "Achaia"){improveProp = prop[35];}
+            else if(input == "Via Popilia"){improveProp = prop[36];}
+            else if(input == "Sicilia"){improveProp = prop[38];}
+            else if(input == "Italia"){improveProp = prop[40];}
 			
+			if (improveProp != null) {
+            new Improvements(thePlayer, improveProp, play, prop);
+			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+" "+"</div></html>"); //set to blank
+			} //if item is selected from the dialog box activate mortgage
+			else {
+			statusbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">"+"You have cancelled improving a property."+"</div></html>");
+			} //otherwise print status
+			
+			printVillas = "";
+			for(int i = 0; i< prop.length; i++){
+            	if(prop[i].getVillas() > 0 || prop[i].getPantheons() > 0){
+            		printVillas += prop[i].getName()+" - Villas: "+prop[i].getVillas()+", Pantheons: "+prop[i].getPantheons()+"<br/>";
+            	}
+            } //update and print improved properties
+		
+			plbtn.setText("<html><div style=\"color: black; font-family: verdana; width: 267px; font-size: 11pt; padding-left: 10px;\">Player: " +thePlayer.getName()+  "<br/>" + "Balance: "+thePlayer.getBalance()+	" denarius <br/>Space: "+prop[thePlayer.getPosition()].getName()+
+					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
+					"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/>Properties with Villas/Pantheons: "+printVillas+"<br/><br/></div></html>");
 
 		} //villas and pantheons
 		if(e.getSource()== buying) {
