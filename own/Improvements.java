@@ -34,9 +34,7 @@ public class Improvements extends JFrame implements ActionListener {
 		Properties match2 = null;		
 		
 		int group = currentProperty.getGroup();
-		boolean ownAll = checkGroup(prop,propArr);
-		
-		if(currentProperty.getOwner() != currentPlayer.getPlayerNumber()){
+		if(group == 11 || group == 10 || group == 9){
 			setTitle("Improvements");
 			setSize(200,250); //window size
 			setLocation(255,290);
@@ -47,61 +45,7 @@ public class Improvements extends JFrame implements ActionListener {
 			front.setLayout(null);
 			add(front, BorderLayout.CENTER);
 
-			statustxt = "You do not own this property";
-		
-			button1 = "<u>C</u>lose";
-			close=new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 14pt; padding: 5px 10px 5px 10px;\">"+button1+"</div>");
-			status=new JLabel("<html><center><div style=\"color: black; font-family: verdana; font-size: 11pt; padding: 5px;\">"+statustxt+"</div>");
-			close.setBackground(new Color(73,175,47));
-		
-			front.add(status);
-			front.add(close);
-		
-			status.setBounds(20,0,150,50);
-			close.setBounds(20, 60, 150, 50);
-		
-			close.addActionListener(this);
-			repaint();
-		}
-		else if(currentProperty.getMortgaged() == true){
-			setTitle("Improvements");
-			setSize(200,250); //window size
-			setLocation(255,290);
-			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			setVisible(true);
-			setLayout(new BorderLayout());
-			JPanel front = new JPanel();
-			front.setLayout(null);
-			add(front, BorderLayout.CENTER);
-
-			statustxt = "This property is mortgaged, you cannot improve upon it";
-		
-			button1 = "<u>C</u>lose";
-			close=new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 14pt; padding: 5px 10px 5px 10px;\">"+button1+"</div>");
-			status=new JLabel("<html><center><div style=\"color: black; font-family: verdana; font-size: 11pt; padding: 5px;\">"+statustxt+"</div>");
-			close.setBackground(new Color(73,175,47));
-		
-			front.add(status);
-			front.add(close);
-		
-			status.setBounds(20,0,150,50);
-			close.setBounds(20, 60, 150, 50);
-		
-			close.addActionListener(this);
-			repaint();
-		}
-		else if(ownAll == false){
-			setTitle("Improvements");
-			setSize(200,250); //window size
-			setLocation(255,290);
-			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			setVisible(true);
-			setLayout(new BorderLayout());
-			JPanel front = new JPanel();
-			front.setLayout(null);
-			add(front, BorderLayout.CENTER);
-
-			statustxt = "You do not own the entire group, you cannot improve on this property";
+			statustxt = "You cannot purchase villas or pantheons on this property";
 		
 			button1 = "<u>C</u>lose";
 			close=new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 14pt; padding: 5px 10px 5px 10px;\">"+button1+"</div>");
@@ -202,7 +146,7 @@ public class Improvements extends JFrame implements ActionListener {
 								int addVilla = currentProperty.getVillas() + 1;
 								currentProperty.setVillas(addVilla);
 								m1.setVillas(addVilla);
-								m2.setVillas(addVilla);
+								m2.setMortgaged(addVilla);
 								int newBalance = currentPlayer.getBalance() - (houseCost*3);
 								currentPlayer.setBalance(newBalance);
 								dispose();
@@ -232,7 +176,7 @@ public class Improvements extends JFrame implements ActionListener {
 							int addVilla = currentProperty.getVillas() + 1;
 							currentProperty.setVillas(addVilla);
 							m1.setVillas(addVilla);
-							m2.setVillas(addVilla);
+							m2.setMortgaged(addVilla);
 							int newBalance = currentPlayer.getBalance() - (houseCost*3);
 							currentPlayer.setBalance(newBalance);
 							dispose();
@@ -262,7 +206,7 @@ public class Improvements extends JFrame implements ActionListener {
 								int addVilla = currentProperty.getVillas() + 1;
 								currentProperty.setVillas(addVilla);
 								m1.setVillas(addVilla);
-								m2.setVillas(addVilla);
+								m2.setMortgaged(addVilla);
 								int newBalance = currentPlayer.getBalance() - (houseCost*3);
 								currentPlayer.setBalance(newBalance);
 								dispose();
@@ -292,7 +236,7 @@ public class Improvements extends JFrame implements ActionListener {
 								int addVilla = currentProperty.getVillas() + 1;
 								currentProperty.setVillas(addVilla);
 								m1.setVillas(addVilla);
-								m2.setVillas(addVilla);
+								m2.setMortgaged(addVilla);
 								int newBalance = currentPlayer.getBalance() - (houseCost*3);
 								currentPlayer.setBalance(newBalance);
 								dispose();
@@ -316,7 +260,7 @@ public class Improvements extends JFrame implements ActionListener {
 									int addVilla = currentProperty.getVillas() + 1;
 									currentProperty.setVillas(addVilla);
 									m1.setVillas(addVilla);
-									m2.setVillas(addVilla);
+									m2.setMortgaged(addVilla);
 									int newBalance = currentPlayer.getBalance() - (houseCost*2);
 									currentPlayer.setBalance(newBalance);
 									dispose();
@@ -363,13 +307,13 @@ public class Improvements extends JFrame implements ActionListener {
 				else returnValue = false;
 			}
 		}
+		status.repaint();	
 		return returnValue;	
 	} //end of buy improvements
-
+	public String getStatusTxt() {return statustxt;}
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == close) {
 			dispose();
 		}		
 	}
 } //end of action
-
