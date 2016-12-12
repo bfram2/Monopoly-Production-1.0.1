@@ -15,8 +15,8 @@ import tile.Properties;
 
 public class Board extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	JButton rolling, purchase, mortgage, unmortgage, improve, simprove, ending, mmenu, hmenu, token1, token2, token3, token4, token5, token6, token7, token8, plbtn, chabtn, statusbtn, dicez, dice2thereckoning, tdbtn, buying, trade, confirmBuy, confirmTrade;
-
+	JButton rolling, purchase, mortgage, unmortgage, ending, mmenu, hmenu, token1, token2, token3, token4, token5, token6, token7, token8, plbtn, chabtn, statusbtn, dicez, dice2thereckoning, tdbtn, buying, trade, confirmBuy, confirmTrade;
+	//JButton simprove, improve;
 	JFrame boardFrame = new JFrame("Stats");
 	JPanel stats = new JPanel();
 	Turn theTurn = new Turn(); //pulling player's turn
@@ -82,8 +82,8 @@ public class Board extends JFrame implements ActionListener {
 	purchase = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>P</u>urchase Property</div>");
 	mortgage = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>M</u>ortgage</div>");
 	unmortgage = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>U</u>nMortgage</div>");
-	improve = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>I</u>mprovements</div>");
-	simprove = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>S</u>ell Improvements</div>");
+	//improve = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>I</u>mprovements</div>");
+	//simprove = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>S</u>ell Improvements</div>");
 	buying = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>B</u>uy from Player</div>");
 	trade = new JButton("<html><center><div style=\"color: #5d5d5d; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>T</u>rade</div>");
 	ending = new JButton("<html><center><div style=\"color: white; font-weight: bold; font-family: verdana; font-size: 12pt; padding: 5px;\"><u>E</u>nd Turn</div>");
@@ -97,8 +97,8 @@ public class Board extends JFrame implements ActionListener {
 		purchase.setBackground(new Color(167,39,88));
 		mortgage.setBackground(new Color(247, 153, 22));
 		unmortgage.setBackground(new Color(247, 153, 22));
-		improve.setBackground(new Color(68, 35, 90));
-		simprove.setBackground(new Color(68, 35, 90));
+		//improve.setBackground(new Color(68, 35, 90));
+		//simprove.setBackground(new Color(68, 35, 90));
 		buying.setBackground(new Color(71,71,255));
 		confirmBuy.setBackground(new Color(71,71,255));
 		trade.setBackground(new Color(248,243,123));
@@ -136,8 +136,8 @@ public class Board extends JFrame implements ActionListener {
 	purchase.addActionListener(this);
 	mortgage.addActionListener(this);
 	unmortgage.addActionListener(this);
-	improve.addActionListener(this);
-	simprove.addActionListener(this);
+	//improve.addActionListener(this);
+	//simprove.addActionListener(this);
 	buying.addActionListener(this);
 	trade.addActionListener(this);
 	confirmBuy.addActionListener(this);
@@ -204,8 +204,8 @@ public class Board extends JFrame implements ActionListener {
 	front.add(purchase);
 	front.add(mortgage);
 	front.add(unmortgage);
-	front.add(improve);
-	front.add(simprove);
+	//front.add(improve);
+	//front.add(simprove);
 	front.add(buying);
 	front.add(trade);
 	front.add(ending);
@@ -228,10 +228,10 @@ public class Board extends JFrame implements ActionListener {
 	ending.setFocusPainted(false);
 	buying.setFocusPainted(false);
 	trade.setFocusPainted(false);
-	improve.setFocusPainted(false);
+	//improve.setFocusPainted(false);
 	confirmBuy.setFocusPainted(false);
 	confirmTrade.setFocusPainted(false);
-	simprove.setFocusPainted(false);
+	//simprove.setFocusPainted(false);
 	purchase.setFocusPainted(false);
 	mortgage.setFocusPainted(false);
 	unmortgage.setFocusPainted(false);
@@ -278,8 +278,8 @@ public class Board extends JFrame implements ActionListener {
 	ending.setEnabled(false);
 	purchase.setEnabled(false);
 	mortgage.setEnabled(false);
-	improve.setEnabled(false);
-	simprove.setEnabled(false);
+	//improve.setEnabled(false);
+	//simprove.setEnabled(false);
 	buying.setEnabled(false);
 	trade.setEnabled(false);
 	confirmBuy.setEnabled(false);
@@ -315,16 +315,16 @@ public class Board extends JFrame implements ActionListener {
 			if(thePlayer.getOwner() == true){
 				mortgage.setEnabled(true);
 				unmortgage.setEnabled(true);
-				improve.setEnabled(true);
-				simprove.setEnabled(true);
+				//improve.setEnabled(true);
+				//simprove.setEnabled(true);
 				buying.setEnabled(true);
 				trade.setEnabled(true);
 			}
 			if(thePlayer.getOwner() == false){
 				mortgage.setEnabled(false);
 				unmortgage.setEnabled(false);
-				improve.setEnabled(false);
-				simprove.setEnabled(false);
+				//improve.setEnabled(false);
+				//simprove.setEnabled(false);
 				buying.setEnabled(false);
 				trade.setEnabled(false);
 			}
@@ -618,7 +618,7 @@ public class Board extends JFrame implements ActionListener {
 					", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/>Get out of the Arena cards: "+thePlayer.getOutJail()+
 					"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/><br/></div></html>");
 		}
-		if(e.getSource()== simprove) {
+		/*if(e.getSource()== simprove) {
 			Properties siProp = null;
             String[] choices = {
             	    "Germania Inferior","Germania Superior","Alps Poeniae","Alps Cottiae","Alps Maritimae",
@@ -711,6 +711,7 @@ public class Board extends JFrame implements ActionListener {
 	            		", <br/>Buy cost: "+prop[thePlayer.getPosition()].getCost()+" denarius <br/>Jail Counter: "+play[turnCounter].getJail()+", Doubles Counter: "+play[turnCounter].getDoubles()+"<br/><br/>Owned properties: <br/>"+tdowned+"<br/>Mortgaged properties: <br/>"+tdmort+"<br/>Villas/Pantheons: "+printVillas+"<br/><br/></div></html>");
 
 		} //villas and pantheons
+		*/
 		if(e.getSource()== buying) {
 			int counter = 0;
 			int buyCounter;
@@ -943,16 +944,16 @@ public class Board extends JFrame implements ActionListener {
 			if(thePlayer.getOwner() == true){
 				mortgage.setEnabled(true);
 				unmortgage.setEnabled(true);
-				improve.setEnabled(true);
-				simprove.setEnabled(true);
+				//improve.setEnabled(true);
+				//simprove.setEnabled(true);
 				buying.setEnabled(true);
 				trade.setEnabled(true);
 			}
 			if(thePlayer.getOwner() == false){
 				mortgage.setEnabled(false);
 				unmortgage.setEnabled(false);
-				improve.setEnabled(false);
-				simprove.setEnabled(false);
+				//improve.setEnabled(false);
+				//simprove.setEnabled(false);
 				buying.setEnabled(false);
 				trade.setEnabled(false);
 			}
@@ -1003,8 +1004,8 @@ public class Board extends JFrame implements ActionListener {
 					rolling.setEnabled(false);
 					purchase.setEnabled(false);
 					mortgage.setEnabled(false);
-					improve.setEnabled(false);
-					simprove.setEnabled(false);
+					//improve.setEnabled(false);
+					//simprove.setEnabled(false);
 					buying.setEnabled(false);
 					trade.setEnabled(false);
 					unmortgage.setEnabled(false);
@@ -1015,8 +1016,8 @@ public class Board extends JFrame implements ActionListener {
 					rolling.setEnabled(false);
 					purchase.setEnabled(false);
 					mortgage.setEnabled(true);
-					improve.setEnabled(false);
-					simprove.setEnabled(false);
+					//improve.setEnabled(false);
+					//simprove.setEnabled(false);
 					buying.setEnabled(false);
 					trade.setEnabled(false);
 					unmortgage.setEnabled(false);
@@ -1029,16 +1030,16 @@ public class Board extends JFrame implements ActionListener {
 				confirmTrade.setEnabled(false);
 				if(play[turnCounter].getOwner() == false){
 					mortgage.setEnabled(false);
-					improve.setEnabled(false);
-					simprove.setEnabled(false);
+					//improve.setEnabled(false);
+					//simprove.setEnabled(false);
 					buying.setEnabled(false);
 					trade.setEnabled(false);
 					unmortgage.setEnabled(false);
 				}
 				else if(play[turnCounter].getOwner() == true){
 					mortgage.setEnabled(true);
-					improve.setEnabled(true);
-					simprove.setEnabled(true);
+					//improve.setEnabled(true);
+					//simprove.setEnabled(true);
 					buying.setEnabled(true);
 					trade.setEnabled(true);
 					unmortgage.setEnabled(true);
